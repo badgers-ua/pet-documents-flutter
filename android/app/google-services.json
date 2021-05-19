@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "796641729899",
+    "project_id": "pet-documents",
+    "storage_bucket": "pet-documents.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796641729899:android:56925d9cf051834c8f402e",
+        "android_client_info": {
+          "package_name": "ua.yyesi.pdoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796641729899-lciq9mll1rna7s321v2btbit2btopsif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFvgzuLjzJoidOcbdh2dcBK142Wk0zNxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796641729899-lciq9mll1rna7s321v2btbit2btopsif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "796641729899-akfs81ib3adp62v5q8lfur6pqr75draf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ua.yyesi.pdoc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
