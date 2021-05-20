@@ -1,0 +1,11 @@
+{
+  "sign_in_screen_app_bar_text": "Вхід",
+  "sign_in_screen_welcome_text": "Привіт",
+  "sign_in_screen_email_text_field_text": "Ел. пошта",
+  "sign_in_screen_password_text_field_text": "Пароль",
+  "sign_in_screen_sign_in_button_text": "Увійти",
+  "tabs_screen_home_tab_text": "Головна",
+  "tabs_screen_chats_tab_text": "Чати",
+  "home_screen_app_bar_text": "Головна",
+  "chats_screen_app_bar_text": "Чати"
+}

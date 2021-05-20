@@ -1,16 +1,20 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pdoc/constants.dart';
+import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/screens/tabs_screen.dart';
 
 class SignInScreen extends StatelessWidget {
+  static const routeName = '/sign-in';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Pet Documents")),
+        title: Center(
+          child: Text(L10n.of(context).sign_in_screen_app_bar_text),
+        ),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -29,7 +33,7 @@ class SignInScreen extends StatelessWidget {
                   height: ThemeConstants.spacing(2),
                 ),
                 Text(
-                  "Sign In",
+                  L10n.of(context).sign_in_screen_welcome_text,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
@@ -38,7 +42,8 @@ class SignInScreen extends StatelessWidget {
                 TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
+                    labelText:
+                        L10n.of(context).sign_in_screen_email_text_field_text,
                   ),
                 ),
                 SizedBox(
@@ -47,7 +52,8 @@ class SignInScreen extends StatelessWidget {
                 TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Password',
+                    labelText: L10n.of(context)
+                        .sign_in_screen_password_text_field_text,
                   ),
                 ),
                 SizedBox(
@@ -56,8 +62,13 @@ class SignInScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Sign in"),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(TabsScreen.routeName);
+                    },
+                    child: Text(
+                      L10n.of(context).sign_in_screen_sign_in_button_text,
+                    ),
                   ),
                 )
               ],
