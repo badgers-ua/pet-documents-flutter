@@ -6,6 +6,7 @@
   "sign_in_screen_sign_in_button_text": "Увійти",
   "tabs_screen_home_tab_text": "Головна",
   "tabs_screen_chats_tab_text": "Чати",
+  "tabs_screen_settings_tab_text": "Налаштування",
   "home_screen_app_bar_text": "Головна",
   "home_screen_pets_title_text": "Мої улюбленці",
   "home_screen_events_title_text": "Майбутні події",
@@ -18,6 +19,7 @@
     }
   },
   "chats_screen_app_bar_text": "Чати",
+  "settings_screen_app_bar_text": "Налаштування",
   "add_edit_pet_screen_app_bar_text": "Створити улюбленця",
   "pet_profile_screen_info_tab_text": "Опис",
   "pet_profile_screen_chat_tab_text": "Чат",
