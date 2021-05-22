@@ -24,7 +24,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       visible: true,
       curve: Curves.bounceIn,
       overlayColor: Colors.black,
-      overlayOpacity: 0.5,
+      overlayOpacity: 0,
       children: [
         SpeedDialChild(
           child: Icon(Icons.accessibility),
