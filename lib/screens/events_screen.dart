@@ -23,6 +23,7 @@ class EventsScreen extends StatelessWidget {
                   horizontal: ThemeConstants.spacing(1),
                 ),
                 sliver: SliverFixedExtentList(
+                  // TODO: height of "child: Text("1")"
                   itemExtent: 50,
                   delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {

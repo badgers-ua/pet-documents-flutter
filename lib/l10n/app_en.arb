@@ -17,5 +17,9 @@
       }
     }
   },
-  "chats_screen_app_bar_text": "Chats"
+  "chats_screen_app_bar_text": "Chats",
+  "add_edit_pet_screen_app_bar_text": "Create pet",
+  "pet_profile_screen_info_tab_text": "Info",
+  "pet_profile_screen_chat_tab_text": "Chat",
+  "pet_profile_screen_events_tab_text": "Events"
 }

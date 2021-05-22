@@ -17,5 +17,9 @@
       }
     }
   },
-  "chats_screen_app_bar_text": "Чати"
+  "chats_screen_app_bar_text": "Чати",
+  "add_edit_pet_screen_app_bar_text": "Створити улюбленця",
+  "pet_profile_screen_info_tab_text": "Опис",
+  "pet_profile_screen_chat_tab_text": "Чат",
+  "pet_profile_screen_events_tab_text": "Події"
 }

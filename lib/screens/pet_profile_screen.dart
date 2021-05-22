@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/screens/events_screen.dart';
 
 class PetProfileScreen extends StatefulWidget {
@@ -109,9 +110,9 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                       ),
                       bottom: TabBar(
                         tabs: [
-                          Tab(text: "Info"),
-                          Tab(text: "Chat"),
-                          Tab(text: "Events"),
+                          Tab(text: L10n.of(context).pet_profile_screen_info_tab_text),
+                          Tab(text: L10n.of(context).pet_profile_screen_chat_tab_text),
+                          Tab(text: L10n.of(context).pet_profile_screen_events_tab_text),
                         ],
                       ),
                     ),
