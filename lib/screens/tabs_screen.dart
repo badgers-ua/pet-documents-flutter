@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/screens/add_edit_pet_screen.dart';
+import 'package:pdoc/screens/home_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs';
@@ -12,9 +14,7 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-    ),
+    HomeScreen(),
     Text(
       'Chats',
     ),
@@ -41,26 +41,29 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: _getAppBarTitle(context, _selectedIndex),
       ),
-      body: Center(
+      body: Scrollbar(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            label: L10n
-                .of(context)
-                .tabs_screen_home_tab_text,
+            label: L10n.of(context).tabs_screen_home_tab_text,
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: L10n
-                .of(context)
-                .tabs_screen_chats_tab_text,
+            label: L10n.of(context).tabs_screen_chats_tab_text,
             icon: Icon(Icons.chat),
           ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .pushNamed(AddEditPetScreen.routeName);
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

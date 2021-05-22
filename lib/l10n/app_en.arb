@@ -7,5 +7,15 @@
   "tabs_screen_home_tab_text": "Home",
   "tabs_screen_chats_tab_text": "Chats",
   "home_screen_app_bar_text": "Home",
+  "home_screen_pets_title_text": "My pets",
+  "home_screen_events_title_text": "Upcoming events",
+  "pet_card_widget_subtitle": "Owners: {ownersCount}",
+  "@pet_card_widget_subtitle": {
+    "placeholders": {
+      "ownersCount": {
+        "type": "String"
+      }
+    }
+  },
   "chats_screen_app_bar_text": "Chats"
 }

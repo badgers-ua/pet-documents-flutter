@@ -16,62 +16,64 @@ class SignInScreen extends StatelessWidget {
           child: Text(L10n.of(context).sign_in_screen_app_bar_text),
         ),
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(ThemeConstants.spacing(1)),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: ThemeConstants.spacing(1),
-                ),
-                SvgPicture.asset(
-                  'assets/images/circle-paw.svg',
-                  color: Theme.of(context).accentColor,
-                ),
-                SizedBox(
-                  height: ThemeConstants.spacing(2),
-                ),
-                Text(
-                  L10n.of(context).sign_in_screen_welcome_text,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                SizedBox(
-                  height: ThemeConstants.spacing(1),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText:
-                        L10n.of(context).sign_in_screen_email_text_field_text,
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(ThemeConstants.spacing(1)),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
                   ),
-                ),
-                SizedBox(
-                  height: ThemeConstants.spacing(1),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: L10n.of(context)
-                        .sign_in_screen_password_text_field_text,
+                  SvgPicture.asset(
+                    'assets/images/circle-paw.svg',
+                    color: Theme.of(context).accentColor,
                   ),
-                ),
-                SizedBox(
-                  height: ThemeConstants.spacing(1),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(TabsScreen.routeName);
-                    },
-                    child: Text(
-                      L10n.of(context).sign_in_screen_sign_in_button_text,
+                  SizedBox(
+                    height: ThemeConstants.spacing(2),
+                  ),
+                  Text(
+                    L10n.of(context).sign_in_screen_welcome_text,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText:
+                          L10n.of(context).sign_in_screen_email_text_field_text,
                     ),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: L10n.of(context)
+                          .sign_in_screen_password_text_field_text,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(TabsScreen.routeName);
+                      },
+                      child: Text(
+                        L10n.of(context).sign_in_screen_sign_in_button_text,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
