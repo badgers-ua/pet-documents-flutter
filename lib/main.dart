@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
+import 'package:pdoc/screens/pet_profile_screen.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pdoc/screens/tabs_screen.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       routes: {
         TabsScreen.routeName: (context) => TabsScreen(),
         AddEditPetScreen.routeName: (context) => AddEditPetScreen(),
+        PetProfileScreen.routeName: (context) => PetProfileScreen(),
       },
     );
   }

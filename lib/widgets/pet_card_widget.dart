@@ -4,13 +4,15 @@ import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 
 class PetCardWidget extends StatelessWidget {
+  final GestureTapCallback? onTap;
+
+  PetCardWidget({this.onTap}) {}
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      child:  InkWell(
-        onTap: () {
-          print('Card tapped.');
-        },
+      child: InkWell(
+        onTap: onTap,
         child: Container(
           padding: EdgeInsets.all(ThemeConstants.spacing(1)),
           child: Column(

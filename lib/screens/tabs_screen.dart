@@ -11,7 +11,7 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  int _selectedIndex = 0;
+  int _currentTabIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -31,7 +31,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentTabIndex = index;
     });
   }
 
@@ -39,10 +39,10 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _getAppBarTitle(context, _selectedIndex),
+        title: _getAppBarTitle(context, _currentTabIndex),
       ),
       body: Scrollbar(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_currentTabIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -55,16 +55,16 @@ class _TabsScreenState extends State<TabsScreen> {
             icon: Icon(Icons.chat),
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: _currentTabIndex,
         onTap: _onItemTapped,
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _currentTabIndex == 0 ? FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
               .pushNamed(AddEditPetScreen.routeName);
         },
         child: Icon(Icons.add),
-      ),
+      ) : null,
     );
   }
 }

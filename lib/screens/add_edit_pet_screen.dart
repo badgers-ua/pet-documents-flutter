@@ -7,8 +7,12 @@ class AddEditPetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Create pet")),
-      body: Container(
-        child: Text("Create new one"),
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Text("Create new one"),
+          ),
+        ),
       ),
     );
   }

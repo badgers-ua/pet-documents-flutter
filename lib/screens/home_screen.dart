@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/screens/pet_profile_screen.dart';
 import 'package:pdoc/widgets/event_card_widget.dart';
 import 'package:pdoc/widgets/pet_card_widget.dart';
 
@@ -27,7 +28,11 @@ class HomeScreen extends StatelessWidget {
           mainAxisSpacing: ThemeConstants.spacing(0.5),
           crossAxisCount: 2,
           children: <Widget>[
-            PetCardWidget(),
+            PetCardWidget(
+              onTap: () {
+                Navigator.of(context).pushNamed(PetProfileScreen.routeName);
+              },
+            ),
             PetCardWidget(),
             PetCardWidget(),
             PetCardWidget(),
