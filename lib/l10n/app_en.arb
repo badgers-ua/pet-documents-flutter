@@ -15,6 +15,7 @@
   "home_screen_app_bar_text": "Home",
   "home_screen_pets_title_text": "My pets",
   "home_screen_events_title_text": "Upcoming events",
+  "settings_screen_sign_out_button_text": "Sign out",
   "pet_card_widget_subtitle": "Owners: {ownersCount}",
   "@pet_card_widget_subtitle": {
     "placeholders": {

@@ -34,7 +34,8 @@ Function loadAccessTokenFromRefreshTokenThunk = ({
 }) =>
     (Store<RootStore> store) async {
       store.dispatch(LoadAccessToken());
-      final String refreshToken = await secureStorage.read(key: 'refresh_token') ?? '';
+      final String refreshToken =
+          await secureStorage.read(key: 'refresh_token') ?? '';
       final String deviceToken = store.state.deviceToken.data!.deviceToken;
       final RefreshTokenReqDto dto = RefreshTokenReqDto(
         refreshToken: refreshToken,
@@ -58,7 +59,6 @@ Function loadAccessTokenFromRefreshTokenThunk = ({
           ),
         );
       } catch (e) {
-        print(1);
         final String errorMsg = (e as DioError).response!.data["message"];
 
         // ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
@@ -113,4 +113,13 @@ Function loadSignInThunk = ({
 
         store.dispatch(LoadSignInFailure(payload: errorMsg));
       }
+    };
+
+Function signOutThunk = ({
+  required BuildContext ctx,
+}) =>
+    (Store<RootStore> store) async {
+      clearRefreshToken();
+      store.dispatch(ClearAuthState());
+      Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
     };

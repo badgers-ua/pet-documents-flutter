@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/home_screen.dart';
+import 'package:pdoc/screens/settings_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs';
@@ -18,9 +19,7 @@ class _TabsScreenState extends State<TabsScreen> {
     Text(
       'Chats',
     ),
-    Text(
-      'Settings',
-    ),
+    SettingsScreen(),
   ];
 
   Widget _getAppBarTitle(BuildContext ctx, int index) {
