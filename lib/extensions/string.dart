@@ -11,3 +11,9 @@ extension PasswordValidator on String {
     return this.length > 5 && this.length < 21;
   }
 }
+
+extension BearerTokenFormatter on String {
+  String toBearerToken() {
+    return 'Bearer $this';
+  }
+}

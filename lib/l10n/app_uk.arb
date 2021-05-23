@@ -6,6 +6,9 @@
   "sign_in_screen_sign_in_button_text": "Увійти",
   "sign_in_screen_invalid_email_text": "Некоректна ел. пошта.",
   "sign_in_screen_invalid_password_text": "Довжина паролю має становити від 6 до 20 символів.",
+  "sign_in_screen_no_account_text": "Немає аккаунту?",
+  "sign_in_screen_sign_up_button_text": "Зареєструватись",
+  "sign_up_screen_app_bar_text": "Реєстрація",
   "tabs_screen_home_tab_text": "Головна",
   "tabs_screen_chats_tab_text": "Чати",
   "tabs_screen_settings_tab_text": "Налаштування",
@@ -25,5 +28,6 @@
   "add_edit_pet_screen_app_bar_text": "Створити улюбленця",
   "pet_profile_screen_info_tab_text": "Опис",
   "pet_profile_screen_chat_tab_text": "Чат",
-  "pet_profile_screen_events_tab_text": "Події"
+  "pet_profile_screen_events_tab_text": "Події",
+  "scaffold_messenger_extension_dismiss_text": "Зрозуміло"
 }

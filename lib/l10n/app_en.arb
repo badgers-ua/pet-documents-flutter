@@ -1,11 +1,14 @@
 {
-  "sign_in_screen_app_bar_text": "Sign In",
+  "sign_in_screen_app_bar_text": "Sign in",
   "sign_in_screen_welcome_text": "Welcome",
   "sign_in_screen_email_text_field_text": "Email",
   "sign_in_screen_password_text_field_text": "Password",
   "sign_in_screen_sign_in_button_text": "Sign In",
   "sign_in_screen_invalid_email_text": "Invalid email.",
   "sign_in_screen_invalid_password_text": "Password must be between 6 and 20 characters.",
+  "sign_in_screen_no_account_text": "Don't have an account yet?",
+  "sign_in_screen_sign_up_button_text": "Sign up",
+  "sign_up_screen_app_bar_text": "Sign up",
   "tabs_screen_home_tab_text": "Home",
   "tabs_screen_chats_tab_text": "Chats",
   "tabs_screen_settings_tab_text": "Settings",
@@ -25,5 +28,6 @@
   "add_edit_pet_screen_app_bar_text": "Create pet",
   "pet_profile_screen_info_tab_text": "Info",
   "pet_profile_screen_chat_tab_text": "Chat",
-  "pet_profile_screen_events_tab_text": "Events"
+  "pet_profile_screen_events_tab_text": "Events",
+  "scaffold_messenger_extension_dismiss_text": "Dismiss"
 }
