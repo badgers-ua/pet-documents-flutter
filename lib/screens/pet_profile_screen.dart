@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:pdoc/l10n/l10n.dart';
-import 'package:pdoc/screens/events_screen.dart';
+import 'package:pdoc/screens/pet_events_sliver_list_screen.dart';
+import 'package:pdoc/screens/pet_chat_sliver_list_screen.dart';
+import 'package:pdoc/screens/pet_info_sliver_list_screen.dart';
+import 'package:pdoc/screens/pet_profile_tab_screen.dart';
 
 class PetProfileScreen extends StatefulWidget {
   static const routeName = '/pet-profile';
@@ -121,9 +124,9 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
               },
               body: TabBarView(
                 children: [
-                  EventsScreen(),
-                  EventsScreen(),
-                  EventsScreen(),
+                  PetProfileTabScreen(child: PetInfoSliverListScreen()),
+                  PetProfileTabScreen(child: PetChatSliverListScreen()),
+                  PetProfileTabScreen(child: PetEventsSLiverListScreen()),
                 ],
               ),
             ),
