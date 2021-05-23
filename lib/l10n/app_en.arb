@@ -4,6 +4,8 @@
   "sign_in_screen_email_text_field_text": "Email",
   "sign_in_screen_password_text_field_text": "Password",
   "sign_in_screen_sign_in_button_text": "Sign In",
+  "sign_in_screen_invalid_email_text": "Invalid email.",
+  "sign_in_screen_invalid_password_text": "Password must be between 6 and 20 characters.",
   "tabs_screen_home_tab_text": "Home",
   "tabs_screen_chats_tab_text": "Chats",
   "tabs_screen_settings_tab_text": "Settings",
