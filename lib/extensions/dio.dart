@@ -18,7 +18,7 @@ extension AuthenticatedDio on Dio {
         onRequest: (RequestOptions requestOptions, handler) {
           dio.interceptors.requestLock.lock();
           final String accessToken =
-              MainScreen.store.state.auth.data!.accessToken!;
+              MyApp.store.state.auth.data!.accessToken!;
           requestOptions.headers[HttpHeaders.authorizationHeader] =
               accessToken.toBearerToken();
           dio.interceptors.requestLock.unlock();

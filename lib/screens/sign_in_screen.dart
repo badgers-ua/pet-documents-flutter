@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/extensions/string.dart';
-import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/screens/sign_up_screen.dart';
 import 'package:pdoc/store/auth/effects.dart';
@@ -169,7 +168,7 @@ class SignInScreen extends StatelessWidget {
 
 class _SignInScreenScreenViewModel {
   final dispatchLoadSignInThunk;
-  final AppState<Auth> authState;
+  final AuthState authState;
 
   _SignInScreenScreenViewModel({
     required this.dispatchLoadSignInThunk,

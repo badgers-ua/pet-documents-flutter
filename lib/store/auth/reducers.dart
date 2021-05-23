@@ -1,53 +1,73 @@
-import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/auth.dart';
 
 import 'actions.dart';
 
-AppState<Auth> authReducer(AppState<Auth> state, action) {
-  if (action is LoadSignInSilently) {
-    return AppState(
-      isLoading: true,
+AuthState authReducer(AuthState state, action) {
+  if (action is LoadAccessToken) {
+    return AuthState(
+      isLoadingAccessToken: true,
+      isLoading: false,
       data: null,
       errorMessage: '',
+      errorMessageAccessToken: '',
     );
   }
-  if (action is LoadSignInSilentlySuccess) {
-    return AppState(
+  if (action is LoadAccessTokenSuccess) {
+    return AuthState(
+      isLoadingAccessToken: false,
       isLoading: false,
       data: action.payload,
       errorMessage: '',
+      errorMessageAccessToken: '',
     );
   }
-  if (action is LoadSignInSilentlyFailure) {
-    return AppState(
+  if (action is LoadAccessTokenFailure) {
+    return AuthState(
+      isLoadingAccessToken: false,
+      isLoading: false,
+      data: null,
+      errorMessage: '',
+      errorMessageAccessToken: action.payload,
+    );
+  }
+  if (action is LoadAccessTokenFailure) {
+    return AuthState(
+      isLoadingAccessToken: false,
       isLoading: false,
       data: null,
       errorMessage: action.payload,
+      errorMessageAccessToken: '',
     );
   }
   if (action is LoadSignIn) {
-    return AppState(
+    return AuthState(
+      isLoadingAccessToken: false,
       isLoading: true,
       data: null,
       errorMessage: '',
+      errorMessageAccessToken: '',
     );
   }
   if (action is LoadSignInSuccess) {
-    return AppState(
+    return AuthState(
+      isLoadingAccessToken: false,
       isLoading: false,
       data: action.payload,
       errorMessage: '',
+      errorMessageAccessToken: '',
     );
   }
   if (action is LoadSignInFailure) {
-    return AppState(
+    return AuthState(
+      isLoadingAccessToken: false,
       isLoading: false,
       data: null,
       errorMessage: action.payload,
+      errorMessageAccessToken: '',
     );
   }
   if (action is ClearAuthState) {
-    return AppState();
+    return AuthState();
   }
   return state;
 }

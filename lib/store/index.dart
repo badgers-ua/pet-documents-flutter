@@ -12,7 +12,7 @@ abstract class AppAction {
 }
 
 class RootStore {
-  final AppState<Auth> auth;
+  final AuthState auth;
   final AppState<DeviceToken> deviceToken;
 
 
@@ -22,7 +22,7 @@ class RootStore {
   });
 
   RootStore.initialState()
-      : auth = AppState(),
+      : auth = AuthState(),
        deviceToken = AppState();
 }
 
