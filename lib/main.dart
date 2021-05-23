@@ -94,15 +94,27 @@ class _MyAppState extends State<MyApp> {
               if ((await FlutterSecureStorage().read(key: 'refresh_token') ??
                       '')
                   .isEmpty) {
-                store.dispatch(LoadAccessTokenFailure(payload: 'No refresh token'));
+                store.dispatch(
+                    LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
               store
                   .dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
             },
             converter: (store) => store.state,
-            ignoreChange: (RootStore state) => true,
+            ignoreChange: (RootStore state) {
+              final bool isNotEmptyErrorMessage =
+                  state.auth.errorMessage.isNotEmpty;
+              final bool isNotEmptyErrorMessageAccessToken =
+                  state.auth.errorMessageAccessToken.isEmpty;
+
+              final bool ignoreChangeOnErrorChange =
+                  isNotEmptyErrorMessage ||
+                  isNotEmptyErrorMessageAccessToken;
+              return ignoreChangeOnErrorChange;
+            },
             builder: (context, RootStore state) {
+              // TODO: Verify infinite loader bug
               if (state.auth.isLoadingAccessToken) {
                 return Scaffold(
                   body: Center(
