@@ -13,6 +13,7 @@ class SignInReqDto {
     required this.password,
     required this.deviceToken,
   });
+
   factory SignInReqDto.fromJson(Map<String, dynamic> json) => _$SignInReqDtoFromJson(json);
   Map<String, dynamic> toJson() => _$SignInReqDtoToJson(this);
 }

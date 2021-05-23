@@ -58,13 +58,10 @@ Function loadAccessTokenFromRefreshTokenThunk = ({
           ),
         );
       } catch (e) {
+        print(1);
         final String errorMsg = (e as DioError).response!.data["message"];
 
         // ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
-        Timer(Duration(milliseconds: 50), () {
-          Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
-        });
 
         print('Refresh Token Error: $errorMsg');
 

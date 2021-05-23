@@ -11,6 +11,7 @@ import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pdoc/screens/sign_up_screen.dart';
 import 'package:pdoc/screens/tabs_screen.dart';
+import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/device_token/actions.dart';
 import 'package:pdoc/store/index.dart';
@@ -93,6 +94,7 @@ class _MyAppState extends State<MyApp> {
               if ((await FlutterSecureStorage().read(key: 'refresh_token') ??
                       '')
                   .isEmpty) {
+                store.dispatch(LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
               store

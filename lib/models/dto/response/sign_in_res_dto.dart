@@ -13,6 +13,7 @@ class SignInResDto {
     required this.refreshToken,
     required this.expiresAt,
   });
+
   factory SignInResDto.fromJson(Map<String, dynamic> json) => _$SignInResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$SignInResDtoToJson(this);
 }

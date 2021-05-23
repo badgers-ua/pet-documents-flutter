@@ -14,6 +14,5 @@ class RefreshTokenReqDto {
 
   factory RefreshTokenReqDto.fromJson(Map<String, dynamic> json) =>
       _$RefreshTokenReqDtoFromJson(json);
-
   Map<String, dynamic> toJson() => _$RefreshTokenReqDtoToJson(this);
 }
