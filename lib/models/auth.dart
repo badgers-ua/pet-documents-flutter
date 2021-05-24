@@ -17,9 +17,11 @@ class Auth {
 class AuthState extends AppState {
   final bool isLoadingAccessToken;
   final String errorMessageAccessToken;
+  final bool isInitialLoadCompleted;
 
   AuthState({
     this.isLoadingAccessToken = false,
+    this.isInitialLoadCompleted = false,
     this.errorMessageAccessToken = '',
     bool isLoading = false,
     String errorMessage = '',

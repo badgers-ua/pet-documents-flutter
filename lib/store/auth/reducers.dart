@@ -10,6 +10,7 @@ AuthState authReducer(AuthState state, action) {
       data: null,
       errorMessage: '',
       errorMessageAccessToken: '',
+      isInitialLoadCompleted: state.isInitialLoadCompleted,
     );
   }
   if (action is LoadAccessTokenSuccess) {
@@ -19,6 +20,7 @@ AuthState authReducer(AuthState state, action) {
       data: action.payload,
       errorMessage: '',
       errorMessageAccessToken: '',
+      isInitialLoadCompleted: true,
     );
   }
   if (action is LoadAccessTokenFailure) {
@@ -28,15 +30,7 @@ AuthState authReducer(AuthState state, action) {
       data: null,
       errorMessage: '',
       errorMessageAccessToken: action.payload,
-    );
-  }
-  if (action is LoadAccessTokenFailure) {
-    return AuthState(
-      isLoadingAccessToken: false,
-      isLoading: false,
-      data: null,
-      errorMessage: action.payload,
-      errorMessageAccessToken: '',
+      isInitialLoadCompleted: true,
     );
   }
   if (action is LoadSignIn) {
@@ -46,6 +40,7 @@ AuthState authReducer(AuthState state, action) {
       data: null,
       errorMessage: '',
       errorMessageAccessToken: '',
+      isInitialLoadCompleted: state.isInitialLoadCompleted,
     );
   }
   if (action is LoadSignInSuccess) {
@@ -55,6 +50,7 @@ AuthState authReducer(AuthState state, action) {
       data: action.payload,
       errorMessage: '',
       errorMessageAccessToken: '',
+      isInitialLoadCompleted: state.isInitialLoadCompleted,
     );
   }
   if (action is LoadSignInFailure) {
@@ -64,6 +60,7 @@ AuthState authReducer(AuthState state, action) {
       data: null,
       errorMessage: action.payload,
       errorMessageAccessToken: '',
+      isInitialLoadCompleted: state.isInitialLoadCompleted,
     );
   }
   if (action is ClearAuthState) {

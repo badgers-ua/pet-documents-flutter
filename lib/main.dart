@@ -90,52 +90,42 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (BuildContext context) =>
               StoreConnector<RootState, _MyAppViewModel>(
-            onInit: (store) async {
-              if ((await FlutterSecureStorage().read(key: 'refresh_token') ??
+                onInit: (store) async {
+                  if ((await FlutterSecureStorage().read(
+                      key: 'refresh_token') ??
                       '')
-                  .isEmpty) {
-                store.dispatch(
-                    LoadAccessTokenFailure(payload: 'No refresh token'));
-                return;
-              }
-              store.dispatch(loadAccessTokenFromRefreshTokenThunk());
-            },
-            converter: (store) {
-              return _MyAppViewModel(auth: store.state.auth);
-            },
-            ignoreChange: (RootState state) {
-              final AuthState auth = state.auth;
-
-              final bool isNotEmptyErrorMessage = auth.errorMessage.isNotEmpty;
-              final bool isNotEmptyErrorMessageAccessToken =
-                  auth.errorMessageAccessToken.isEmpty;
-
-              final bool ignoreChangeOnErrorChange =
-                  isNotEmptyErrorMessage || isNotEmptyErrorMessageAccessToken;
-
-              return ignoreChangeOnErrorChange ||
-                  (auth.data != null &&
-                      auth.data.refreshToken.isNotEmpty &&
-                      (auth.isLoadingAccessToken ||
-                          !auth.isLoadingAccessToken));
-            },
-            builder: (context, _MyAppViewModel vm) {
-              // TODO: Verify infinite loader bug
-              if (vm.auth.isLoadingAccessToken) {
-                return Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-              final Auth? auth = vm.auth.data;
-              if (auth == null ||
-                  (!auth.isAuthenticated && !vm.auth.isLoading)) {
-                return SignInScreen();
-              }
-              return TabsScreen();
-            },
-          ),
+                      .isEmpty) {
+                    store.dispatch(
+                        LoadAccessTokenFailure(payload: 'No refresh token'));
+                    return;
+                  }
+                  store.dispatch(loadAccessTokenFromRefreshTokenThunk());
+                },
+                converter: (store) {
+                  final Auth? auth = store.state.auth.data;
+                  final bool isAuthenticated = auth != null &&
+                      auth.isAuthenticated;
+                  return _MyAppViewModel(
+                    isAuthenticated: isAuthenticated,
+                    isInitialLoadCompleted: store.state.auth
+                        .isInitialLoadCompleted,
+                  );
+                },
+                builder: (context, _MyAppViewModel vm) {
+                  // TODO: Verify infinite loader bug
+                  if (!vm.isInitialLoadCompleted) {
+                    return Scaffold(
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  if (!vm.isAuthenticated) {
+                    return SignInScreen();
+                  }
+                  return TabsScreen();
+                },
+              ),
         ),
       ),
     );
@@ -143,7 +133,11 @@ class _MyAppState extends State<MyApp> {
 }
 
 class _MyAppViewModel {
-  final AuthState auth;
+  final bool isAuthenticated;
+  final bool isInitialLoadCompleted;
 
-  _MyAppViewModel({required this.auth});
+  _MyAppViewModel({
+    required this.isAuthenticated,
+    required this.isInitialLoadCompleted,
+  });
 }
