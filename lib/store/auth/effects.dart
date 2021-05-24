@@ -8,7 +8,7 @@ import 'package:pdoc/models/dto/request/refresh_token_req_dto.dart';
 import 'package:pdoc/models/dto/request/sign_in_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
-import 'package:pdoc/screens/tabs_screen.dart';
+import 'package:pdoc/screens/tabs/tabs_screen.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/scaffold_messenger.dart';
 
@@ -29,10 +29,8 @@ clearRefreshToken() async {
   await secureStorage.delete(key: 'refresh_token');
 }
 
-Function loadAccessTokenFromRefreshTokenThunk = ({
-  required BuildContext ctx,
-}) =>
-    (Store<RootStore> store) async {
+Function loadAccessTokenFromRefreshTokenThunk = () =>
+    (Store<RootState> store) async {
       store.dispatch(LoadAccessToken());
       final String refreshToken =
           await secureStorage.read(key: 'refresh_token') ?? '';
@@ -74,7 +72,7 @@ Function loadSignInThunk = ({
   required String email,
   required String password,
 }) =>
-    (Store<RootStore> store) async {
+    (Store<RootState> store) async {
       store.dispatch(LoadSignIn());
       final String deviceToken = store.state.deviceToken.data!.deviceToken;
 
@@ -118,7 +116,7 @@ Function loadSignInThunk = ({
 Function signOutThunk = ({
   required BuildContext ctx,
 }) =>
-    (Store<RootStore> store) async {
+    (Store<RootState> store) async {
       clearRefreshToken();
       store.dispatch(ClearAuthState());
       Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);

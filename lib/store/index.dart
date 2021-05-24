@@ -13,22 +13,22 @@ abstract class AppAction {
   }
 }
 
-class RootStore {
+class RootState {
   final AuthState auth;
   final AppState<DeviceToken> deviceToken;
   final AppState<List<PetPreviewResDto>> pets;
 
-  RootStore(
+  RootState(
       {required this.auth, required this.deviceToken, required this.pets});
 
-  RootStore.initialState()
+  RootState.initialState()
       : auth = AuthState(isLoadingAccessToken: true),
         deviceToken = AppState(),
         pets = AppState(data: []);
 }
 
-RootStore appReducer(RootStore state, action) {
-  return RootStore(
+RootState appReducer(RootState state, action) {
+  return RootState(
     auth: authReducer(state.auth, action),
     deviceToken: deviceTokenReducer(state.deviceToken, action),
     pets: petsReducer(state.pets, action),

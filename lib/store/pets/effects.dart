@@ -12,7 +12,7 @@ import 'package:pdoc/extensions/scaffold_messenger.dart';
 Function loadPetsThunk = ({
   required BuildContext ctx,
 }) =>
-    (Store<RootStore> store) async {
+    (Store<RootState> store) async {
       store.dispatch(LoadPets());
       try {
         final response = await Dio().authenticatedDio().get('/pets');

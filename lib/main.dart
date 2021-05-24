@@ -10,7 +10,7 @@ import 'package:pdoc/screens/pet_profile_screen.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pdoc/screens/sign_up_screen.dart';
-import 'package:pdoc/screens/tabs_screen.dart';
+import 'package:pdoc/screens/tabs/tabs_screen.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/device_token/actions.dart';
@@ -28,9 +28,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  static final Store<RootStore> store = Store<RootStore>(
+  static final Store<RootState> store = Store<RootState>(
     appReducer,
-    initialState: RootStore.initialState(),
+    initialState: RootState.initialState(),
     middleware: [thunkMiddleware],
   );
 
@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<RootStore>(
+    return StoreProvider<RootState>(
       store: MyApp.store,
       child: MaterialApp(
         supportedLocales: L10n.all,
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
         darkTheme: ThemeData.dark(),
         home: Builder(
           builder: (BuildContext context) =>
-              StoreConnector<RootStore, RootStore>(
+              StoreConnector<RootState, _MyAppViewModel>(
             onInit: (store) async {
               if ((await FlutterSecureStorage().read(key: 'refresh_token') ??
                       '')
@@ -98,33 +98,39 @@ class _MyAppState extends State<MyApp> {
                     LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
-              store
-                  .dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
+              store.dispatch(loadAccessTokenFromRefreshTokenThunk());
             },
-            converter: (store) => store.state,
-            ignoreChange: (RootStore state) {
-              final bool isNotEmptyErrorMessage =
-                  state.auth.errorMessage.isNotEmpty;
+            converter: (store) {
+              return _MyAppViewModel(auth: store.state.auth);
+            },
+            ignoreChange: (RootState state) {
+              final AuthState auth = state.auth;
+
+              final bool isNotEmptyErrorMessage = auth.errorMessage.isNotEmpty;
               final bool isNotEmptyErrorMessageAccessToken =
-                  state.auth.errorMessageAccessToken.isEmpty;
+                  auth.errorMessageAccessToken.isEmpty;
 
               final bool ignoreChangeOnErrorChange =
-                  isNotEmptyErrorMessage ||
-                  isNotEmptyErrorMessageAccessToken;
-              return ignoreChangeOnErrorChange;
+                  isNotEmptyErrorMessage || isNotEmptyErrorMessageAccessToken;
+
+              return ignoreChangeOnErrorChange ||
+                  (auth.data != null &&
+                      auth.data.refreshToken.isNotEmpty &&
+                      (auth.isLoadingAccessToken ||
+                          !auth.isLoadingAccessToken));
             },
-            builder: (context, RootStore state) {
+            builder: (context, _MyAppViewModel vm) {
               // TODO: Verify infinite loader bug
-              if (state.auth.isLoadingAccessToken) {
+              if (vm.auth.isLoadingAccessToken) {
                 return Scaffold(
                   body: Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
               }
-              final Auth? auth = state.auth.data;
+              final Auth? auth = vm.auth.data;
               if (auth == null ||
-                  (!auth.isAuthenticated && !state.auth.isLoading)) {
+                  (!auth.isAuthenticated && !vm.auth.isLoading)) {
                 return SignInScreen();
               }
               return TabsScreen();
@@ -134,4 +140,10 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+class _MyAppViewModel {
+  final AuthState auth;
+
+  _MyAppViewModel({required this.auth});
 }

@@ -13,7 +13,7 @@ import 'package:pdoc/widgets/pet_card_widget.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<RootStore, _HomeScreenViewModel>(
+    return StoreConnector<RootState, _HomeScreenViewModel>(
       onInit: (store) {
         store.dispatch(loadPetsThunk(ctx: context));
       },

@@ -3,7 +3,7 @@ import 'package:redux/redux.dart';
 
 import '../index.dart';
 
-void signOutThunk(Store<RootStore> store) async {
+void signOutThunk(Store<RootState> store) async {
   // AuthService.clearRefreshToken();
   // store.dispatch(ClearAuthState());
   // store.dispatch(ClearUserState());

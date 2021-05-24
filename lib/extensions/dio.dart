@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:pdoc/extensions/string.dart';
+import 'package:pdoc/store/auth/effects.dart';
 
 import '../constants.dart';
 import '../main.dart';
@@ -17,8 +18,17 @@ extension AuthenticatedDio on Dio {
       InterceptorsWrapper(
         onRequest: (RequestOptions requestOptions, handler) {
           dio.interceptors.requestLock.lock();
-          final String accessToken =
-              MyApp.store.state.auth.data!.accessToken!;
+          final String accessToken = MyApp.store.state.auth.data!.accessToken!;
+
+          final int expiresAt = MyApp.store.state.auth.data!.expiresAt!;
+          final int now = DateTime.now().microsecondsSinceEpoch;
+          final int jsNow = int.parse(now.toString().substring(0, now.toString().length - 6));
+          final bool expiresInFiveMins = (expiresAt - jsNow) <= 300;
+
+          if (expiresInFiveMins) {
+            MyApp.store.dispatch(loadAccessTokenFromRefreshTokenThunk());
+          }
+
           requestOptions.headers[HttpHeaders.authorizationHeader] =
               accessToken.toBearerToken();
           dio.interceptors.requestLock.unlock();

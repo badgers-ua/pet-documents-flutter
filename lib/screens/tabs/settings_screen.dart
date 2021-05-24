@@ -7,7 +7,7 @@ import 'package:pdoc/store/index.dart';
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<RootStore, _SettingsScreenViewModel>(
+    return StoreConnector<RootState, _SettingsScreenViewModel>(
       converter: (store) {
         return _SettingsScreenViewModel(
           dispatchSignOut: () => store.dispatch(signOutThunk(ctx: context)),

@@ -28,7 +28,7 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<RootStore, _SignInScreenScreenViewModel>(
+    return StoreConnector<RootState, _SignInScreenScreenViewModel>(
       converter: (store) {
         return _SignInScreenScreenViewModel(
           authState: store.state.auth,
