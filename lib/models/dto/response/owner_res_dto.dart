@@ -4,18 +4,17 @@ part 'owner_res_dto.g.dart';
 
 @JsonSerializable()
 class OwnerResDto {
-  final String userId;
+  @JsonKey(name: '_id')
+  final String id;
   final String email;
-  final String? phoneNumber;
-  final String? familyName;
-  final String? givenName;
+  final String firstName;
+  final String lastName;
 
   OwnerResDto({
-    required this.userId,
+    required this.id,
     required this.email,
-    this.phoneNumber,
-    this.familyName,
-    this.givenName,
+    required this.firstName,
+    required this.lastName
   });
 
   factory OwnerResDto.fromJson(Map<String, dynamic> json) => _$OwnerResDtoFromJson(json);

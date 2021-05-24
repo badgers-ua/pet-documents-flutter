@@ -11,6 +11,19 @@ import 'package:pdoc/widgets/event_card_widget.dart';
 import 'package:pdoc/widgets/pet_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
+
+  void handlePetCardPressed({
+    required BuildContext ctx,
+    required String petId,
+  }) {
+    Navigator.of(ctx).pushNamed(
+      PetProfileScreen.routeName,
+      arguments: PetProfileScreenProps(
+        petId: petId,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<RootState, _HomeScreenViewModel>(
@@ -40,8 +53,13 @@ class HomeScreen extends StatelessWidget {
                 left: ThemeConstants.spacing(0.5),
               ),
               child: Text(
-                L10n.of(context).home_screen_pets_title_text,
-                style: Theme.of(context).textTheme.headline5,
+                L10n
+                    .of(context)
+                    .home_screen_pets_title_text,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline5,
               ),
             ),
             GridView.builder(
@@ -57,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                 return PetCardWidget(
                   pet: petPreviewList[index],
                   onTap: () {
-                    Navigator.of(context).pushNamed(PetProfileScreen.routeName);
+                    handlePetCardPressed(ctx: context, petId: petPreviewList[index].id);
                   },
                 );
               },
@@ -66,8 +84,13 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(ThemeConstants.spacing(0.5)),
               child: Text(
-                L10n.of(context).home_screen_events_title_text,
-                style: Theme.of(context).textTheme.headline5,
+                L10n
+                    .of(context)
+                    .home_screen_events_title_text,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline5,
               ),
             ),
             EventCardWidget(),

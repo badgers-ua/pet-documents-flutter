@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/models/app_state.dart';
+import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/screens/pet_events_sliver_list_screen.dart';
 import 'package:pdoc/screens/pet_chat_sliver_list_screen.dart';
 import 'package:pdoc/screens/pet_info_sliver_list_screen.dart';
 import 'package:pdoc/screens/pet_profile_tab_screen.dart';
+import 'package:pdoc/store/index.dart';
+import 'package:pdoc/store/pet/effects.dart';
+
+class PetProfileScreenProps {
+  final String petId;
+
+  PetProfileScreenProps({
+    required this.petId,
+  });
+}
 
 class PetProfileScreen extends StatefulWidget {
   static const routeName = '/pet-profile';
@@ -67,74 +80,112 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Builder(builder: (BuildContext context) {
-        final TabController tabController = DefaultTabController.of(context)!;
-        tabController.addListener(() {
-          if (!tabController.indexIsChanging) {
-            setState(() {
-              _currentTabIndex = tabController.index;
+    final PetProfileScreenProps props =
+        ModalRoute.of(context)!.settings.arguments as PetProfileScreenProps;
+
+    return StoreConnector<RootState, _PetProfileScreenViewModel>(
+      onInit: (store) {
+        store.dispatch(loadPetThunk(ctx: context, petId: props.petId));
+      },
+      converter: (store) {
+        final AppState<PetResDto> petState = store.state.pet;
+        return _PetProfileScreenViewModel(
+            pet: petState.data, isLoading: petState.isLoading);
+      },
+      builder: (context, _PetProfileScreenViewModel vm) {
+        if (vm.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return DefaultTabController(
+          length: 3,
+          child: Builder(builder: (BuildContext context) {
+            final TabController tabController =
+                DefaultTabController.of(context)!;
+            tabController.addListener(() {
+              if (!tabController.indexIsChanging) {
+                setState(() {
+                  _currentTabIndex = tabController.index;
+                });
+              }
             });
-          }
-        });
-        return Scaffold(
-          body: Scrollbar(
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverOverlapAbsorber(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                    sliver: SliverAppBar(
-                      title: Text('Jill'),
-                      pinned: true,
-                      snap: true,
-                      floating: true,
-                      expandedHeight: 200,
-                      forceElevated: innerBoxIsScrolled,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.7),
-                                BlendMode.dstATop,
-                              ),
-                              image: NetworkImage(
-                                'https://www.thesprucepets.com/thmb/DvxumVXUoBY2q0k3VVnOFRRz-dw=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/facts-about-black-cats-554102-hero-7281a22d75584d448290c359780c2ead.jpg',
+            return Scaffold(
+              body: Scrollbar(
+                child: NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverOverlapAbsorber(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                        sliver: SliverAppBar(
+                          title: Text(vm.pet!.name),
+                          pinned: true,
+                          snap: true,
+                          floating: true,
+                          expandedHeight: 200,
+                          forceElevated: innerBoxIsScrolled,
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.7),
+                                    BlendMode.dstATop,
+                                  ),
+                                  image: NetworkImage(
+                                    'https://www.thesprucepets.com/thmb/DvxumVXUoBY2q0k3VVnOFRRz-dw=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/facts-about-black-cats-554102-hero-7281a22d75584d448290c359780c2ead.jpg',
+                                  ),
+                                ),
                               ),
                             ),
                           ),
+                          bottom: TabBar(
+                            tabs: [
+                              Tab(
+                                  text: L10n.of(context)
+                                      .pet_profile_screen_info_tab_text),
+                              Tab(
+                                  text: L10n.of(context)
+                                      .pet_profile_screen_chat_tab_text),
+                              Tab(
+                                  text: L10n.of(context)
+                                      .pet_profile_screen_events_tab_text),
+                            ],
+                          ),
                         ),
                       ),
-                      bottom: TabBar(
-                        tabs: [
-                          Tab(text: L10n.of(context).pet_profile_screen_info_tab_text),
-                          Tab(text: L10n.of(context).pet_profile_screen_chat_tab_text),
-                          Tab(text: L10n.of(context).pet_profile_screen_events_tab_text),
-                        ],
-                      ),
-                    ),
+                    ];
+                  },
+                  body: TabBarView(
+                    children: [
+                      PetProfileTabScreen(child: PetInfoSliverListScreen(petRowList: vm.pet!.toPetInfoRowWidgetPropsList(ctx: context))),
+                      PetProfileTabScreen(child: PetChatSliverListScreen()),
+                      PetProfileTabScreen(child: PetEventsSLiverListScreen()),
+                    ],
                   ),
-                ];
-              },
-              body: TabBarView(
-                children: [
-                  PetProfileTabScreen(child: PetInfoSliverListScreen()),
-                  PetProfileTabScreen(child: PetChatSliverListScreen()),
-                  PetProfileTabScreen(child: PetEventsSLiverListScreen()),
-                ],
+                ),
               ),
-            ),
-          ),
-          floatingActionButton:
-              _currentTabIndex == 0 ? petActionButtons(context) : null,
+              floatingActionButton:
+                  _currentTabIndex == 0 ? petActionButtons(context) : null,
+            );
+          }),
         );
-      }),
+      },
     );
   }
+}
+
+class _PetProfileScreenViewModel {
+  final bool isLoading;
+  final PetResDto? pet;
+
+  _PetProfileScreenViewModel({
+    required this.isLoading,
+    required this.pet,
+  });
 }

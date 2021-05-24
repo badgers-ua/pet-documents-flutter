@@ -30,5 +30,15 @@
   "pet_profile_screen_info_tab_text": "Опис",
   "pet_profile_screen_chat_tab_text": "Чат",
   "pet_profile_screen_events_tab_text": "Події",
-  "scaffold_messenger_extension_dismiss_text": "Зрозуміло"
+  "scaffold_messenger_extension_dismiss_text": "Зрозуміло",
+  "pet_info_sliver_list_screen_species_text": "Вид",
+  "pet_info_sliver_list_screen_breed_text": "Порода",
+  "pet_info_sliver_list_screen_gender_text": "Стать",
+  "pet_info_sliver_list_screen_date_born_text": "Дата народження",
+  "pet_info_sliver_list_screen_color_text": "Колір",
+  "pet_info_sliver_list_screen_description_text": "Опис",
+  "species_enum_cat": "Кіт",
+  "species_enum_dog": "Пес",
+  "gender_enum_male": "Чоловіча",
+  "gender_enum_female": "Жіноча"
 }

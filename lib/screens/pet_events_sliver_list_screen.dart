@@ -8,7 +8,7 @@ class PetEventsSLiverListScreen extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return Container(
-            child: PetInfoRowWidget(),
+            child: PetInfoRowWidget(props: PetInfoRowWidgetProps(label: 'Label', value: 'value')),
           );
         },
         childCount: 20,

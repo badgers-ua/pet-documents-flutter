@@ -8,19 +8,17 @@ part of 'owner_res_dto.dart';
 
 OwnerResDto _$OwnerResDtoFromJson(Map<String, dynamic> json) {
   return OwnerResDto(
-    userId: json['userId'] as String,
+    id: json['_id'] as String,
     email: json['email'] as String,
-    phoneNumber: json['phoneNumber'] as String?,
-    familyName: json['familyName'] as String?,
-    givenName: json['givenName'] as String?,
+    firstName: json['firstName'] as String,
+    lastName: json['lastName'] as String,
   );
 }
 
 Map<String, dynamic> _$OwnerResDtoToJson(OwnerResDto instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
+      '_id': instance.id,
       'email': instance.email,
-      'phoneNumber': instance.phoneNumber,
-      'familyName': instance.familyName,
-      'givenName': instance.givenName,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
     };

@@ -30,5 +30,15 @@
   "pet_profile_screen_info_tab_text": "Info",
   "pet_profile_screen_chat_tab_text": "Chat",
   "pet_profile_screen_events_tab_text": "Events",
-  "scaffold_messenger_extension_dismiss_text": "Dismiss"
+  "scaffold_messenger_extension_dismiss_text": "Dismiss",
+  "pet_info_sliver_list_screen_species_text": "Species",
+  "pet_info_sliver_list_screen_breed_text": "Breed",
+  "pet_info_sliver_list_screen_gender_text": "Gender",
+  "pet_info_sliver_list_screen_date_born_text": "Date born",
+  "pet_info_sliver_list_screen_color_text": "Color",
+  "pet_info_sliver_list_screen_description_text": "Description",
+  "species_enum_cat": "Cat",
+  "species_enum_dog": "Dog",
+  "gender_enum_male": "Male",
+  "gender_enum_female": "Female"
 }
