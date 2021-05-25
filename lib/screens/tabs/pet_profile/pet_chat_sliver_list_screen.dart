@@ -24,7 +24,7 @@ class PetChatSliverListScreen extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
+                      color: index.isOdd ? Theme.of(context).backgroundColor : Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),

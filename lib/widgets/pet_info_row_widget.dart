@@ -77,6 +77,8 @@ class _Row extends StatelessWidget {
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
               props.label,
@@ -86,6 +88,7 @@ class _Row extends StatelessWidget {
             Text(
               props.value,
               style: Theme.of(context).textTheme.bodyText1,
+              textAlign: TextAlign.end,
             ),
             Divider(),
           ],

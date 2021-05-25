@@ -4,7 +4,7 @@ import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
-import 'package:pdoc/screens/pet_profile_screen.dart';
+import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pets/effects.dart';
 import 'package:pdoc/widgets/event_card_widget.dart';

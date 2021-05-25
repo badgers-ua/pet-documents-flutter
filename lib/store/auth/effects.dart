@@ -9,6 +9,8 @@ import 'package:pdoc/models/dto/request/sign_in_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:pdoc/screens/tabs/tabs_screen.dart';
+import 'package:pdoc/store/user/actions.dart';
+import 'package:pdoc/store/user/effects.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/scaffold_messenger.dart';
 
@@ -56,6 +58,7 @@ Function loadAccessTokenFromRefreshTokenThunk = () =>
             ),
           ),
         );
+        store.dispatch(loadUserThunk());
       } catch (e) {
         final String errorMsg = (e as DioError).response!.data["message"];
 
@@ -103,6 +106,7 @@ Function loadSignInThunk = ({
             ),
           ),
         );
+        store.dispatch(loadUserThunk());
         // store.dispatch(SetUserState(payload: User.getUserFromToken(auth.idToken!)));
       } catch (e) {
         final String errorMsg = (e as DioError).response!.data["message"];
@@ -119,5 +123,6 @@ Function signOutThunk = ({
     (Store<RootState> store) async {
       clearRefreshToken();
       store.dispatch(ClearAuthState());
+      store.dispatch(ClearUserState());
       Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
     };

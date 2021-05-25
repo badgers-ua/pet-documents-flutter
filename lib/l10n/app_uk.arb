@@ -37,6 +37,8 @@
   "pet_info_sliver_list_screen_date_born_text": "Дата народження",
   "pet_info_sliver_list_screen_color_text": "Колір",
   "pet_info_sliver_list_screen_description_text": "Опис",
+  "pet_info_sliver_list_screen_owners_text": "Власники",
+  "pet_info_sliver_list_screen_owners_me_text": "Я",
   "species_enum_cat": "Кіт",
   "species_enum_dog": "Пес",
   "gender_enum_male": "Чоловіча",

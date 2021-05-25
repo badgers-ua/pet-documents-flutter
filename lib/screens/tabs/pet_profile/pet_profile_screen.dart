@@ -4,10 +4,11 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
-import 'package:pdoc/screens/pet_events_sliver_list_screen.dart';
-import 'package:pdoc/screens/pet_chat_sliver_list_screen.dart';
-import 'package:pdoc/screens/pet_info_sliver_list_screen.dart';
-import 'package:pdoc/screens/pet_profile_tab_screen.dart';
+import 'package:pdoc/models/dto/response/user_res_dto.dart';
+import 'package:pdoc/screens/tabs/pet_profile/pet_chat_sliver_list_screen.dart';
+import 'package:pdoc/screens/tabs/pet_profile/pet_events_sliver_list_screen.dart';
+import 'package:pdoc/screens/tabs/pet_profile/pet_info_sliver_list_screen.dart';
+import 'package:pdoc/screens/tabs/pet_profile/pet_profile_tab_screen.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/effects.dart';
 
@@ -89,11 +90,16 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       },
       converter: (store) {
         final AppState<PetResDto> petState = store.state.pet;
+        final AppState<UserResDto> userState = store.state.user;
         return _PetProfileScreenViewModel(
-            pet: petState.data, isLoading: petState.isLoading);
+          pet: petState.data,
+          isLoadingPet: petState.isLoading,
+          user: userState.data,
+          isLoadingUser: userState.isLoading,
+        );
       },
       builder: (context, _PetProfileScreenViewModel vm) {
-        if (vm.isLoading) {
+        if (vm.isLoadingPet || vm.isLoadingUser) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -163,7 +169,14 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                   },
                   body: TabBarView(
                     children: [
-                      PetProfileTabScreen(child: PetInfoSliverListScreen(petRowList: vm.pet!.toPetInfoRowWidgetPropsList(ctx: context))),
+                      PetProfileTabScreen(
+                        child: PetInfoSliverListScreen(
+                          petRowList: vm.pet!.toPetInfoRowWidgetPropsList(
+                            ctx: context,
+                            user: vm.user!,
+                          ),
+                        ),
+                      ),
                       PetProfileTabScreen(child: PetChatSliverListScreen()),
                       PetProfileTabScreen(child: PetEventsSLiverListScreen()),
                     ],
@@ -181,11 +194,15 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 }
 
 class _PetProfileScreenViewModel {
-  final bool isLoading;
+  final bool isLoadingPet;
+  final bool isLoadingUser;
   final PetResDto? pet;
+  final UserResDto? user;
 
   _PetProfileScreenViewModel({
-    required this.isLoading,
+    required this.isLoadingPet,
+    required this.isLoadingUser,
     required this.pet,
+    required this.user,
   });
 }

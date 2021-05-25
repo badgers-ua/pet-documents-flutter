@@ -37,6 +37,8 @@
   "pet_info_sliver_list_screen_date_born_text": "Date born",
   "pet_info_sliver_list_screen_color_text": "Color",
   "pet_info_sliver_list_screen_description_text": "Description",
+  "pet_info_sliver_list_screen_owners_text": "Owners",
+  "pet_info_sliver_list_screen_owners_me_text": "Me",
   "species_enum_cat": "Cat",
   "species_enum_dog": "Dog",
   "gender_enum_male": "Male",

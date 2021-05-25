@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/owner_res_dto.dart';
 import 'package:pdoc/models/dto/response/static_res_dto.dart';
+import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/widgets/pet_info_row_widget.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -22,7 +23,10 @@ enum SPECIES {
   DOG,
 }
 
-String getSpeciesLabel({required BuildContext ctx, required SPECIES species,}) {
+String getSpeciesLabel({
+  required BuildContext ctx,
+  required SPECIES species,
+}) {
   if (species == SPECIES.CAT) {
     return L10n.of(ctx).species_enum_cat;
   }
@@ -32,7 +36,10 @@ String getSpeciesLabel({required BuildContext ctx, required SPECIES species,}) {
   return '';
 }
 
-String getGenderLabel({required BuildContext ctx, required GENDER gender,}) {
+String getGenderLabel({
+  required BuildContext ctx,
+  required GENDER gender,
+}) {
   if (gender == GENDER.MALE) {
     return L10n.of(ctx).gender_enum_male;
   }
@@ -124,7 +131,10 @@ class PetResDto extends _PetCommon {
 
   Map<String, dynamic> toJson() => _$PetResDtoToJson(this);
 
-  List<PetInfoRowWidgetProps> toPetInfoRowWidgetPropsList({required BuildContext ctx}) {
+  List<PetInfoRowWidgetProps> toPetInfoRowWidgetPropsList({
+    required BuildContext ctx,
+    required UserResDto user,
+  }) {
     return [
       PetInfoRowWidgetProps(
         label: L10n.of(ctx).pet_info_sliver_list_screen_species_text,
@@ -143,13 +153,24 @@ class PetResDto extends _PetCommon {
       if (this.dateOfBirth != null)
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_date_born_text,
-          value: '(Age: ${(Duration(days: DateTime.now().difference(DateTime.parse(this.dateOfBirth!)).inDays).inDays / 365).toStringAsPrecision(1)}) ${intl.DateFormat('dd/MM/yyyy').format(DateTime.parse(this.dateOfBirth!)).toString()}',
+          value:
+              '(Age: ${(Duration(days: DateTime.now().difference(DateTime.parse(this.dateOfBirth!)).inDays).inDays / 365).toStringAsPrecision(1)}) ${intl.DateFormat('dd/MM/yyyy').format(DateTime.parse(this.dateOfBirth!)).toString()}',
         ),
       if (this.colour != null)
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_color_text,
           value: this.colour!,
         ),
+      PetInfoRowWidgetProps(
+        label: L10n.of(ctx).pet_info_sliver_list_screen_owners_text,
+        value: this.owners.asMap().entries.map(
+          (entry) {
+            int i = entry.key;
+            OwnerResDto o = entry.value;
+            return '${o.firstName} ${o.lastName} ${o.id == user.id ? '(${L10n.of(ctx).pet_info_sliver_list_screen_owners_me_text})' : ''}${i != this.owners.length - 1 ? ',' : ''}${i != this.owners.length - 1 ? '\n' : ''}';
+          },
+        ).join(' '),
+      ),
       if (this.notes != null)
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_description_text,

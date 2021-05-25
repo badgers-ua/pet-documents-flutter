@@ -14,9 +14,11 @@ class OwnerResDto {
     required this.id,
     required this.email,
     required this.firstName,
-    required this.lastName
+    required this.lastName,
   });
 
-  factory OwnerResDto.fromJson(Map<String, dynamic> json) => _$OwnerResDtoFromJson(json);
+  factory OwnerResDto.fromJson(Map<String, dynamic> json) =>
+      _$OwnerResDtoFromJson(json);
+
   Map<String, dynamic> toJson() => _$OwnerResDtoToJson(this);
 }
