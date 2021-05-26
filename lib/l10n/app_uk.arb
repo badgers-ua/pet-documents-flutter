@@ -27,6 +27,13 @@
   "chats_screen_app_bar_text": "Чати",
   "settings_screen_app_bar_text": "Налаштування",
   "add_edit_pet_screen_app_bar_text": "Створити улюбленця",
+  "add_edit_pet_screen_name_input_text": "Ім'я",
+  "add_edit_pet_screen_species_input_text": "Вид",
+  "add_edit_pet_screen_breed_input_text": "Порода",
+  "add_edit_pet_screen_gender_input_text": "Стать",
+  "add_edit_pet_screen_date_of_birth_input_text": "Дата народження",
+  "add_edit_pet_screen_color_input_text": "Колір",
+  "add_edit_pet_screen_description_input_text": "Опис",
   "pet_profile_screen_info_tab_text": "Опис",
   "pet_profile_screen_chat_tab_text": "Чат",
   "pet_profile_screen_events_tab_text": "Події",
@@ -42,5 +49,8 @@
   "species_enum_cat": "Кіт",
   "species_enum_dog": "Пес",
   "gender_enum_male": "Чоловіча",
-  "gender_enum_female": "Жіноча"
+  "gender_enum_female": "Жіноча",
+  "modal_select_app_bar_select_species_text": "Обрати вид",
+  "modal_select_app_bar_search_text": "Пошук",
+  "modal_select_app_bar_done_button_text": "Готово"
 }

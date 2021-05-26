@@ -171,6 +171,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                     children: [
                       PetProfileTabScreen(
                         child: PetInfoSliverListScreen(
+                          // TODO: pet == null when token expired?
                           petRowList: vm.pet!.toPetInfoRowWidgetPropsList(
                             ctx: context,
                             user: vm.user!,
