@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 
-class ModalSelectOption {
+class ModalSelectOption<T> {
   final String label;
-  final dynamic value;
+  final T value;
 
   ModalSelectOption({required this.label, required this.value});
 }

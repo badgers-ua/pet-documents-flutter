@@ -6,6 +6,15 @@ extension EmailValidator on String {
   }
 }
 
+extension RequiredValidator on String {
+  String? requiredValidator({required String fieldName}) {
+    if (this.isEmpty) {
+      return '$fieldName is required.';
+    }
+    return null;
+  }
+}
+
 extension PasswordValidator on String {
   bool isValidPassword() {
     return this.length > 5 && this.length < 21;
