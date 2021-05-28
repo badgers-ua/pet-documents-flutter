@@ -129,7 +129,7 @@ class AddEditPetScreen extends StatelessWidget {
       _breedController.text = pet.breed!.name;
     }
     if (pet.dateOfBirth != null) {
-      final DateTime dateTimeBirth = DateTime.parse(pet.dateOfBirth!);
+      final DateTime dateTimeBirth = DateTime.parse(pet.dateOfBirth!).toLocal();
       final String formattedDate =
           // TODO: Users local format
           intl.DateFormat('dd/MM/yyyy').format(dateTimeBirth).toString();

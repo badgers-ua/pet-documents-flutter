@@ -154,7 +154,7 @@ class PetResDto extends _PetCommon {
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_date_born_text,
           value:
-              '(Age: ${(Duration(days: DateTime.now().difference(DateTime.parse(this.dateOfBirth!)).inDays).inDays / 365).toStringAsPrecision(1)}) ${intl.DateFormat('dd/MM/yyyy').format(DateTime.parse(this.dateOfBirth!)).toString()}',
+              '(Age: ${(Duration(days: DateTime.now().difference(DateTime.parse(this.dateOfBirth!).toLocal()).inDays).inDays / 365).toStringAsPrecision(1)}) ${intl.DateFormat('dd/MM/yyyy').format(DateTime.parse(this.dateOfBirth!).toLocal()).toString()}',
         ),
       if (this.colour != null)
         PetInfoRowWidgetProps(
