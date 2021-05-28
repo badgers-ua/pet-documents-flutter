@@ -34,6 +34,7 @@
   "add_edit_pet_screen_date_of_birth_input_text": "Date of birth",
   "add_edit_pet_screen_color_input_text": "Color",
   "add_edit_pet_screen_description_input_text": "Description",
+  "add_edit_pet_screen_submit_button_text": "Create",
   "pet_profile_screen_info_tab_text": "Info",
   "pet_profile_screen_chat_tab_text": "Chat",
   "pet_profile_screen_events_tab_text": "Events",

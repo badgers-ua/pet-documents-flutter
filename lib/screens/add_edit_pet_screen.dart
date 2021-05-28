@@ -4,10 +4,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/models/date_picker_value.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/static_res_dto.dart';
 import 'package:pdoc/store/breeds/effects.dart';
 import 'package:pdoc/store/index.dart';
+import 'package:pdoc/widgets/date_picker_widget.dart';
 import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:pdoc/extensions/string.dart';
 
@@ -117,7 +119,6 @@ class AddEditPetScreen extends StatelessWidget {
 
         return _AddEditPetScreenViewModel(
           isLoadingBreeds: store.state.breeds.isLoading,
-          // TODO: Empty when initially breeds are loaded in store
           breedOptions: breedOptions,
           dispatchLoadBreedsBySpeciesThunk: ({
             required BuildContext ctx,
@@ -166,6 +167,7 @@ class AddEditPetScreen extends StatelessWidget {
                           ),
                           readOnly: true,
                           decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.keyboard_arrow_right),
                             border: OutlineInputBorder(),
                             labelText: L10n.of(context)
                                 .add_edit_pet_screen_species_input_text,
@@ -183,15 +185,17 @@ class AddEditPetScreen extends StatelessWidget {
                                   vm: vm,
                                 ),
                           readOnly: true,
-                          enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
+                          enabled: !vm.isLoadingBreeds &&
+                              _speciesController.text.isNotEmpty,
                           decoration: InputDecoration(
                             suffixIconConstraints: BoxConstraints(
-                                maxWidth: 48,
-                                maxHeight: 25,
-                                minWidth: 48,
-                                minHeight: 25),
+                              maxWidth: 48,
+                              maxHeight: 25,
+                              minWidth: 48,
+                              minHeight: 25,
+                            ),
                             suffixIcon: !vm.isLoadingBreeds
-                                ? null
+                                ? Icon(Icons.keyboard_arrow_right)
                                 : SizedBox(
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 23),
@@ -220,14 +224,11 @@ class AddEditPetScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: ThemeConstants.spacing(1)),
-                        TextFormField(
+                        DatePickerWidget(
+                          labelText: L10n.of(context)
+                              .add_edit_pet_screen_date_of_birth_input_text,
                           controller: _dateController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: L10n.of(context)
-                                .add_edit_pet_screen_date_of_birth_input_text,
-                          ),
+                          onFieldSubmitted: (DatePickerValue? val) {},
                         ),
                         SizedBox(height: ThemeConstants.spacing(1)),
                         TextFormField(
@@ -254,7 +255,7 @@ class AddEditPetScreen extends StatelessWidget {
                             onPressed: () {
                               _validateForm();
                             },
-                            child: Text("Create"),
+                            child: Text(L10n.of(context).add_edit_pet_screen_submit_button_text),
                           ),
                         ),
                       ],
