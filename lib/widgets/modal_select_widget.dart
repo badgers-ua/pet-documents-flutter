@@ -60,8 +60,16 @@ class _ModalSelectWidgetState extends State<ModalSelectWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        leading: IconButton(onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Icon(Icons.close),
+        ),
         actions: [
           TextButton(
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+            ),
             onPressed: _selectedIndex == null ? null : () => _onSubmit(ctx: context),
             child: Text(L10n.of(context).modal_select_app_bar_done_button_text),
           ),

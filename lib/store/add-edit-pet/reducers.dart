@@ -1,31 +1,30 @@
 import 'package:pdoc/models/app_state.dart';
-import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 
 import 'actions.dart';
 
-AppState<PetResDto> petReducer(AppState<PetResDto> state, action) {
-  if (action is LoadPet) {
+addEditPetReducer(state, action) {
+  if (action is LoadAddEditPet) {
     return AppState(
       isLoading: true,
       data: null,
       errorMessage: '',
     );
   }
-  if (action is LoadPetSuccess) {
+  if (action is LoadAddEditPetSuccess) {
     return AppState(
       isLoading: false,
-      data: action.payload,
+      data: null,
       errorMessage: '',
     );
   }
-  if (action is LoadPetFailure) {
+  if (action is LoadAddEditPetFailure) {
     return AppState(
       isLoading: false,
       data: null,
       errorMessage: action.payload,
     );
   }
-  if (action is ClearPetState) {
+  if (action is ClearAddEditPetState) {
     return AppState();
   }
   return state;

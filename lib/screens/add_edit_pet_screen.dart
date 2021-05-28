@@ -5,8 +5,10 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/date_picker_value.dart';
+import 'package:pdoc/models/dto/request/create_pet_req_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/static_res_dto.dart';
+import 'package:pdoc/store/add-edit-pet/effects.dart';
 import 'package:pdoc/store/breeds/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/widgets/date_picker_widget.dart';
@@ -128,6 +130,16 @@ class AddEditPetScreen extends StatelessWidget {
           }) =>
               store.dispatch(
             loadBreedsBySpeciesThunk(ctx: ctx, species: species),
+          ),
+          dispatchLoadCreatePetThunk: ({
+            required BuildContext ctx,
+            required CreatePetReqDto request,
+          }) =>
+              store.dispatch(
+            loadCreatePetThunk(
+              ctx: ctx,
+              request: request,
+            ),
           ),
         );
       },
@@ -257,23 +269,47 @@ class AddEditPetScreen extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              // print(_nameController.text);
-                              // print(speciesOptions
-                              //     .firstWhere((element) =>
-                              //         element.label == _speciesController.text)
-                              //     .value);
-                              // print(vm.breedOptions
-                              //     .firstWhere((element) =>
-                              //         element.label == _breedController.text)
-                              //     .value);
-                              // print(genderOptions
-                              //     .firstWhere((element) =>
-                              //         element.label == _genderController.text)
-                              //     .value);
-                              // print(_selectedDate!.dateTime);
-                              // print(_colorController.text);
-                              // print(_descriptionController.text);
-                              _validateForm();
+                              if (!_validateForm()) {
+                                return;
+                              }
+
+                              CreatePetReqDto createPetReqDto = CreatePetReqDto(
+                                name: _nameController.text.trim(),
+                                species: speciesOptions
+                                    .firstWhere((element) =>
+                                        element.label ==
+                                        _speciesController.text)
+                                    .value,
+                              );
+
+                              if (_breedController.text.isNotEmpty) {
+                                createPetReqDto.breed = vm.breedOptions
+                                    .firstWhere((element) =>
+                                        element.label == _breedController.text)
+                                    .value;
+                              }
+                              if (_genderController.text.isNotEmpty) {
+                                createPetReqDto.gender = genderOptions
+                                    .firstWhere((element) =>
+                                        element.label == _genderController.text)
+                                    .value;
+                              }
+                              if (_selectedDate != null) {
+                                createPetReqDto.dateOfBirth =
+                                    _selectedDate!.dateTime.toIso8601String();
+                              }
+                              if (_colorController.text.isNotEmpty) {
+                                createPetReqDto.colour = _colorController.text;
+                              }
+                              if (_descriptionController.text.isNotEmpty) {
+                                createPetReqDto.notes =
+                                    _descriptionController.text;
+                              }
+
+                              vm.dispatchLoadCreatePetThunk(
+                                ctx: context,
+                                request: createPetReqDto,
+                              );
                             },
                             child: Text(L10n.of(context)
                                 .add_edit_pet_screen_submit_button_text),
@@ -294,11 +330,13 @@ class AddEditPetScreen extends StatelessWidget {
 
 class _AddEditPetScreenViewModel {
   final dispatchLoadBreedsBySpeciesThunk;
+  final dispatchLoadCreatePetThunk;
   final bool isLoadingBreeds;
   final List<ModalSelectOption<String>> breedOptions;
 
   _AddEditPetScreenViewModel({
     required this.dispatchLoadBreedsBySpeciesThunk,
+    required this.dispatchLoadCreatePetThunk,
     required this.isLoadingBreeds,
     required this.breedOptions,
   });

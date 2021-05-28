@@ -28,6 +28,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<RootState, _HomeScreenViewModel>(
       onInit: (store) {
+        if (store.state.pets.data!.isNotEmpty) {
+          return;
+        }
         store.dispatch(loadPetsThunk(ctx: context));
       },
       converter: (store) {
