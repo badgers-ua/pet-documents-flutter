@@ -53,5 +53,6 @@
   "gender_enum_female": "Female",
   "modal_select_app_bar_select_species_text": "Select species",
   "modal_select_app_bar_search_text": "Search",
-  "modal_select_app_bar_done_button_text": "Done"
+  "modal_select_app_bar_done_button_text": "Done",
+  "modal_select_search_bar_breeds_hint_text": "Please use english language to search breeds."
 }

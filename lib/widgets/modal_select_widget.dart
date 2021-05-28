@@ -14,10 +14,12 @@ class ModalSelectWidget extends StatefulWidget {
 
   final String title;
   final List<ModalSelectOption> options;
+  final String? helperText;
 
   ModalSelectWidget({
     required this.title,
     required this.options,
+    this.helperText,
   });
 
   @override
@@ -60,47 +62,62 @@ class _ModalSelectWidgetState extends State<ModalSelectWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        leading: IconButton(onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: Icon(Icons.close),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.close),
         ),
         actions: [
           TextButton(
             style: TextButton.styleFrom(
               primary: Colors.white,
             ),
-            onPressed: _selectedIndex == null ? null : () => _onSubmit(ctx: context),
+            onPressed:
+                _selectedIndex == null ? null : () => _onSubmit(ctx: context),
             child: Text(L10n.of(context).modal_select_app_bar_done_button_text),
           ),
         ],
-        bottom: _SearchBar(onChanged: _onChanged),
       ),
       body: Scrollbar(
-        child: ListView.builder(
-          itemCount: _filteredOptions!.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              onTap: () {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              title: Text(_filteredOptions![index].label),
-              trailing: _selectedIndex == index ? Icon(Icons.check) : null,
-            );
-          },
+        child: Column(
+          children: [
+            _SearchBar(
+              onChanged: _onChanged,
+              helperText: widget.helperText,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _filteredOptions!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    title: Text(_filteredOptions![index].label),
+                    trailing:
+                        _selectedIndex == index ? Icon(Icons.check) : null,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _SearchBar extends StatelessWidget with PreferredSizeWidget {
-  Size get preferredSize => Size.fromHeight(50);
+class _SearchBar extends StatelessWidget {
   final ValueChanged<String>? onChanged;
+  final String? helperText;
 
-  _SearchBar({required this.onChanged});
+  _SearchBar({
+    required this.onChanged,
+    this.helperText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +126,7 @@ class _SearchBar extends StatelessWidget with PreferredSizeWidget {
       child: TextFormField(
         onChanged: onChanged,
         decoration: InputDecoration(
+          helperText: helperText,
           labelText: L10n.of(context).modal_select_app_bar_search_text,
         ),
       ),

@@ -37,11 +37,13 @@ class AddEditPetScreen extends StatelessWidget {
     required List<ModalSelectOption> options,
     required TextEditingController controller,
     required _AddEditPetScreenViewModel vm,
+    String? modalHintText,
     bool isSpecies = false,
   }) async {
     final widget = ModalSelectWidget(
       title: L10n.of(ctx).modal_select_app_bar_select_species_text,
       options: options,
+      helperText: isSpecies ? null : L10n.of(ctx).modal_select_search_bar_breeds_hint_text,
     );
 
     if (Platform.isIOS) {
@@ -51,7 +53,7 @@ class AddEditPetScreen extends StatelessWidget {
         builder: (_) => widget,
       );
 
-      _setModalSelectFrmValue(
+      _setModalSelectFormValue(
         ctx: ctx,
         modalSelectOption: modalSelectOption,
         controller: controller,
@@ -68,7 +70,7 @@ class AddEditPetScreen extends StatelessWidget {
       builder: (_) => widget,
     );
 
-    _setModalSelectFrmValue(
+    _setModalSelectFormValue(
       ctx: ctx,
       modalSelectOption: modalSelectOption,
       controller: controller,
@@ -77,7 +79,7 @@ class AddEditPetScreen extends StatelessWidget {
     );
   }
 
-  void _setModalSelectFrmValue({
+  void _setModalSelectFormValue({
     required BuildContext ctx,
     required ModalSelectOption? modalSelectOption,
     required TextEditingController controller,
