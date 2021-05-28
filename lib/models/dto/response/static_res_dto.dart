@@ -4,6 +4,7 @@ part 'static_res_dto.g.dart';
 
 @JsonSerializable()
 class StaticResDto {
+  @JsonKey(name: '_id')
   final String id;
   final String name;
 

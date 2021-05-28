@@ -16,11 +16,9 @@ import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/device_token/actions.dart';
 import 'package:pdoc/store/index.dart';
-import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
-import 'animations/slide_top_route.dart';
 import 'l10n/l10n.dart';
 import 'models/auth.dart';
 

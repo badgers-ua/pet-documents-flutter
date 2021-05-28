@@ -8,13 +8,13 @@ part of 'static_res_dto.dart';
 
 StaticResDto _$StaticResDtoFromJson(Map<String, dynamic> json) {
   return StaticResDto(
-    id: json['id'] as String,
+    id: json['_id'] as String,
     name: json['name'] as String,
   );
 }
 
 Map<String, dynamic> _$StaticResDtoToJson(StaticResDto instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
     };

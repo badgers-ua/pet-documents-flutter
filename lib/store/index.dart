@@ -2,7 +2,9 @@ import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/device_token.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/models/dto/response/static_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
+import 'package:pdoc/store/breeds/reducer.dart';
 import 'package:pdoc/store/pet/reducers.dart';
 import 'package:pdoc/store/pets/reducers.dart';
 import 'package:pdoc/store/user/reducers.dart';
@@ -22,6 +24,7 @@ class RootState {
   final AppState<List<PetPreviewResDto>> pets;
   final AppState<PetResDto> pet;
   final AppState<UserResDto> user;
+  final AppState<Map<SPECIES, List<StaticResDto>>> breeds;
 
   RootState({
     required this.auth,
@@ -29,6 +32,7 @@ class RootState {
     required this.pets,
     required this.pet,
     required this.user,
+    required this.breeds,
   });
 
   RootState.initialState()
@@ -36,7 +40,8 @@ class RootState {
         deviceToken = AppState(),
         pets = AppState(data: []),
         pet = AppState(),
-        user = AppState();
+        user = AppState(),
+        breeds = AppState(data: {});
 }
 
 RootState appReducer(RootState state, action) {
@@ -46,5 +51,6 @@ RootState appReducer(RootState state, action) {
     pets: petsReducer(state.pets, action),
     pet: petReducer(state.pet, action),
     user: userReducer(state.user, action),
+    breeds: breedsReducer(state.breeds, action),
   );
 }
