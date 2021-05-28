@@ -7,11 +7,13 @@ import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
+import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_chat_sliver_list_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_events_sliver_list_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_info_sliver_list_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_tab_screen.dart';
 import 'package:pdoc/store/index.dart';
+import 'package:pdoc/store/pet/actions.dart';
 import 'package:pdoc/store/pet/effects.dart';
 
 class PetProfileScreenProps {
@@ -46,14 +48,13 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       overlayOpacity: 0,
       children: [
         SpeedDialChild(
-          child: Icon(Icons.accessibility),
-          backgroundColor: Colors.red,
-          label: 'Edit pet',
-          labelStyle: TextStyle(fontSize: 18.0),
-          onTap: () => print('FIRST CHILD'),
-          onLongPress: () => print('FIRST CHILD LONG PRESS'),
+          child: Icon(Icons.edit),
+          label: L10n.of(ctx).pet_profile_screen_edit_pet_fab_button_text,
+          onTap: () {
+            Navigator.of(ctx).pushNamed(AddEditPetScreen.routeName);
+          },
         ),
-        SpeedDialChild(
+        /*SpeedDialChild(
           child: Icon(Icons.brush),
           backgroundColor: Colors.blue,
           label: 'Add owner',
@@ -76,7 +77,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () => print('THIRD CHILD'),
           onLongPress: () => print('THIRD CHILD LONG PRESS'),
-        ),
+        ),*/
       ],
     );
   }
@@ -87,6 +88,9 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         ModalRoute.of(context)!.settings.arguments as PetProfileScreenProps;
 
     return StoreConnector<RootState, _PetProfileScreenViewModel>(
+      onDispose: (store) {
+        store.dispatch(ClearPetState());
+      },
       onInit: (store) {
         store.dispatch(loadPetThunk(ctx: context, petId: props.petId));
       },

@@ -1,8 +1,22 @@
+import 'package:flutter/material.dart';
+
 class ThemeConstants {
   static final _padding = 16.0;
 
   static double spacing(double val) {
     return _padding * val;
+  }
+
+  static Widget getButtonSpinner() {
+    return Opacity(
+      opacity: 0.3,
+      child: SizedBox(
+        height: 16,
+        width: 16,
+        child: CircularProgressIndicator(
+            strokeWidth: 2),
+      ),
+    );
   }
 }
 

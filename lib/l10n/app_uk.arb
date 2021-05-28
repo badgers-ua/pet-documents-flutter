@@ -27,6 +27,14 @@
   "chats_screen_app_bar_text": "Чати",
   "settings_screen_app_bar_text": "Налаштування",
   "add_edit_pet_screen_app_bar_text": "Створити улюбленця",
+  "add_edit_pet_screen_app_bar_edit_text": "Редагувати {petName}",
+  "@add_edit_pet_screen_app_bar_edit_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
   "add_edit_pet_screen_name_input_text": "Ім'я",
   "add_edit_pet_screen_species_input_text": "Вид",
   "add_edit_pet_screen_breed_input_text": "Порода",
@@ -35,9 +43,11 @@
   "add_edit_pet_screen_color_input_text": "Колір",
   "add_edit_pet_screen_description_input_text": "Опис",
   "add_edit_pet_screen_submit_button_text": "Створити",
+  "add_edit_pet_screen_submit_edit_button_text": "Редагувати",
   "pet_profile_screen_info_tab_text": "Опис",
   "pet_profile_screen_chat_tab_text": "Чат",
   "pet_profile_screen_events_tab_text": "Події",
+  "pet_profile_screen_edit_pet_fab_button_text": "Рудагувати",
   "scaffold_messenger_extension_dismiss_text": "Зрозуміло",
   "pet_info_sliver_list_screen_species_text": "Вид",
   "pet_info_sliver_list_screen_breed_text": "Порода",

@@ -34,7 +34,7 @@ class DatePickerWidget extends StatelessWidget {
                     DateTime.now().difference(DateTime(1970, 1, 1)).inDays),
               ),
               lastDate: DateTime.now(),
-              onDateChanged: (v) {
+              onDateChanged: (DateTime v) {
                 Navigator.of(ctx).pop();
 
                 final String formattedDate =

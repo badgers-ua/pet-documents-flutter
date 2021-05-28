@@ -27,6 +27,14 @@
   "chats_screen_app_bar_text": "Chats",
   "settings_screen_app_bar_text": "Settings",
   "add_edit_pet_screen_app_bar_text": "Create pet",
+  "add_edit_pet_screen_app_bar_edit_text": "Edit {petName}",
+  "@add_edit_pet_screen_app_bar_edit_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
   "add_edit_pet_screen_name_input_text": "Name",
   "add_edit_pet_screen_species_input_text": "Species",
   "add_edit_pet_screen_breed_input_text": "Breed",
@@ -35,9 +43,11 @@
   "add_edit_pet_screen_color_input_text": "Color",
   "add_edit_pet_screen_description_input_text": "Description",
   "add_edit_pet_screen_submit_button_text": "Create",
+  "add_edit_pet_screen_submit_edit_button_text": "Update",
   "pet_profile_screen_info_tab_text": "Info",
   "pet_profile_screen_chat_tab_text": "Chat",
   "pet_profile_screen_events_tab_text": "Events",
+  "pet_profile_screen_edit_pet_fab_button_text": "Edit",
   "scaffold_messenger_extension_dismiss_text": "Dismiss",
   "pet_info_sliver_list_screen_species_text": "Species",
   "pet_info_sliver_list_screen_breed_text": "Breed",

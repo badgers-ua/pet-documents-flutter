@@ -122,15 +122,7 @@ class SignInScreen extends StatelessWidget {
                                 ? null
                                 : () => _onSubmit(context, vm),
                             child: vm.authState.isLoading
-                                ? Opacity(
-                                    opacity: vm.authState.isLoading ? 0.3 : 0,
-                                    child: SizedBox(
-                                      height: 16,
-                                      width: 16,
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2),
-                                    ),
-                                  )
+                                ? ThemeConstants.getButtonSpinner()
                                 : Text(
                                     L10n.of(context)
                                         .sign_in_screen_sign_in_button_text,

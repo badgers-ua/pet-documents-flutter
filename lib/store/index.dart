@@ -4,12 +4,13 @@ import 'package:pdoc/models/breeds_state.dart';
 import 'package:pdoc/models/device_token.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
-import 'package:pdoc/store/add-edit-pet/reducers.dart';
 import 'package:pdoc/store/breeds/reducer.dart';
+import 'package:pdoc/store/edit-pet/reducers.dart';
 import 'package:pdoc/store/pet/reducers.dart';
 import 'package:pdoc/store/pets/reducers.dart';
 import 'package:pdoc/store/user/reducers.dart';
 
+import 'add-pet/reducers.dart';
 import 'auth/reducers.dart';
 import 'device_token/reducers.dart';
 
@@ -26,7 +27,8 @@ class RootState {
   final AppState<PetResDto> pet;
   final AppState<UserResDto> user;
   final BreedsState breeds;
-  final AppState addEditPet;
+  final AppState addPet;
+  final AppState editPet;
 
   RootState({
     required this.auth,
@@ -35,7 +37,8 @@ class RootState {
     required this.pet,
     required this.user,
     required this.breeds,
-    required this.addEditPet,
+    required this.addPet,
+    required this.editPet,
   });
 
   RootState.initialState()
@@ -48,7 +51,8 @@ class RootState {
           data: {},
           selectedSpecies: null,
         ),
-        addEditPet = AppState();
+        addPet = AppState(),
+        editPet = AppState();
 }
 
 RootState appReducer(RootState state, action) {
@@ -59,6 +63,7 @@ RootState appReducer(RootState state, action) {
     pet: petReducer(state.pet, action),
     user: userReducer(state.user, action),
     breeds: breedsReducer(state.breeds, action),
-    addEditPet: addEditPetReducer(state.addEditPet, action),
+    addPet: addPetReducer(state.addPet, action),
+    editPet: editPetReducer(state.editPet, action),
   );
 }
