@@ -24,6 +24,8 @@ class AddEditPetScreen extends StatelessWidget {
   final TextEditingController _colorController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
+  DatePickerValue? _selectedDate;
+
   bool _validateForm() {
     return _formKey.currentState!.validate();
   }
@@ -228,7 +230,9 @@ class AddEditPetScreen extends StatelessWidget {
                           labelText: L10n.of(context)
                               .add_edit_pet_screen_date_of_birth_input_text,
                           controller: _dateController,
-                          onFieldSubmitted: (DatePickerValue? val) {},
+                          onFieldSubmitted: (DatePickerValue? val) {
+                            _selectedDate = val;
+                          },
                         ),
                         SizedBox(height: ThemeConstants.spacing(1)),
                         TextFormField(
@@ -253,9 +257,26 @@ class AddEditPetScreen extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
+                              // print(_nameController.text);
+                              // print(speciesOptions
+                              //     .firstWhere((element) =>
+                              //         element.label == _speciesController.text)
+                              //     .value);
+                              // print(vm.breedOptions
+                              //     .firstWhere((element) =>
+                              //         element.label == _breedController.text)
+                              //     .value);
+                              // print(genderOptions
+                              //     .firstWhere((element) =>
+                              //         element.label == _genderController.text)
+                              //     .value);
+                              // print(_selectedDate!.dateTime);
+                              // print(_colorController.text);
+                              // print(_descriptionController.text);
                               _validateForm();
                             },
-                            child: Text(L10n.of(context).add_edit_pet_screen_submit_button_text),
+                            child: Text(L10n.of(context)
+                                .add_edit_pet_screen_submit_button_text),
                           ),
                         ),
                       ],
