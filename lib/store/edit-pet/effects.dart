@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pdoc/models/dto/request/create_pet_req_dto.dart';
 import 'package:pdoc/models/dto/response/create_pet_res_dto.dart';
+import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/effects.dart';
 import 'package:pdoc/store/pets/effects.dart';
@@ -17,23 +18,38 @@ Function loadEditPetThunk = ({
   required String petId,
 }) =>
     (Store<RootState> store) async {
-      store.dispatch(LoadEditPet());
-      try {
-        final res = await Dio()
-            .authenticatedDio()
-            .patch('/pet/$petId', data: request.toJson());
-        final CreatePetResDto createPetResDto =
-            CreatePetResDto.fromJson(res.data);
-        store.dispatch(LoadEditPetSuccess());
-        store.dispatch(loadPetsThunk(ctx: ctx));
-        store.dispatch(loadPetThunk(ctx: ctx, petId: petId));
-        Navigator.of(ctx).pop();
-      } catch (e) {
-        print(1);
-        final String errorMsg = (e as DioError).response!.data["message"];
+  final PetResDto? currentPet = store.state.pet.data;
+  if (currentPet != null) {
+    final isPetChanged = currentPet.name != request.name
+        || currentPet.species != request.species
+        || currentPet.breed != null && currentPet.breed!.id != request.breed
+        || currentPet.gender != request.gender
+        || currentPet.dateOfBirth != request.dateOfBirth
+        || currentPet.colour != request.colour
+        || currentPet.notes != request.notes;
+    if (!isPetChanged) {
+      Navigator.of(ctx).pop();
+      return;
+    }
+  }
 
-        ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
+  store.dispatch(LoadEditPet());
+  try {
+    final res = await Dio()
+        .authenticatedDio()
+        .patch('/pet/$petId', data: request.toJson());
+    final CreatePetResDto createPetResDto =
+    CreatePetResDto.fromJson(res.data);
+    store.dispatch(LoadEditPetSuccess());
+    store.dispatch(loadPetsThunk(ctx: ctx));
+    store.dispatch(loadPetThunk(ctx: ctx, petId: petId));
+    Navigator.of(ctx).pop();
+  } catch (e) {
+    print(1);
+    final String errorMsg = (e as DioError).response!.data["message"];
 
-        store.dispatch(LoadEditPetFailure(payload: errorMsg));
-      }
-    };
+    ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
+
+    store.dispatch(LoadEditPetFailure(payload: errorMsg));
+  }
+};
