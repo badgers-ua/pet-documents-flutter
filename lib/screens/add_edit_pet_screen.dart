@@ -41,11 +41,12 @@ class AddEditPetScreen extends StatelessWidget {
     required _AddEditPetScreenViewModel vm,
     String? modalHintText,
     bool isSpecies = false,
+    bool isBreeds = false,
   }) async {
     final widget = ModalSelectWidget(
       title: L10n.of(ctx).modal_select_app_bar_select_species_text,
       options: options,
-      helperText: isSpecies
+      helperText: !isBreeds
           ? null
           : L10n.of(ctx).modal_select_search_bar_breeds_hint_text,
     );
@@ -293,6 +294,7 @@ class AddEditPetScreen extends StatelessWidget {
                                   options: vm.breedOptions,
                                   controller: _breedController,
                                   vm: vm,
+                                  isBreeds: true,
                                 ),
                           readOnly: true,
                           enabled: !vm.isLoadingBreeds &&
