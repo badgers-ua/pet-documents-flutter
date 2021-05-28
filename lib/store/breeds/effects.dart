@@ -16,6 +16,8 @@ Function loadBreedsBySpeciesThunk = ({
     (Store<RootState> store) async {
       final contains = store.state.breeds.data!.containsKey(species);
 
+      store.dispatch(SetSelectedSpecies(payload: species));
+
       if (contains) {
         return;
       }

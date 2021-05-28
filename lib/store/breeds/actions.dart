@@ -17,5 +17,11 @@ class LoadBreedsFailure extends AppAction {
   LoadBreedsFailure({required this.payload});
 }
 
+class SetSelectedSpecies extends AppAction {
+  final SPECIES payload;
+
+  SetSelectedSpecies({required this.payload});
+}
+
 class ClearBreedsState extends AppAction {
 }

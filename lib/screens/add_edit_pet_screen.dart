@@ -106,19 +106,19 @@ class AddEditPetScreen extends StatelessWidget {
 
     return StoreConnector<RootState, _AddEditPetScreenViewModel>(
       converter: (store) {
-        final List<StaticResDto> breeds = (_speciesController.text.isNotEmpty
-            ? store.state.breeds.data![speciesOptions
-                .firstWhere(
-                    (element) => element.label == _speciesController.text)
-                .value] ?? []
+        final SPECIES? selectedSpecies = store.state.breeds.selectedSpecies;
+        final List<StaticResDto> breeds = (selectedSpecies != null
+            ? store.state.breeds.data![selectedSpecies] ?? []
             : []);
+
+        final List<ModalSelectOption<String>> breedOptions = breeds
+            .map((e) => ModalSelectOption(label: e.name, value: e.id))
+            .toList();
 
         return _AddEditPetScreenViewModel(
           isLoadingBreeds: store.state.breeds.isLoading,
           // TODO: Empty when initially breeds are loaded in store
-          breedOptions: breeds
-              .map((e) => ModalSelectOption(label: e.name, value: e.id))
-              .toList(),
+          breedOptions: breedOptions,
           dispatchLoadBreedsBySpeciesThunk: ({
             required BuildContext ctx,
             required SPECIES species,
@@ -174,22 +174,30 @@ class AddEditPetScreen extends StatelessWidget {
                         SizedBox(height: ThemeConstants.spacing(1)),
                         TextFormField(
                           controller: _breedController,
-                          onTap: () => vm.isLoadingBreeds ? null : showModalSelect(
-                            ctx: context,
-                            options: vm.breedOptions,
-                            controller: _breedController,
-                            vm: vm,
-                          ),
+                          onTap: () => vm.isLoadingBreeds
+                              ? null
+                              : showModalSelect(
+                                  ctx: context,
+                                  options: vm.breedOptions,
+                                  controller: _breedController,
+                                  vm: vm,
+                                ),
                           readOnly: true,
-                          enabled: !vm.isLoadingBreeds,
+                          enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
                           decoration: InputDecoration(
-                            suffixIconConstraints: BoxConstraints(maxWidth: 48, maxHeight: 25, minWidth: 48, minHeight: 25),
-                            suffixIcon: !vm.isLoadingBreeds ? null : SizedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 23),
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
+                            suffixIconConstraints: BoxConstraints(
+                                maxWidth: 48,
+                                maxHeight: 25,
+                                minWidth: 48,
+                                minHeight: 25),
+                            suffixIcon: !vm.isLoadingBreeds
+                                ? null
+                                : SizedBox(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 23),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
                             border: OutlineInputBorder(),
                             labelText: L10n.of(context)
                                 .add_edit_pet_screen_breed_input_text,

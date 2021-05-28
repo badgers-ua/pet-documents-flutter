@@ -1,37 +1,48 @@
-import 'package:pdoc/models/app_state.dart';
-import 'package:pdoc/models/dto/response/pet_res_dto.dart';
-import 'package:pdoc/models/dto/response/static_res_dto.dart';
+import 'package:pdoc/models/breeds_state.dart';
 
 import 'actions.dart';
 
-AppState<Map<SPECIES, List<StaticResDto>>> breedsReducer(
-    AppState<Map<SPECIES, List<StaticResDto>>> state, action) {
+BreedsState breedsReducer(BreedsState state, action) {
+  if (action is SetSelectedSpecies) {
+    return BreedsState(
+      isLoading: false,
+      data: state.data,
+      errorMessage: '',
+      selectedSpecies: action.payload,
+    );
+  }
   if (action is LoadBreeds) {
-    return AppState(
+    return BreedsState(
       isLoading: true,
       data: state.data,
       errorMessage: '',
+      selectedSpecies: state.selectedSpecies,
     );
   }
   if (action is LoadBreedsSuccess) {
     final updatedData = state.data!;
     updatedData.addAll(action.payload);
 
-    return AppState(
+    return BreedsState(
       isLoading: false,
       data: updatedData,
       errorMessage: '',
+      selectedSpecies: state.selectedSpecies,
     );
   }
   if (action is LoadBreedsFailure) {
-    return AppState(
+    return BreedsState(
       isLoading: false,
       data: state.data,
       errorMessage: action.payload,
+      selectedSpecies: state.selectedSpecies,
     );
   }
   if (action is ClearBreedsState) {
-    return AppState();
+    return BreedsState(
+      data: {},
+      selectedSpecies: null,
+    );
   }
   return state;
 }

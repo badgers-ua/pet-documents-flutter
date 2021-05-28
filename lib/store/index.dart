@@ -1,8 +1,8 @@
 import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/auth.dart';
+import 'package:pdoc/models/breeds_state.dart';
 import 'package:pdoc/models/device_token.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
-import 'package:pdoc/models/dto/response/static_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/store/breeds/reducer.dart';
 import 'package:pdoc/store/pet/reducers.dart';
@@ -24,7 +24,7 @@ class RootState {
   final AppState<List<PetPreviewResDto>> pets;
   final AppState<PetResDto> pet;
   final AppState<UserResDto> user;
-  final AppState<Map<SPECIES, List<StaticResDto>>> breeds;
+  final BreedsState breeds;
 
   RootState({
     required this.auth,
@@ -41,7 +41,10 @@ class RootState {
         pets = AppState(data: []),
         pet = AppState(),
         user = AppState(),
-        breeds = AppState(data: {});
+        breeds = BreedsState(
+          data: {},
+          selectedSpecies: null,
+        );
 }
 
 RootState appReducer(RootState state, action) {
