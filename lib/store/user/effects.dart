@@ -15,10 +15,7 @@ Function loadUserThunk = () => (Store<RootState> store) async {
 
         store.dispatch(LoadUserSuccess(payload: resDto));
       } catch (e) {
-        print(1);
         final String errorMsg = (e as DioError).response!.data["message"];
-
-        // ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
 
         print('Refresh Token Error: $errorMsg');
 

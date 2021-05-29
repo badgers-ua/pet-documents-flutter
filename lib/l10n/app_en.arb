@@ -63,7 +63,6 @@
   "gender_enum_female": "Female",
   "modal_select_app_bar_select_species_text": "Select species",
   "modal_select_app_bar_search_text": "Search",
-  "modal_select_app_bar_done_button_text": "Done",
   "modal_select_search_bar_breeds_hint_text": "Please use english language to search breeds.",
   "required_validator_text": "{fieldName} is required.",
   "@required_validator_text": {
@@ -72,5 +71,18 @@
         "type": "String"
       }
     }
-  }
+  },
+  "add_owner": "Add owner",
+  "add_owner_dialog_widget_description1_text": "Enter email address of person that you want to add as an owner of {petName}.",
+  "@add_owner_dialog_widget_description1_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_owner_dialog_widget_description2_text": "WARNING: Person must be registered within the app.",
+  "done_text": "Done",
+  "cancel_text": "Cancel"
+
 }

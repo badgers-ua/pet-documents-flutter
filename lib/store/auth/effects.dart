@@ -62,8 +62,6 @@ Function loadAccessTokenFromRefreshTokenThunk = () =>
       } catch (e) {
         final String errorMsg = (e as DioError).response!.data["message"];
 
-        // ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
         print('Refresh Token Error: $errorMsg');
 
         store.dispatch(LoadAccessTokenFailure(payload: errorMsg));

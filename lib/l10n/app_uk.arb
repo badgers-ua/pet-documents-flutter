@@ -16,7 +16,7 @@
   "home_screen_pets_title_text": "Мої улюбленці",
   "home_screen_events_title_text": "Майбутні події",
   "settings_screen_sign_out_button_text": "Вилогуватись",
-  "pet_card_widget_subtitle": "Влісників: {ownersCount}",
+  "pet_card_widget_subtitle": "Власників: {ownersCount}",
   "@pet_card_widget_subtitle": {
     "placeholders": {
       "ownersCount": {
@@ -63,7 +63,6 @@
   "gender_enum_female": "Жіноча",
   "modal_select_app_bar_select_species_text": "Обрати вид",
   "modal_select_app_bar_search_text": "Пошук",
-  "modal_select_app_bar_done_button_text": "Готово",
   "modal_select_search_bar_breeds_hint_text": "Пошук породи ведеться англійською мовою.",
   "required_validator_text": "{fieldName} є обов'язковим полем.",
   "@required_validator_text": {
@@ -72,5 +71,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "add_owner": "Додати власника",
+  "add_owner_dialog_widget_description1_text": "Вкажіть електронну адресу людини, яку бажаєте додати як власника {petName}.",
+  "@add_owner_dialog_widget_description1_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_owner_dialog_widget_description2_text": "УВАГА: Людина має бути зареєстрована в додатку.",
+  "done_text": "Готово",
+  "cancel_text": "Відміна"
 }

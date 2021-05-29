@@ -75,7 +75,7 @@ class _ModalSelectWidgetState extends State<ModalSelectWidget> {
             ),
             onPressed:
                 _selectedIndex == null ? null : () => _onSubmit(ctx: context),
-            child: Text(L10n.of(context).modal_select_app_bar_done_button_text),
+            child: Text(L10n.of(context).done_text),
           ),
         ],
       ),

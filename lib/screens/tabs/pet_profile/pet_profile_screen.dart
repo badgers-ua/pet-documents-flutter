@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
@@ -15,6 +14,7 @@ import 'package:pdoc/screens/tabs/pet_profile/pet_profile_tab_screen.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/actions.dart';
 import 'package:pdoc/store/pet/effects.dart';
+import 'package:pdoc/widgets/add_owner_dialog_widget.dart';
 
 class PetProfileScreenProps {
   final String petId;
@@ -34,7 +34,10 @@ class PetProfileScreen extends StatefulWidget {
 class _PetProfileScreenState extends State<PetProfileScreen> {
   int _currentTabIndex = 0;
 
-  SpeedDial petActionButtons(BuildContext ctx) {
+  SpeedDial petActionButtons({
+    required BuildContext ctx,
+    required PetResDto pet,
+  }) {
     return SpeedDial(
       marginEnd: 18,
       marginBottom: 20,
@@ -54,31 +57,45 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
             Navigator.of(ctx).pushNamed(AddEditPetScreen.routeName);
           },
         ),
-        /*SpeedDialChild(
-          child: Icon(Icons.brush),
-          backgroundColor: Colors.blue,
-          label: 'Add owner',
-          labelStyle: TextStyle(fontSize: 18.0),
-          onTap: () => print('SECOND CHILD'),
-          onLongPress: () => print('SECOND CHILD LONG PRESS'),
-        ),
         SpeedDialChild(
-          child: Icon(Icons.keyboard_voice),
-          backgroundColor: Colors.green,
-          label: 'Remove owner',
-          labelStyle: TextStyle(fontSize: 18.0),
-          onTap: () => print('THIRD CHILD'),
-          onLongPress: () => print('THIRD CHILD LONG PRESS'),
+          child: Icon(Icons.person_add),
+          label: L10n.of(ctx).add_owner,
+          onTap: () {
+            _showAddOwnerDialog(ctx: ctx, pet: pet);
+          },
         ),
-        SpeedDialChild(
-          child: Icon(Icons.keyboard_voice),
-          backgroundColor: Colors.green,
-          label: 'Delete pet',
-          labelStyle: TextStyle(fontSize: 18.0),
-          onTap: () => print('THIRD CHILD'),
-          onLongPress: () => print('THIRD CHILD LONG PRESS'),
-        ),*/
+        // SpeedDialChild(
+        //   child: Icon(Icons.keyboard_voice),
+        //   backgroundColor: Colors.green,
+        //   label: 'Remove owner',
+        //   labelStyle: TextStyle(fontSize: 18.0),
+        //   onTap: () => print('THIRD CHILD'),
+        //   onLongPress: () => print('THIRD CHILD LONG PRESS'),
+        // ),
+        // SpeedDialChild(
+        //   child: Icon(Icons.keyboard_voice),
+        //   backgroundColor: Colors.green,
+        //   label: 'Delete pet',
+        //   labelStyle: TextStyle(fontSize: 18.0),
+        //   onTap: () => print('THIRD CHILD'),
+        //   onLongPress: () => print('THIRD CHILD LONG PRESS'),
+        // ),
       ],
+    );
+  }
+
+  Future<void> _showAddOwnerDialog({
+    required BuildContext ctx,
+    required PetResDto pet,
+  }) async {
+    return showDialog<void>(
+      context: ctx,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AddOwnerDialogWidget(
+          pet: pet,
+        );
+      },
     );
   }
 
@@ -192,8 +209,9 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                   ),
                 ),
               ),
-              floatingActionButton:
-                  _currentTabIndex == 0 ? petActionButtons(context) : null,
+              floatingActionButton: _currentTabIndex == 0
+                  ? petActionButtons(ctx: context, pet: vm.pet!)
+                  : null,
             );
           }),
         );
