@@ -98,5 +98,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "select_avatar": "Обрати фото",
+  "delete_avatar": "Видалити фото"
 }

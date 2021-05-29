@@ -1,4 +1,4 @@
-import 'dart:io' show Platform;
+import 'dart:io' show File, Platform;
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -14,6 +14,7 @@ import 'package:pdoc/store/breeds/effects.dart';
 import 'package:pdoc/store/edit-pet/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/widgets/date_picker_widget.dart';
+import 'package:pdoc/widgets/image_capture.dart';
 import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:pdoc/extensions/string.dart';
 
@@ -29,6 +30,7 @@ class AddEditPetScreen extends StatelessWidget {
   final TextEditingController _descriptionController = TextEditingController();
 
   DatePickerValue? _selectedDate;
+  File? _selectedAvatar;
 
   bool _validateForm() {
     return _formKey.currentState != null && _formKey.currentState!.validate();
@@ -254,6 +256,11 @@ class AddEditPetScreen extends StatelessWidget {
                     key: _formKey,
                     child: Column(
                       children: [
+                        ImageCapture(
+                          onChange: (File file) {
+                            _selectedAvatar = file;
+                          },
+                        ),
                         TextFormField(
                           controller: _nameController,
                           onChanged: (v) => _validateForm(),
@@ -333,7 +340,8 @@ class AddEditPetScreen extends StatelessWidget {
                         TextFormField(
                           controller: _genderController,
                           onTap: () => showModalSelect(
-                            modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
+                            modalTitle: L10n.of(context)
+                                .modal_select_app_bar_select_gender_text,
                             ctx: context,
                             options: genderOptions,
                             vm: vm,

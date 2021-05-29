@@ -98,5 +98,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "select_avatar": "Select photo",
+  "delete_avatar": "Delete photo"
 }
