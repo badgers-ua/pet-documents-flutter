@@ -75,6 +75,7 @@
     }
   },
   "add_owner": "Add owner",
+  "remove_owner": "Remove owner",
   "add_owner_dialog_widget_description1_text": "Enter email address of person that you want to add as an owner of {petName}.",
   "@add_owner_dialog_widget_description1_text": {
     "placeholders": {

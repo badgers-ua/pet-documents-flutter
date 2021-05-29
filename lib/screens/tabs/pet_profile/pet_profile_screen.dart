@@ -64,14 +64,13 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
             _showAddOwnerDialog(ctx: ctx, pet: pet);
           },
         ),
-        // SpeedDialChild(
-        //   child: Icon(Icons.keyboard_voice),
-        //   backgroundColor: Colors.green,
-        //   label: 'Remove owner',
-        //   labelStyle: TextStyle(fontSize: 18.0),
-        //   onTap: () => print('THIRD CHILD'),
-        //   onLongPress: () => print('THIRD CHILD LONG PRESS'),
-        // ),
+        SpeedDialChild(
+          child: Icon(Icons.person_remove),
+          label: L10n.of(ctx).remove_owner,
+          onTap: () {
+
+          },
+        ),
         // SpeedDialChild(
         //   child: Icon(Icons.keyboard_voice),
         //   backgroundColor: Colors.green,

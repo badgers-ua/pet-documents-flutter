@@ -75,6 +75,7 @@
     }
   },
   "add_owner": "Додати власника",
+  "remove_owner": "Видалити власника",
   "add_owner_dialog_widget_description1_text": "Вкажіть електронну адресу людини, яку бажаєте додати як власника {petName}.",
   "@add_owner_dialog_widget_description1_text": {
     "placeholders": {
