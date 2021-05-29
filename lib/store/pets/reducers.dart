@@ -27,7 +27,7 @@ AppState<List<PetPreviewResDto>> petsReducer(
     );
   }
   if (action is ClearPetsState) {
-    return AppState();
+    return AppState(data: []);
   }
   return state;
 }

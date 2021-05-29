@@ -9,6 +9,13 @@ import 'package:pdoc/models/dto/request/sign_in_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:pdoc/screens/tabs/tabs_screen.dart';
+import 'package:pdoc/store/add-owner/actions.dart';
+import 'package:pdoc/store/add-pet/actions.dart';
+import 'package:pdoc/store/breeds/actions.dart';
+import 'package:pdoc/store/edit-pet/actions.dart';
+import 'package:pdoc/store/pet/actions.dart';
+import 'package:pdoc/store/pets/actions.dart';
+import 'package:pdoc/store/remove-owner/actions.dart';
 import 'package:pdoc/store/user/actions.dart';
 import 'package:pdoc/store/user/effects.dart';
 import 'package:redux/redux.dart';
@@ -120,7 +127,14 @@ Function signOutThunk = ({
 }) =>
     (Store<RootState> store) async {
       clearRefreshToken();
+      store.dispatch(ClearAddOwnerState());
+      store.dispatch(ClearAddPetState());
       store.dispatch(ClearAuthState());
+      store.dispatch(ClearBreedsState());
+      store.dispatch(ClearEditPetState());
+      store.dispatch(ClearPetState());
+      store.dispatch(ClearPetsState());
+      store.dispatch(ClearRemoveOwnerState());
       store.dispatch(ClearUserState());
       Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
     };
