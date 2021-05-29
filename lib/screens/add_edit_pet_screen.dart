@@ -256,8 +256,11 @@ class AddEditPetScreen extends StatelessWidget {
                         TextFormField(
                           controller: _nameController,
                           onChanged: (v) => _validateForm(),
-                          validator: (v) =>
-                              (v ?? '').requiredValidator(fieldName: 'Name'),
+                          validator: (v) => (v ?? '').requiredValidator(
+                            fieldName: L10n.of(context)
+                                .add_edit_pet_screen_name_input_text,
+                            ctx: context,
+                          ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: L10n.of(context)
@@ -267,8 +270,10 @@ class AddEditPetScreen extends StatelessWidget {
                         SizedBox(height: ThemeConstants.spacing(1)),
                         TextFormField(
                           controller: _speciesController,
-                          validator: (v) =>
-                              (v ?? '').requiredValidator(fieldName: 'Species'),
+                          validator: (v) => (v ?? '').requiredValidator(
+                              fieldName: L10n.of(context)
+                                  .add_edit_pet_screen_species_input_text,
+                              ctx: context),
                           onTap: () => showModalSelect(
                             ctx: context,
                             options: speciesOptions,

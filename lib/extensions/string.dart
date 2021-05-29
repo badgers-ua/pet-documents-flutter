@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:pdoc/l10n/l10n.dart';
+
 extension EmailValidator on String {
   bool isValidEmail() {
     return RegExp(
@@ -7,9 +10,12 @@ extension EmailValidator on String {
 }
 
 extension RequiredValidator on String {
-  String? requiredValidator({required String fieldName}) {
+  String? requiredValidator({
+    required String fieldName,
+    required BuildContext ctx,
+  }) {
     if (this.isEmpty) {
-      return '$fieldName is required.';
+      return L10n.of(ctx).required_validator_text(fieldName);
     }
     return null;
   }

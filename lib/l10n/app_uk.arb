@@ -64,5 +64,13 @@
   "modal_select_app_bar_select_species_text": "Обрати вид",
   "modal_select_app_bar_search_text": "Пошук",
   "modal_select_app_bar_done_button_text": "Готово",
-  "modal_select_search_bar_breeds_hint_text": "Пошук породи ведеться англійською мовою."
+  "modal_select_search_bar_breeds_hint_text": "Пошук породи ведеться англійською мовою.",
+  "required_validator_text": "{fieldName} є обов'язковим полем.",
+  "@required_validator_text": {
+    "placeholders": {
+      "fieldName": {
+        "type": "String"
+      }
+    }
+  }
 }
