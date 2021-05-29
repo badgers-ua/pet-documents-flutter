@@ -19,6 +19,19 @@ class AddOwnerDialogWidget extends StatelessWidget {
     return _formKey.currentState != null && _formKey.currentState!.validate();
   }
 
+  void _handleSubmit({
+    required BuildContext ctx,
+    required _AddOwnerDialogWidgetViewModel vm,
+  }) {
+    if (!_validateForm()) {
+      return;
+    }
+    vm.dispatchLoadAddOwnerThunk(
+      ctx: ctx,
+      email: _emailController.text.trim(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<RootState, _AddOwnerDialogWidgetViewModel>(
@@ -66,7 +79,10 @@ class AddOwnerDialogWidget extends StatelessWidget {
                       controller: _emailController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.go,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) {
+                        _handleSubmit(ctx: context, vm: vm);
+                      },
                       validator: (input) => input!.isValidEmail()
                           ? null
                           : L10n.of(context).sign_in_screen_invalid_email_text,
@@ -82,9 +98,11 @@ class AddOwnerDialogWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: vm.isLoadingAddOwner ? null : () {
-                        Navigator.of(context).pop();
-                      },
+                      onPressed: vm.isLoadingAddOwner
+                          ? null
+                          : () {
+                              Navigator.of(context).pop();
+                            },
                       child: Text(
                         L10n.of(context).cancel_text,
                         style: TextStyle(
@@ -96,13 +114,7 @@ class AddOwnerDialogWidget extends StatelessWidget {
                       onPressed: vm.isLoadingAddOwner
                           ? null
                           : () {
-                              if (!_validateForm()) {
-                                return;
-                              }
-                              vm.dispatchLoadAddOwnerThunk(
-                                ctx: context,
-                                email: _emailController.text.trim(),
-                              );
+                              _handleSubmit(ctx: context, vm: vm);
                             },
                       child: vm.isLoadingAddOwner
                           ? ThemeConstants.getButtonSpinner()
