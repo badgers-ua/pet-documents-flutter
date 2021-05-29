@@ -21,10 +21,7 @@ extension ErrorSnackBar on ScaffoldMessenger {
         padding: EdgeInsets.symmetric(
           horizontal: ThemeConstants.spacing(0.5),
         ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
+        behavior: SnackBarBehavior.fixed,
       ),
     );
   }
