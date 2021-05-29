@@ -39,12 +39,13 @@ class AddEditPetScreen extends StatelessWidget {
     required List<ModalSelectOption> options,
     required TextEditingController controller,
     required _AddEditPetScreenViewModel vm,
+    required String modalTitle,
     String? modalHintText,
     bool isSpecies = false,
     bool isBreeds = false,
   }) async {
     final widget = ModalSelectWidget(
-      title: L10n.of(ctx).modal_select_app_bar_select_species_text,
+      title: modalTitle,
       options: options,
       helperText: !isBreeds
           ? null
@@ -275,6 +276,8 @@ class AddEditPetScreen extends StatelessWidget {
                                   .add_edit_pet_screen_species_input_text,
                               ctx: context),
                           onTap: () => showModalSelect(
+                            modalTitle: L10n.of(context)
+                                .modal_select_app_bar_select_species_text,
                             ctx: context,
                             options: speciesOptions,
                             controller: _speciesController,
@@ -295,6 +298,8 @@ class AddEditPetScreen extends StatelessWidget {
                           onTap: () => vm.isLoadingBreeds
                               ? null
                               : showModalSelect(
+                                  modalTitle: L10n.of(context)
+                                      .modal_select_app_bar_select_breeds_text,
                                   ctx: context,
                                   options: vm.breedOptions,
                                   controller: _breedController,
@@ -328,6 +333,7 @@ class AddEditPetScreen extends StatelessWidget {
                         TextFormField(
                           controller: _genderController,
                           onTap: () => showModalSelect(
+                            modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
                             ctx: context,
                             options: genderOptions,
                             vm: vm,

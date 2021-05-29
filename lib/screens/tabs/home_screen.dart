@@ -47,6 +47,10 @@ class HomeScreen extends StatelessWidget {
 
         final List<PetPreviewResDto> petPreviewList = vm.state.data!;
 
+        if (petPreviewList.isEmpty) {
+          return Center(child: Text(L10n.of(context).no_pets_text));
+        }
+
         return ListView(
           padding: EdgeInsets.all(ThemeConstants.spacing(1)),
           children: [

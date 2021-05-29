@@ -62,6 +62,8 @@
   "gender_enum_male": "Чоловіча",
   "gender_enum_female": "Жіноча",
   "modal_select_app_bar_select_species_text": "Обрати вид",
+  "modal_select_app_bar_select_breeds_text": "Обрати породу",
+  "modal_select_app_bar_select_gender_text": "Обрати стать",
   "modal_select_app_bar_search_text": "Пошук",
   "modal_select_search_bar_breeds_hint_text": "Пошук породи ведеться англійською мовою.",
   "required_validator_text": "{fieldName} є обов'язковим полем.",
@@ -83,5 +85,6 @@
   },
   "add_owner_dialog_widget_description2_text": "УВАГА: Людина має бути зареєстрована в додатку.",
   "done_text": "Готово",
-  "cancel_text": "Відміна"
+  "cancel_text": "Відміна",
+  "no_pets_text": "Створені улюбленці відображатимуться тут."
 }

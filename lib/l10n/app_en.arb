@@ -62,6 +62,8 @@
   "gender_enum_male": "Male",
   "gender_enum_female": "Female",
   "modal_select_app_bar_select_species_text": "Select species",
+  "modal_select_app_bar_select_breeds_text": "Select breed",
+  "modal_select_app_bar_select_gender_text": "Select gender",
   "modal_select_app_bar_search_text": "Search",
   "modal_select_search_bar_breeds_hint_text": "Please use english language to search breeds.",
   "required_validator_text": "{fieldName} is required.",
@@ -83,6 +85,6 @@
   },
   "add_owner_dialog_widget_description2_text": "WARNING: Person must be registered within the app.",
   "done_text": "Done",
-  "cancel_text": "Cancel"
-
+  "cancel_text": "Cancel",
+  "no_pets_text": "Created pets will be displayed here."
 }
