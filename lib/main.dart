@@ -86,8 +86,8 @@ class _MyAppState extends State<MyApp> {
           SignUpScreen.routeName: (context) => SignUpScreen(),
           SignInScreen.routeName: (context) => SignInScreen(),
         },
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData(brightness: Brightness.light),
+        darkTheme: ThemeData(brightness: Brightness.dark),
         home: Builder(
           builder: (BuildContext context) =>
               StoreConnector<RootState, _MyAppViewModel>(

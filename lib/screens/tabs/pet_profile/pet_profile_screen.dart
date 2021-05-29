@@ -157,22 +157,25 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                           expandedHeight: 200,
                           forceElevated: innerBoxIsScrolled,
                           flexibleSpace: FlexibleSpaceBar(
-                            background: CachedNetworkImage(
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.7),
-                                      BlendMode.dstATop,
+                            background: Container(
+                              decoration: BoxDecoration(color: Colors.black),
+                              child: CachedNetworkImage(
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.black.withOpacity(0.7),
+                                        BlendMode.dstATop,
+                                      ),
                                     ),
                                   ),
                                 ),
+                                imageUrl:
+                                    'https://www.thesprucepets.com/thmb/DvxumVXUoBY2q0k3VVnOFRRz-dw=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/facts-about-black-cats-554102-hero-7281a22d75584d448290c359780c2ead.jpg',
                               ),
-                              imageUrl:
-                                  'https://www.thesprucepets.com/thmb/DvxumVXUoBY2q0k3VVnOFRRz-dw=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/facts-about-black-cats-554102-hero-7281a22d75584d448290c359780c2ead.jpg',
                             ),
                           ),
                           bottom: TabBar(
