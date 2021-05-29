@@ -87,5 +87,16 @@
   "add_owner_dialog_widget_description2_text": "УВАГА: Людина має бути зареєстрована в додатку.",
   "done_text": "Готово",
   "cancel_text": "Відміна",
-  "no_pets_text": "Створені улюбленці відображатимуться тут."
+  "no_pets_text": "Створені улюбленці відображатимуться тут.",
+  "remove_owner_warning": "УВАГА: {ownerName} втратить доступ до {petName}.",
+  "@remove_owner_warning": {
+    "placeholders": {
+      "ownerName": {
+        "type": "String"
+      },
+      "petName": {
+        "type": "String"
+      }
+    }
+  }
 }

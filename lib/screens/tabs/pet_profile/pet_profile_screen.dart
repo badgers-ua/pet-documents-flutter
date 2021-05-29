@@ -1,9 +1,12 @@
+import 'dart:io' show Platform;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/app_state.dart';
+import 'package:pdoc/models/dto/request/remove_owner_req_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
@@ -14,7 +17,10 @@ import 'package:pdoc/screens/tabs/pet_profile/pet_profile_tab_screen.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/actions.dart';
 import 'package:pdoc/store/pet/effects.dart';
+import 'package:pdoc/store/remove-owner/effects.dart';
 import 'package:pdoc/widgets/add_owner_dialog_widget.dart';
+import 'package:pdoc/widgets/confirmation_dialog_widget.dart';
+import 'package:pdoc/widgets/modal_select_widget.dart';
 
 class PetProfileScreenProps {
   final String petId;
@@ -36,7 +42,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
   SpeedDial petActionButtons({
     required BuildContext ctx,
-    required PetResDto pet,
+    required _PetProfileScreenViewModel vm,
   }) {
     return SpeedDial(
       marginEnd: 18,
@@ -61,14 +67,14 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           child: Icon(Icons.person_add),
           label: L10n.of(ctx).add_owner,
           onTap: () {
-            _showAddOwnerDialog(ctx: ctx, pet: pet);
+            _showAddOwnerDialog(ctx: ctx, pet: vm.pet!);
           },
         ),
         SpeedDialChild(
           child: Icon(Icons.person_remove),
           label: L10n.of(ctx).remove_owner,
           onTap: () {
-
+            _showRemoveOwnerModalSelect(ctx: ctx, vm: vm);
           },
         ),
         // SpeedDialChild(
@@ -98,6 +104,77 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
     );
   }
 
+  void _showRemoveOwnerModalSelect({
+    required BuildContext ctx,
+    required _PetProfileScreenViewModel vm,
+  }) async {
+    final widget = ModalSelectWidget(
+      title: L10n.of(ctx).remove_owner,
+      options: vm.removeOwnerOptions,
+    );
+
+    if (Platform.isIOS) {
+      final ModalSelectOption? modalSelectOption =
+          await showCupertinoModalBottomSheet(
+        context: ctx,
+        builder: (_) => widget,
+      );
+
+      if (modalSelectOption == null) {
+        return;
+      }
+
+      _showRemoveOwnerConfirmationDialog(
+        ctx: ctx,
+        vm: vm,
+        selectedOwner: modalSelectOption,
+      );
+
+      return;
+    }
+
+    final ModalSelectOption? modalSelectOption =
+        await showMaterialModalBottomSheet(
+      context: ctx,
+      builder: (_) => widget,
+    );
+
+    if (modalSelectOption == null) {
+      return;
+    }
+
+    _showRemoveOwnerConfirmationDialog(
+      ctx: ctx,
+      vm: vm,
+      selectedOwner: modalSelectOption,
+    );
+  }
+
+  Future<void> _showRemoveOwnerConfirmationDialog({
+    required BuildContext ctx,
+    required _PetProfileScreenViewModel vm,
+    required ModalSelectOption selectedOwner,
+  }) async {
+    return showDialog<void>(
+      context: ctx,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ConfirmationDialogWidget(
+          title: L10n.of(context).remove_owner,
+          content: L10n.of(context).remove_owner_warning(selectedOwner.label, vm.pet!.name),
+          enabled: true,
+          onSubmit: () {
+            vm.dispatchLoadRemoveOwnerThunk(
+              ctx: ctx,
+              petId: vm.pet!.id,
+              ownerId: selectedOwner.value,
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final PetProfileScreenProps props =
@@ -114,16 +191,39 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         final AppState<PetResDto> petState = store.state.pet;
         final AppState<UserResDto> userState = store.state.user;
         return _PetProfileScreenViewModel(
+          removeOwnerOptions: petState.data == null
+              ? []
+              : petState.data!.owners
+                  .map(
+                    (e) => ModalSelectOption(
+                        label: '${e.firstName} ${e.lastName}',
+                        value: e.id),
+                  )
+                  .toList(),
           pet: petState.data,
           isLoadingPet: petState.isLoading,
           user: userState.data,
           isLoadingUser: userState.isLoading,
+          dispatchLoadRemoveOwnerThunk: ({
+            required BuildContext ctx,
+            required String ownerId,
+            required String petId,
+          }) =>
+              store.dispatch(
+            loadRemoveOwnerThunk(
+              ctx: ctx,
+              request: RemoveOwnerReqDto(ownerId: ownerId),
+              petId: petId,
+            ),
+          ),
         );
       },
       builder: (context, _PetProfileScreenViewModel vm) {
         if (vm.isLoadingPet || vm.isLoadingUser) {
-          return Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         }
 
@@ -212,7 +312,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                 ),
               ),
               floatingActionButton: _currentTabIndex == 0
-                  ? petActionButtons(ctx: context, pet: vm.pet!)
+                  ? petActionButtons(ctx: context, vm: vm)
                   : null,
             );
           }),
@@ -227,11 +327,15 @@ class _PetProfileScreenViewModel {
   final bool isLoadingUser;
   final PetResDto? pet;
   final UserResDto? user;
+  final List<ModalSelectOption> removeOwnerOptions;
+  final dispatchLoadRemoveOwnerThunk;
 
   _PetProfileScreenViewModel({
     required this.isLoadingPet,
     required this.isLoadingUser,
     required this.pet,
     required this.user,
+    required this.removeOwnerOptions,
+    required this.dispatchLoadRemoveOwnerThunk,
   });
 }
