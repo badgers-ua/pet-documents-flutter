@@ -100,5 +100,7 @@
     }
   },
   "select_avatar": "Обрати фото",
-  "delete_avatar": "Видалити фото"
+  "delete_avatar": "Видалити фото",
+  "camera": "Камера",
+  "library": "Галерея"
 }

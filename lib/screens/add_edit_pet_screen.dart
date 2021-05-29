@@ -261,6 +261,7 @@ class AddEditPetScreen extends StatelessWidget {
                             _selectedAvatar = file;
                           },
                         ),
+                        SizedBox(height: ThemeConstants.spacing(1)),
                         TextFormField(
                           controller: _nameController,
                           onChanged: (v) => _validateForm(),

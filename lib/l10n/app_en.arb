@@ -99,6 +99,8 @@
       }
     }
   },
-  "select_avatar": "Select photo",
-  "delete_avatar": "Delete photo"
+  "select_avatar": "Choose photo",
+  "delete_avatar": "Delete photo",
+  "camera": "Camera",
+  "library": "Library"
 }
