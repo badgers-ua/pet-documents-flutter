@@ -376,7 +376,7 @@ class AddEditPetScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: L10n.of(context)
-                          .add_edit_pet_screen_description_input_text,
+                          .description,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
@@ -441,9 +441,9 @@ class AddEditPetScreen extends StatelessWidget {
                           : Text(
                               !vm.isEditMode
                                   ? L10n.of(context)
-                                      .add_edit_pet_screen_submit_button_text
+                                      .create
                                   : L10n.of(context)
-                                      .add_edit_pet_screen_submit_edit_button_text,
+                                      .update,
                             ),
                     ),
                   ),

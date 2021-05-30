@@ -41,9 +41,9 @@
   "add_edit_pet_screen_gender_input_text": "Стать",
   "add_edit_pet_screen_date_of_birth_input_text": "Дата народження",
   "add_edit_pet_screen_color_input_text": "Колір",
-  "add_edit_pet_screen_description_input_text": "Опис",
-  "add_edit_pet_screen_submit_button_text": "Створити",
-  "add_edit_pet_screen_submit_edit_button_text": "Редагувати",
+  "description": "Опис",
+  "create": "Створити",
+  "update": "Редагувати",
   "pet_profile_screen_info_tab_text": "Опис",
   "pet_profile_screen_chat_tab_text": "Чат",
   "pet_profile_screen_events_tab_text": "Події",
@@ -146,5 +146,6 @@
   "event_pairing": "Спарювання",
   "event_estrus": "Еструс",
   "event_molt": "Линька",
-  "event_type": "Тип події"
+  "event_type": "Тип події",
+  "date": "Дата"
 }

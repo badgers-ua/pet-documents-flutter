@@ -88,8 +88,28 @@ class _MyAppState extends State<MyApp> {
           SignInScreen.routeName: (context) => SignInScreen(),
           AddEditEventScreen.routeName: (context) => AddEditEventScreen(),
         },
-        theme: ThemeData(brightness: Brightness.light),
-        darkTheme: ThemeData(brightness: Brightness.dark),
+        theme: ThemeData(
+          brightness: Brightness.light,
+          checkboxTheme: CheckboxThemeData(
+            fillColor: MaterialStateProperty.resolveWith(
+              (_) => Colors.blue,
+            ),
+            checkColor: MaterialStateProperty.resolveWith(
+              (_) => Colors.white,
+            ),
+          ),
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          checkboxTheme: CheckboxThemeData(
+            fillColor: MaterialStateProperty.resolveWith(
+              (_) => Colors.blue,
+            ),
+            checkColor: MaterialStateProperty.resolveWith(
+              (_) => Colors.white,
+            ),
+          ),
+        ),
         home: Builder(
           builder: (BuildContext context) =>
               StoreConnector<RootState, _MyAppViewModel>(
@@ -101,7 +121,8 @@ class _MyAppState extends State<MyApp> {
                     LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
-              store.dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
+              store
+                  .dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
             },
             converter: (store) {
               final Auth? auth = store.state.auth.data;
