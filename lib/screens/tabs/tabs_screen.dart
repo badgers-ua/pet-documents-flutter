@@ -17,9 +17,10 @@ class _TabsScreenState extends State<TabsScreen> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text(
-      'Chats',
-    ),
+    // TODO: [FEATURE] Chat
+    // Text(
+    //   'Chats',
+    // ),
     SettingsScreen(),
   ];
 
@@ -54,10 +55,11 @@ class _TabsScreenState extends State<TabsScreen> {
             label: L10n.of(context).tabs_screen_home_tab_text,
             icon: Icon(Icons.home),
           ),
-          BottomNavigationBarItem(
-            label: L10n.of(context).tabs_screen_chats_tab_text,
-            icon: Icon(Icons.chat),
-          ),
+          // TODO: [FEATURE] Chat
+          // BottomNavigationBarItem(
+          //   label: L10n.of(context).tabs_screen_chats_tab_text,
+          //   icon: Icon(Icons.chat),
+          // ),
           BottomNavigationBarItem(
             label: L10n.of(context).tabs_screen_settings_tab_text,
             icon: Icon(Icons.settings),

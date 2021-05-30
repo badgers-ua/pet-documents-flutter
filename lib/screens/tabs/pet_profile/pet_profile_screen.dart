@@ -228,7 +228,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         }
 
         return DefaultTabController(
-          length: 3,
+          length: 2,
           child: Builder(builder: (BuildContext context) {
             final TabController tabController =
                 DefaultTabController.of(context)!;
@@ -282,9 +282,10 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                               Tab(
                                   text: L10n.of(context)
                                       .pet_profile_screen_info_tab_text),
-                              Tab(
-                                  text: L10n.of(context)
-                                      .pet_profile_screen_chat_tab_text),
+                              // TODO: [FEATURE] Chat
+                              // Tab(
+                              //     text: L10n.of(context)
+                              //         .pet_profile_screen_chat_tab_text),
                               Tab(
                                   text: L10n.of(context)
                                       .pet_profile_screen_events_tab_text),
@@ -305,7 +306,8 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                           ),
                         ),
                       ),
-                      PetProfileTabScreen(child: PetChatSliverListScreen()),
+                      // TODO: [FEATURE] Chat
+                      // PetProfileTabScreen(child: PetChatSliverListScreen()),
                       PetProfileTabScreen(child: PetEventsSLiverListScreen()),
                     ],
                   ),
