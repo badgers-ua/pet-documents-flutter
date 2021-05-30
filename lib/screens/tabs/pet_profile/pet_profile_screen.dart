@@ -9,10 +9,10 @@ import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/dto/request/remove_owner_req_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
+import 'package:pdoc/screens/add_edit_event_screen.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
-import 'package:pdoc/screens/tabs/pet_profile/pet_events_sliver_list_screen.dart';
-import 'package:pdoc/screens/tabs/pet_profile/pet_info_sliver_list_screen.dart';
-import 'package:pdoc/screens/tabs/pet_profile/pet_profile_tab_screen.dart';
+import 'package:pdoc/screens/tabs/pet_profile/tabs/pet_events_sliver_list_screen.dart';
+import 'package:pdoc/screens/tabs/pet_profile/tabs/pet_info_sliver_list_screen.dart';
 import 'package:pdoc/store/delete-pet/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/actions.dart';
@@ -21,6 +21,8 @@ import 'package:pdoc/store/remove-owner/effects.dart';
 import 'package:pdoc/widgets/add_owner_dialog_widget.dart';
 import 'package:pdoc/widgets/confirmation_dialog_widget.dart';
 import 'package:pdoc/widgets/modal_select_widget.dart';
+
+import '../../../constants.dart';
 
 class PetProfileScreenProps {
   final String petId;
@@ -45,11 +47,9 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
     required _PetProfileScreenViewModel vm,
   }) {
     return SpeedDial(
-      marginEnd: 18,
-      marginBottom: 20,
       icon: Icons.menu,
       backgroundColor: Theme.of(ctx).accentColor,
-      foregroundColor: Theme.of(context).bottomAppBarColor,
+      foregroundColor: Theme.of(ctx).bottomAppBarColor,
       activeIcon: Icons.close,
       visible: true,
       curve: Curves.bounceIn,
@@ -329,7 +329,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                   },
                   body: TabBarView(
                     children: [
-                      PetProfileTabScreen(
+                      _PetProfileTabScreen(
                         child: PetInfoSliverListScreen(
                           // TODO: pet == null when token expired?
                           petRowList: vm.pet!.toPetInfoRowWidgetPropsList(
@@ -339,15 +339,21 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ),
                       // TODO: [FEATURE] Chat
-                      // PetProfileTabScreen(child: PetChatSliverListScreen()),
-                      PetProfileTabScreen(child: PetEventsSLiverListScreen()),
+                      // _PetProfileTabScreen(child: PetChatSliverListScreen()),
+                      _PetProfileTabScreen(child: PetEventsSLiverListScreen()),
                     ],
                   ),
                 ),
               ),
               floatingActionButton: _currentTabIndex == 0
                   ? petActionButtons(ctx: context, vm: vm)
-                  : null,
+                  : FloatingActionButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AddEditEventScreen.routeName);
+                      },
+                      child: Icon(Icons.add),
+                    ),
             );
           }),
         );
@@ -374,4 +380,36 @@ class _PetProfileScreenViewModel {
     required this.dispatchLoadRemoveOwnerThunk,
     required this.dispatchLoadDeletePetThunk,
   });
+}
+
+class _PetProfileTabScreen extends StatelessWidget {
+  final Widget child;
+
+  _PetProfileTabScreen({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Builder(
+        builder: (BuildContext context) {
+          return CustomScrollView(
+            slivers: <Widget>[
+              SliverOverlapInjector(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              ),
+              SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: ThemeConstants.spacing(0.5),
+                    horizontal: ThemeConstants.spacing(1),
+                  ),
+                  sliver: child),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

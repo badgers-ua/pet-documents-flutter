@@ -120,5 +120,31 @@
         "type": "String"
       }
     }
-  }
+  },
+  "add_edit_event_app_bar_title": "Додати подію ({petName})",
+  "@add_edit_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "event_vaccination": "Вакцинація",
+  "event_deworming": "Дегельмінтизація",
+  "event_end_of_treatment": "Кінець лікування",
+  "event_operation": "Операція",
+  "event_childbirth": "Роди",
+  "event_sterilization": "Стерелізація/Кастрація",
+  "event_tick_treatment": "Щеплення проти кліщів",
+  "event_vaccination_against_rabies": "Щеплення проти сказу",
+  "event_veterinarian_examination": "Огляд лікаря",
+  "event_show": "Участь у виставці",
+  "event_reward": "Нагорода",
+  "event_photo_session": "Фотосесія",
+  "event_training": "Дресерування",
+  "event_start_of_treatment": "Початок лікування",
+  "event_pairing": "Спарювання",
+  "event_estrus": "Еструс",
+  "event_molt": "Линька",
+  "event_type": "Тип події"
 }

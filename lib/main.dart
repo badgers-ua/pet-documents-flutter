@@ -6,12 +6,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/device_token.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
+import 'package:pdoc/screens/add_edit_event_screen.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pdoc/screens/sign_up_screen.dart';
-import 'package:pdoc/screens/tabs/tabs_screen.dart';
+import 'package:pdoc/screens/tabs_screen.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/device_token/actions.dart';
@@ -85,6 +86,7 @@ class _MyAppState extends State<MyApp> {
           PetProfileScreen.routeName: (context) => PetProfileScreen(),
           SignUpScreen.routeName: (context) => SignUpScreen(),
           SignInScreen.routeName: (context) => SignInScreen(),
+          AddEditEventScreen.routeName: (context) => AddEditEventScreen(),
         },
         theme: ThemeData(brightness: Brightness.light),
         darkTheme: ThemeData(brightness: Brightness.dark),

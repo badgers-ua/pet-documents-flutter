@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pdoc/models/dto/request/create_pet_req_dto.dart';
 import 'package:pdoc/models/dto/response/create_pet_res_dto.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
-import 'package:pdoc/screens/tabs/tabs_screen.dart';
+import 'package:pdoc/screens/tabs_screen.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/actions.dart';
 import 'package:pdoc/store/pets/effects.dart';

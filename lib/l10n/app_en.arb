@@ -120,5 +120,31 @@
         "type": "String"
       }
     }
-  }
+  },
+  "add_edit_event_app_bar_title": "Add event ({petName})",
+  "@add_edit_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "event_vaccination": "Vaccination",
+  "event_deworming": "Deworming",
+  "event_end_of_treatment": "End of treatment",
+  "event_operation": "Operation",
+  "event_childbirth": "Childbirth",
+  "event_sterilization": "Sterilization",
+  "event_tick_treatment": "Tick treatment",
+  "event_vaccination_against_rabies": "Vaccination against rabies",
+  "event_veterinarian_examination": "Veterinarian examination",
+  "event_show": "Participation in the exhibition",
+  "event_reward": "Reward",
+  "event_photo_session": "Photo session",
+  "event_training": "Training",
+  "event_start_of_treatment": "Start of treatment",
+  "event_pairing": "Pairing",
+  "event_estrus": "Estrus",
+  "event_molt": "Molt",
+  "event_type": "Event type"
 }

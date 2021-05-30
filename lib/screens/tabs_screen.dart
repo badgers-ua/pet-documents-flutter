@@ -3,7 +3,7 @@ import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/tabs/settings_screen.dart';
 
-import 'home_screen.dart';
+import 'tabs/home_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs';

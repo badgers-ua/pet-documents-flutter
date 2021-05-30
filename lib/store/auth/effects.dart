@@ -8,7 +8,7 @@ import 'package:pdoc/models/dto/request/refresh_token_req_dto.dart';
 import 'package:pdoc/models/dto/request/sign_in_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
-import 'package:pdoc/screens/tabs/tabs_screen.dart';
+import 'package:pdoc/screens/tabs_screen.dart';
 import 'package:pdoc/store/add-owner/actions.dart';
 import 'package:pdoc/store/add-pet/actions.dart';
 import 'package:pdoc/store/breeds/actions.dart';
