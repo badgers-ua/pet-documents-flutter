@@ -16,7 +16,8 @@ import 'add-pet/reducers.dart';
 import 'auth/reducers.dart';
 import 'device_token/reducers.dart';
 
-abstract class AppAction {
+class AppAction {
+  AppAction();
   String toString() {
     return '$runtimeType';
   }

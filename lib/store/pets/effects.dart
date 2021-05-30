@@ -7,7 +7,6 @@ import 'package:redux/redux.dart';
 import '../index.dart';
 import 'actions.dart';
 import 'package:pdoc/extensions/dio.dart';
-import 'package:pdoc/extensions/scaffold_messenger.dart';
 
 Function loadPetsThunk = ({
   required BuildContext ctx,
@@ -15,15 +14,13 @@ Function loadPetsThunk = ({
     (Store<RootState> store) async {
       store.dispatch(LoadPets());
       try {
-        final response = await Dio().authenticatedDio().get('/pets');
+        final response = await Dio().authenticatedDio(ctx: ctx).get('/pets');
         final List<PetPreviewResDto> petPreviewList =
             response.data.map((item) => PetPreviewResDto.fromJson(item)).cast<PetPreviewResDto>().toList();
         store.dispatch(LoadPetsSuccess(payload: petPreviewList));
-      } catch (e) {
-        final String errorMsg = (e as DioError).response!.data["message"];
-
-        ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadPetsFailure(payload: errorMsg));
       }
     };

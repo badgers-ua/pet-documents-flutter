@@ -7,7 +7,6 @@ import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pets/effects.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
-import 'package:pdoc/extensions/scaffold_messenger.dart';
 
 import 'actions.dart';
 
@@ -19,7 +18,7 @@ Function loadCreatePetThunk = ({
       store.dispatch(LoadAddPet());
       try {
         final res = await Dio()
-            .authenticatedDio()
+            .authenticatedDio(ctx: ctx)
             .post('/pet/create', data: request.toJson());
         final CreatePetResDto createPetResDto =
             CreatePetResDto.fromJson(res.data);
@@ -29,11 +28,9 @@ Function loadCreatePetThunk = ({
           PetProfileScreen.routeName,
           arguments: PetProfileScreenProps(petId: createPetResDto.id),
         );
-      } catch (e) {
-        final String errorMsg = (e as DioError).response!.data["message"];
-
-        ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadAddPetFailure(payload: errorMsg));
       }
     };

@@ -102,5 +102,6 @@
   "select_avatar": "Choose photo",
   "delete_avatar": "Delete photo",
   "camera": "Camera",
-  "library": "Library"
+  "library": "Library",
+  "something_went_wrong": "Oh no, something went wrong, please try again later."
 }

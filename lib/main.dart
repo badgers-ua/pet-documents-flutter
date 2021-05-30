@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
                     LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
-              store.dispatch(loadAccessTokenFromRefreshTokenThunk());
+              store.dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
             },
             converter: (store) {
               final Auth? auth = store.state.auth.data;

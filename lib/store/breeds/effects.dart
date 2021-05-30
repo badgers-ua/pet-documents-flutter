@@ -7,7 +7,6 @@ import 'package:pdoc/store/index.dart';
 import 'package:redux/redux.dart';
 
 import 'package:pdoc/extensions/dio.dart';
-import 'package:pdoc/extensions/scaffold_messenger.dart';
 
 Function loadBreedsBySpeciesThunk = ({
   required BuildContext ctx,
@@ -25,17 +24,15 @@ Function loadBreedsBySpeciesThunk = ({
       store.dispatch(LoadBreeds());
       try {
         final response = await Dio()
-            .authenticatedDio()
+            .authenticatedDio(ctx: ctx)
             .get('/static/breeds/${species.index}');
         final List<StaticResDto> breeds =
             response.data.map((item) => StaticResDto.fromJson(item)).cast<StaticResDto>().toList();
         final Map<SPECIES, List<StaticResDto>> payload = {species: breeds};
         store.dispatch(LoadBreedsSuccess(payload: payload));
-      } catch (e) {
-        final String errorMsg = (e as DioError).response!.data["message"];
-
-        ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadBreedsFailure(payload: errorMsg));
       }
     };

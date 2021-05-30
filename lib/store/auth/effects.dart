@@ -19,7 +19,7 @@ import 'package:pdoc/store/remove-owner/actions.dart';
 import 'package:pdoc/store/user/actions.dart';
 import 'package:pdoc/store/user/effects.dart';
 import 'package:redux/redux.dart';
-import 'package:pdoc/extensions/scaffold_messenger.dart';
+import 'package:pdoc/extensions/dio.dart';
 
 import '../../constants.dart';
 import '../index.dart';
@@ -38,7 +38,7 @@ clearRefreshToken() async {
   await secureStorage.delete(key: 'refresh_token');
 }
 
-Function loadAccessTokenFromRefreshTokenThunk = () =>
+Function loadAccessTokenFromRefreshTokenThunk = ({required BuildContext ctx}) =>
     (Store<RootState> store) async {
       store.dispatch(LoadAccessToken());
       final String refreshToken =
@@ -65,12 +65,10 @@ Function loadAccessTokenFromRefreshTokenThunk = () =>
             ),
           ),
         );
-        store.dispatch(loadUserThunk());
-      } catch (e) {
-        final String errorMsg = (e as DioError).response!.data["message"];
-
-        print('Refresh Token Error: $errorMsg');
-
+        store.dispatch(loadUserThunk(ctx: ctx));
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadAccessTokenFailure(payload: errorMsg));
       }
     };
@@ -111,13 +109,10 @@ Function loadSignInThunk = ({
             ),
           ),
         );
-        store.dispatch(loadUserThunk());
-        // store.dispatch(SetUserState(payload: User.getUserFromToken(auth.idToken!)));
-      } catch (e) {
-        final String errorMsg = (e as DioError).response!.data["message"];
-
-        ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
+        store.dispatch(loadUserThunk(ctx: ctx));
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadSignInFailure(payload: errorMsg));
       }
     };

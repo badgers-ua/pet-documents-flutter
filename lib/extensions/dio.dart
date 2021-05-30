@@ -1,14 +1,17 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:pdoc/extensions/string.dart';
+import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/store/auth/effects.dart';
 
 import '../constants.dart';
 import '../main.dart';
 
 extension AuthenticatedDio on Dio {
-  Dio authenticatedDio() {
+  Dio authenticatedDio({required BuildContext ctx}) {
     Dio dio = Dio(BaseOptions(
       baseUrl: Api.baseUrl,
       responseType: ResponseType.json,
@@ -22,11 +25,13 @@ extension AuthenticatedDio on Dio {
 
           final int expiresAt = MyApp.store.state.auth.data!.expiresAt!;
           final int now = DateTime.now().microsecondsSinceEpoch;
-          final int jsNow = int.parse(now.toString().substring(0, now.toString().length - 6));
+          final int jsNow =
+              int.parse(now.toString().substring(0, now.toString().length - 6));
           final bool expiresInFiveMins = (expiresAt - jsNow) <= 300;
 
           if (expiresInFiveMins) {
-            MyApp.store.dispatch(loadAccessTokenFromRefreshTokenThunk());
+            MyApp.store
+                .dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: ctx));
           }
 
           requestOptions.headers[HttpHeaders.authorizationHeader] =
@@ -37,5 +42,44 @@ extension AuthenticatedDio on Dio {
       ),
     );
     return dio;
+  }
+}
+
+extension DioErrorExtension on DioError {
+  String getResponseError({required BuildContext ctx}) {
+    String errorMsg;
+    if (this.response != null) {
+      errorMsg = this.response!.data["message"];
+    }
+    errorMsg = this.message.isNotEmpty
+        ? this.message
+        : L10n.of(ctx).something_went_wrong;
+
+    return errorMsg;
+  }
+
+  void showErrorSnackBar({
+    required BuildContext ctx,
+    required String errorMsg,
+  }) {
+    ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
+    ScaffoldMessenger.of(ctx).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.redAccent,
+        action: SnackBarAction(
+          label: L10n.of(ctx).scaffold_messenger_extension_dismiss_text,
+          textColor: Colors.white,
+          onPressed: () {},
+        ),
+        content: Text(
+          errorMsg,
+          style: TextStyle(color: Colors.white),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: ThemeConstants.spacing(0.5),
+        ),
+        behavior: SnackBarBehavior.fixed,
+      ),
+    );
   }
 }

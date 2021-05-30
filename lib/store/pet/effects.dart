@@ -4,7 +4,6 @@ import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
-import 'package:pdoc/extensions/scaffold_messenger.dart';
 
 import 'actions.dart';
 
@@ -15,15 +14,13 @@ Function loadPetThunk = ({
     (Store<RootState> store) async {
       store.dispatch(LoadPet());
       try {
-        final response = await Dio().authenticatedDio().get('/pet/$petId');
+        final response = await Dio().authenticatedDio(ctx: ctx).get('/pet/$petId');
         final PetResDto petResDto = PetResDto.fromJson(response.data);
 
         store.dispatch(LoadPetSuccess(payload: petResDto));
-      } catch (e) {
-        final String errorMsg = (e as DioError).response!.data["message"];
-
-        ScaffoldMessenger(child: Container()).showErrorSnackBar(ctx, errorMsg);
-
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadPetFailure(payload: errorMsg));
       }
     };
