@@ -21,11 +21,12 @@ class ConfirmationDialogWidget extends StatelessWidget {
     return AlertDialog(
       title: Text(title),
       content: Container(
-        height: 100,
+        height: 125,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Spacer(),
             Text(content),
+            Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

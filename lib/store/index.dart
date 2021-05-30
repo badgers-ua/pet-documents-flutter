@@ -6,6 +6,7 @@ import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/store/add-owner/reducer.dart';
 import 'package:pdoc/store/breeds/reducer.dart';
+import 'package:pdoc/store/delete-pet/reducers.dart';
 import 'package:pdoc/store/edit-pet/reducers.dart';
 import 'package:pdoc/store/pet/reducers.dart';
 import 'package:pdoc/store/pets/reducers.dart';
@@ -34,6 +35,7 @@ class RootState {
   final AppState editPet;
   final AppState addOwner;
   final AppState removeOwner;
+  final AppState deletePet;
 
   RootState({
     required this.auth,
@@ -46,6 +48,7 @@ class RootState {
     required this.editPet,
     required this.addOwner,
     required this.removeOwner,
+    required this.deletePet,
   });
 
   RootState.initialState()
@@ -61,7 +64,8 @@ class RootState {
         addPet = AppState(),
         editPet = AppState(),
         addOwner = AppState(),
-        removeOwner = AppState();
+        removeOwner = AppState(),
+        deletePet = AppState();
 }
 
 RootState appReducer(RootState state, action) {
@@ -76,5 +80,6 @@ RootState appReducer(RootState state, action) {
     editPet: editPetReducer(state.editPet, action),
     addOwner: addOwnerReducer(state.addOwner, action),
     removeOwner: removeOwnerReducer(state.removeOwner, action),
+    deletePet: deletePetReducer(state.deletePet, action),
   );
 }

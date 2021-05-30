@@ -103,5 +103,22 @@
   "delete_avatar": "Delete photo",
   "camera": "Camera",
   "library": "Library",
-  "something_went_wrong": "Oh no, something went wrong, please try again later."
+  "something_went_wrong": "Oh no, something went wrong, please try again later.",
+  "delete": "Delete",
+  "delete_pet": "Delete {petName}",
+  "@delete_pet": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete_pet_warning": "WARNING: You are about to delete {petName}.\nAll owners will lose access to {petName}.",
+  "@delete_pet_warning": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  }
 }

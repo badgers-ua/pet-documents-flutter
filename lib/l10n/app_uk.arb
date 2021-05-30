@@ -103,5 +103,22 @@
   "delete_avatar": "Видалити фото",
   "camera": "Камера",
   "library": "Галерея",
-  "something_went_wrong": "От халепа, щось пішло не так, будь ласка, спробуйте пізніше."
+  "something_went_wrong": "От халепа, щось пішло не так, будь ласка, спробуйте пізніше.",
+  "delete": "Видалити",
+  "delete_pet": "Видалити {petName}",
+  "@delete_pet": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete_pet_warning": "УВАГА: Ви збираєтесь видалити {petName}.\nУсі власники втратять доступ до {petName}.",
+  "@delete_pet_warning": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  }
 }
