@@ -52,103 +52,98 @@ class SignInScreen extends StatelessWidget {
             ),
           ),
           body: Scrollbar(
-            child: SingleChildScrollView(
-              child: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.all(ThemeConstants.spacing(1)),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: ThemeConstants.spacing(1),
-                        ),
-                        SvgPicture.asset(
-                          'assets/images/circle-paw.svg',
-                          color: Theme.of(context).accentColor,
-                        ),
-                        SizedBox(
-                          height: ThemeConstants.spacing(2),
-                        ),
-                        Text(
-                          L10n.of(context).sign_in_screen_welcome_text,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        SizedBox(
-                          height: ThemeConstants.spacing(1),
-                        ),
-                        TextFormField(
-                          controller: _emailController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          validator: (input) => input!.isValidEmail()
-                              ? null
-                              : L10n.of(context)
-                                  .sign_in_screen_invalid_email_text,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: L10n.of(context)
-                                .sign_in_screen_email_text_field_text,
-                          ),
-                        ),
-                        SizedBox(
-                          height: ThemeConstants.spacing(1),
-                        ),
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          validator: (input) => input!.isValidPassword()
-                              ? null
-                              : L10n.of(context)
-                                  .sign_in_screen_invalid_password_text,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: L10n.of(context)
-                                .sign_in_screen_password_text_field_text,
-                          ),
-                        ),
-                        SizedBox(
-                          height: ThemeConstants.spacing(1),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: vm.authState.isLoading
-                                ? null
-                                : () => _onSubmit(context, vm),
-                            child: vm.authState.isLoading
-                                ? ThemeConstants.getButtonSpinner()
-                                : Text(
-                                    L10n.of(context)
-                                        .sign_in_screen_sign_in_button_text,
-                                  ),
-                          ),
-                        ),
-                        SizedBox(height: ThemeConstants.spacing(2)),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Text(L10n.of(context).sign_in_screen_no_account_text),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed(SignUpScreen.routeName);
-                              },
-                              child: Text(L10n.of(context).sign_in_screen_sign_up_button_text),
-                            ),
-                          ],
-                        ),
-                      ],
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: EdgeInsets.all(ThemeConstants.spacing(1)),
+                children: <Widget>[
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  SvgPicture.asset(
+                    'assets/images/circle-paw.svg',
+                    color: Theme.of(context).accentColor,
+                  ),
+                  SizedBox(
+                    height: ThemeConstants.spacing(2),
+                  ),
+                  Text(
+                    L10n.of(context).sign_in_screen_welcome_text,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    validator: (input) => input!.isValidEmail()
+                        ? null
+                        : L10n.of(context).sign_in_screen_invalid_email_text,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText:
+                          L10n.of(context).sign_in_screen_email_text_field_text,
                     ),
                   ),
-                ),
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    validator: (input) => input!.isValidPassword()
+                        ? null
+                        : L10n.of(context).sign_in_screen_invalid_password_text,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: L10n.of(context)
+                          .sign_in_screen_password_text_field_text,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ThemeConstants.spacing(1),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: vm.authState.isLoading
+                          ? null
+                          : () => _onSubmit(context, vm),
+                      child: vm.authState.isLoading
+                          ? ThemeConstants.getButtonSpinner()
+                          : Text(
+                              L10n.of(context)
+                                  .sign_in_screen_sign_in_button_text,
+                            ),
+                    ),
+                  ),
+                  SizedBox(height: ThemeConstants.spacing(2)),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Text(
+                            L10n.of(context).sign_in_screen_no_account_text),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(SignUpScreen.routeName);
+                        },
+                        child: Text(L10n.of(context)
+                            .sign_in_screen_sign_up_button_text),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

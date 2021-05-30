@@ -80,30 +80,31 @@ class _ModalSelectWidgetState extends State<ModalSelectWidget> {
         ],
       ),
       body: Scrollbar(
-        child: Column(
-          children: [
-            _SearchBar(
-              onChanged: _onChanged,
-              helperText: widget.helperText,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredOptions!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                    title: Text(_filteredOptions![index].label),
-                    trailing:
-                        _selectedIndex == index ? Icon(Icons.check) : null,
-                  );
-                },
-              ),
-            ),
-          ],
+        child: ListView.builder(
+          itemCount: _filteredOptions!.length,
+          itemBuilder: (BuildContext context, int index) {
+            final listTile = ListTile(
+              onTap: () {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              title: Text(_filteredOptions![index].label),
+              trailing: _selectedIndex == index ? Icon(Icons.check) : null,
+            );
+            if (index == 0) {
+              return Column(
+                children: [
+                  _SearchBar(
+                    onChanged: _onChanged,
+                    helperText: widget.helperText,
+                  ),
+                  listTile
+                ],
+              );
+            }
+            return listTile;
+          },
         ),
       ),
     );
