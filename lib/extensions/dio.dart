@@ -47,11 +47,11 @@ extension AuthenticatedDio on Dio {
 
 extension DioErrorExtension on DioError {
   String getResponseError({required BuildContext ctx}) {
-    String errorMsg;
     if (this.response != null) {
-      errorMsg = this.response!.data["message"];
+      final String errorMsg = this.response!.data["message"];
+      return errorMsg;
     }
-    errorMsg = this.message.isNotEmpty
+    final String errorMsg = this.message.isNotEmpty
         ? this.message
         : L10n.of(ctx).something_went_wrong;
 
