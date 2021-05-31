@@ -16,7 +16,7 @@ class PetEventsSLiverListScreen extends StatelessWidget {
       converter: (store) {
         return _PetEventsSLiverListScreenViewModel(
           isLoadingEvents: store.state.events.isLoading,
-          events: store.state.events.data!,
+          events: store.state.events.data!.where((element) => element.petId == store.state.pet.data!.id).toList(),
         );
       },
       builder: (context, _PetEventsSLiverListScreenViewModel vm) {

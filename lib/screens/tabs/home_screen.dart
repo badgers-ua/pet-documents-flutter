@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
-import 'package:pdoc/models/app_state.dart';
+import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
+import 'package:pdoc/store/events/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pets/effects.dart';
 import 'package:pdoc/widgets/event_row_widget.dart';
 import 'package:pdoc/widgets/pet_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-
   void handlePetCardPressed({
     required BuildContext ctx,
     required String petId,
@@ -32,23 +32,38 @@ class HomeScreen extends StatelessWidget {
           return;
         }
         store.dispatch(loadPetsThunk(ctx: context));
+        if (store.state.events.data!.isNotEmpty) {
+          return;
+        }
+        store.dispatch(loadEventsThunk(ctx: context));
       },
       converter: (store) {
-        final AppState<List<PetPreviewResDto>> petPreviewState =
-            store.state.pets;
+        final List<EventResDto> events = store.state.events.data!;
+
+        events.sort((prev, curr) =>
+            DateTime
+                .parse(prev.date)
+                .millisecondsSinceEpoch
+                .compareTo(DateTime
+                .parse(curr.date)
+                .millisecondsSinceEpoch));
+
         return _HomeScreenViewModel(
-          state: petPreviewState,
+          pets: store.state.pets.data!,
+          futureEvents: events.length > 2 ? events.sublist(0, 3) : events,
+          isLoadingPets: store.state.pets.isLoading,
+          isLoadingEvents: store.state.events.isLoading,
         );
       },
       builder: (context, _HomeScreenViewModel vm) {
-        if (vm.state.isLoading) {
+        if (vm.isLoadingPets || vm.isLoadingEvents) {
           return Center(child: CircularProgressIndicator());
         }
 
-        final List<PetPreviewResDto> petPreviewList = vm.state.data!;
-
-        if (petPreviewList.isEmpty) {
-          return Center(child: Text(L10n.of(context).no_pets_text));
+        if (vm.pets.isEmpty) {
+          return Center(child: Text(L10n
+              .of(context)
+              .no_pets_text));
         }
 
         return ListView(
@@ -77,32 +92,44 @@ class HomeScreen extends StatelessWidget {
               ),
               shrinkWrap: true,
               primary: false,
-              itemCount: petPreviewList.length,
+              itemCount: vm.pets.length,
               itemBuilder: (BuildContext context, int index) {
                 return PetCardWidget(
-                  pet: petPreviewList[index],
+                  pet: vm.pets[index],
                   onTap: () {
-                    handlePetCardPressed(ctx: context, petId: petPreviewList[index].id);
+                    handlePetCardPressed(
+                        ctx: context, petId: vm.pets[index].id);
                   },
                 );
               },
               padding: const EdgeInsets.all(4.0),
             ),
-            Padding(
-              padding: EdgeInsets.all(ThemeConstants.spacing(0.5)),
-              child: Text(
-                L10n
-                    .of(context)
-                    .home_screen_events_title_text,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline5,
+            if (vm.futureEvents.isNotEmpty) ...[
+              Padding(
+                padding: EdgeInsets.all(ThemeConstants.spacing(0.5)),
+                child: Text(
+                  L10n
+                      .of(context)
+                      .home_screen_events_title_text,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline5,
+                ),
               ),
-            ),
-            // EventCardWidget(),
-            // EventCardWidget(),
-            // EventCardWidget(),
+              Column(
+                children: vm.futureEvents
+                    .map((e) =>
+                    Card(
+                        child: EventRowWidget(
+                          event: e,
+                          prefix: '${vm.pets
+                            .firstWhere((element) => element.id == e.petId)
+                            .name}: ',
+                        )))
+                    .toList(),
+              ),
+            ],
           ],
         );
       },
@@ -111,9 +138,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeScreenViewModel {
-  final AppState<List<PetPreviewResDto>> state;
+  final List<PetPreviewResDto> pets;
+  final List<EventResDto> futureEvents;
+  final bool isLoadingPets;
+  final bool isLoadingEvents;
 
   _HomeScreenViewModel({
-    required this.state,
+    required this.pets,
+    required this.futureEvents,
+    required this.isLoadingPets,
+    required this.isLoadingEvents,
   });
 }

@@ -11,6 +11,7 @@ EventResDto _$EventResDtoFromJson(Map<String, dynamic> json) {
     id: json['_id'] as String,
     type: _$enumDecode(_$EVENTEnumMap, json['type']),
     date: json['date'] as String,
+    petId: json['petId'] as String,
     description: json['description'] as String,
     isNotification: json['isNotification'] as bool,
   );
@@ -21,6 +22,7 @@ Map<String, dynamic> _$EventResDtoToJson(EventResDto instance) =>
       '_id': instance.id,
       'type': _$EVENTEnumMap[instance.type],
       'date': instance.date,
+      'petId': instance.petId,
       'description': instance.description,
       'isNotification': instance.isNotification,
     };

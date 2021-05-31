@@ -91,6 +91,7 @@ class EventResDto {
   final String id;
   final EVENT type;
   final String date;
+  final String petId;
   final String description;
   final bool isNotification;
 
@@ -98,6 +99,7 @@ class EventResDto {
     required this.id,
     required this.type,
     required this.date,
+    required this.petId,
     required this.description,
     required this.isNotification,
   });
