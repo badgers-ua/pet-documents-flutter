@@ -245,17 +245,19 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                         horizontal: ThemeConstants.spacing(1)),
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (!_validateForm()) {
-                          return;
-                        }
-                        _handleSubmit(
-                          pet: vm.pet!,
-                          ctx: context,
-                          options: eventOptions,
-                          vm: vm,
-                        );
-                      },
+                      onPressed: vm.isLoadingCreateEvent
+                          ? null
+                          : () {
+                              if (!_validateForm()) {
+                                return;
+                              }
+                              _handleSubmit(
+                                pet: vm.pet!,
+                                ctx: context,
+                                options: eventOptions,
+                                vm: vm,
+                              );
+                            },
                       child: vm.isLoadingCreateEvent
                           ? ThemeConstants.getButtonSpinner()
                           : Text(
