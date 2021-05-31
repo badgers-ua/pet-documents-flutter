@@ -12,8 +12,8 @@ EventResDto _$EventResDtoFromJson(Map<String, dynamic> json) {
     type: _$enumDecode(_$EVENTEnumMap, json['type']),
     date: json['date'] as String,
     petId: json['petId'] as String,
-    description: json['description'] as String,
     isNotification: json['isNotification'] as bool,
+    description: json['description'] as String?,
   );
 }
 

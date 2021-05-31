@@ -44,7 +44,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
         .value;
 
     final CreateEventReqDto request = CreateEventReqDto(
-      pet: pet.id,
+      petId: pet.id,
       type: selectedType,
       date: _selectedDate!.dateTime.toIso8601String(),
       isNotification: _isNotification,

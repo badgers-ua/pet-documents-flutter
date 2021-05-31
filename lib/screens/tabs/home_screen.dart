@@ -10,6 +10,7 @@ import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pets/effects.dart';
 import 'package:pdoc/widgets/event_row_widget.dart';
 import 'package:pdoc/widgets/pet_card_widget.dart';
+import 'package:pdoc/extensions/events.dart';
 
 class HomeScreen extends StatelessWidget {
   void handlePetCardPressed({
@@ -39,14 +40,7 @@ class HomeScreen extends StatelessWidget {
       },
       converter: (store) {
         final List<EventResDto> events = store.state.events.data!;
-
-        events.sort((prev, curr) =>
-            DateTime
-                .parse(prev.date)
-                .millisecondsSinceEpoch
-                .compareTo(DateTime
-                .parse(curr.date)
-                .millisecondsSinceEpoch));
+        events.sortByDate();
 
         return _HomeScreenViewModel(
           pets: store.state.pets.data!,
@@ -61,9 +55,7 @@ class HomeScreen extends StatelessWidget {
         }
 
         if (vm.pets.isEmpty) {
-          return Center(child: Text(L10n
-              .of(context)
-              .no_pets_text));
+          return Center(child: Text(L10n.of(context).no_pets_text));
         }
 
         return ListView(
@@ -75,13 +67,8 @@ class HomeScreen extends StatelessWidget {
                 left: ThemeConstants.spacing(0.5),
               ),
               child: Text(
-                L10n
-                    .of(context)
-                    .home_screen_pets_title_text,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline5,
+                L10n.of(context).home_screen_pets_title_text,
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
             GridView.builder(
@@ -108,24 +95,17 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(ThemeConstants.spacing(0.5)),
                 child: Text(
-                  L10n
-                      .of(context)
-                      .home_screen_events_title_text,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline5,
+                  L10n.of(context).home_screen_events_title_text,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ),
               Column(
                 children: vm.futureEvents
-                    .map((e) =>
-                    Card(
-                        child: EventRowWidget(
+                    .map((e) => Card(
+                            child: EventRowWidget(
                           event: e,
-                          prefix: '${vm.pets
-                            .firstWhere((element) => element.id == e.petId)
-                            .name}: ',
+                          prefix:
+                              '${vm.pets.firstWhere((element) => element.id == e.petId).name}: ',
                         )))
                     .toList(),
               ),

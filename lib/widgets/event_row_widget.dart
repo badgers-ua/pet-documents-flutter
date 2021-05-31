@@ -39,7 +39,7 @@ class EventRowWidget extends StatelessWidget {
               ),
             ],
           ),
-          subtitle: Text(event.description),
+          subtitle: event.description != null ? Text(event.description!) : null,
         ),
       ),
     );

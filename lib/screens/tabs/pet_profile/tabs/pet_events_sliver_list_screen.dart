@@ -5,6 +5,7 @@ import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/store/events/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/widgets/event_row_widget.dart';
+import 'package:pdoc/extensions/events.dart';
 
 class PetEventsSLiverListScreen extends StatelessWidget {
   @override
@@ -14,9 +15,12 @@ class PetEventsSLiverListScreen extends StatelessWidget {
         store.dispatch(loadEventsThunk(ctx: context));
       },
       converter: (store) {
+        final List<EventResDto> events = store.state.events.data!.where((element) => element.petId == store.state.pet.data!.id).toList();
+        events.sortByDate();
+
         return _PetEventsSLiverListScreenViewModel(
           isLoadingEvents: store.state.events.isLoading,
-          events: store.state.events.data!.where((element) => element.petId == store.state.pet.data!.id).toList(),
+          events: events,
         );
       },
       builder: (context, _PetEventsSLiverListScreenViewModel vm) {

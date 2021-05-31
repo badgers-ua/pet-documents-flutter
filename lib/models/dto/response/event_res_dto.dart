@@ -92,7 +92,7 @@ class EventResDto {
   final EVENT type;
   final String date;
   final String petId;
-  final String description;
+  final String? description;
   final bool isNotification;
 
   EventResDto({
@@ -100,8 +100,8 @@ class EventResDto {
     required this.type,
     required this.date,
     required this.petId,
-    required this.description,
     required this.isNotification,
+    this.description,
   });
 
   factory EventResDto.fromJson(Map<String, dynamic> json) =>

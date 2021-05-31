@@ -8,7 +8,7 @@ part of 'create_event_req_dto.dart';
 
 CreateEventReqDto _$CreateEventReqDtoFromJson(Map<String, dynamic> json) {
   return CreateEventReqDto(
-    pet: json['pet'] as String,
+    petId: json['petId'] as String,
     type: _$enumDecode(_$EVENTEnumMap, json['type']),
     date: json['date'] as String,
     isNotification: json['isNotification'] as bool,
@@ -18,7 +18,7 @@ CreateEventReqDto _$CreateEventReqDtoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$CreateEventReqDtoToJson(CreateEventReqDto instance) =>
     <String, dynamic>{
-      'pet': instance.pet,
+      'petId': instance.petId,
       'type': _$EVENTEnumMap[instance.type],
       'date': instance.date,
       'description': instance.description,
