@@ -1,26 +1,26 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pdoc/models/dto/response/event_res_dto.dart';
 
-part 'event_req_dto.g.dart';
+part 'create_event_req_dto.g.dart';
 
 @JsonSerializable()
-class EventReqDto {
+class CreateEventReqDto {
   final String pet;
   final EVENT type;
   final String date;
-  final String description;
+  late String? description;
   final bool isNotification;
 
-  EventReqDto({
+  CreateEventReqDto({
     required this.pet,
     required this.type,
     required this.date,
-    required this.description,
     required this.isNotification,
+    this.description,
   });
 
-  factory EventReqDto.fromJson(Map<String, dynamic> json) =>
-      _$EventReqDtoFromJson(json);
+  factory CreateEventReqDto.fromJson(Map<String, dynamic> json) =>
+      _$CreateEventReqDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EventReqDtoToJson(this);
+  Map<String, dynamic> toJson() => _$CreateEventReqDtoToJson(this);
 }

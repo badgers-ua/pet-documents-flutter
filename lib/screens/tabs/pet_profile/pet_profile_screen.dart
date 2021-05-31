@@ -281,6 +281,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                             context),
                         sliver: SliverAppBar(
+                          centerTitle: false,
                           title: Text(vm.pet!.name),
                           pinned: true,
                           snap: true,
@@ -401,11 +402,12 @@ class _PetProfileTabScreen extends StatelessWidget {
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               ),
               SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: ThemeConstants.spacing(0.5),
-                    horizontal: ThemeConstants.spacing(1),
-                  ),
-                  sliver: child),
+                padding: EdgeInsets.symmetric(
+                  vertical: ThemeConstants.spacing(0.5),
+                  horizontal: ThemeConstants.spacing(1),
+                ),
+                sliver: child,
+              ),
             ],
           );
         },

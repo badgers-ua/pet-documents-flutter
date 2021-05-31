@@ -88,6 +88,7 @@
   "done_text": "Готово",
   "cancel_text": "Відміна",
   "no_pets_text": "Створені улюбленці відображатимуться тут.",
+  "no_events_text": "Створені події відображатимуться тут.",
   "remove_owner_warning": "УВАГА: {ownerName} втратить доступ до {petName}.",
   "@remove_owner_warning": {
     "placeholders": {

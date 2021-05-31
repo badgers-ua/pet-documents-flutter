@@ -5,8 +5,10 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/date_picker_value.dart';
+import 'package:pdoc/models/dto/request/create_event_req_dto.dart';
 import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/store/create-event/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/widgets/date_picker_widget.dart';
 import 'package:pdoc/widgets/modal_select_widget.dart';
@@ -24,11 +26,38 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
   final TextEditingController _eventTypeController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  bool isChecked = false;
+  bool _isNotification = false;
   DatePickerValue? _selectedDate;
 
   bool _validateForm() {
     return _formKey.currentState != null && _formKey.currentState!.validate();
+  }
+
+  void _handleSubmit({
+    required BuildContext ctx,
+    required PetResDto pet,
+    required List<ModalSelectOption> options,
+    required _AddEditEventScreenViewModel vm,
+  }) {
+    final EVENT selectedType = options
+        .firstWhere((element) => element.label == _eventTypeController.text)
+        .value;
+
+    final CreateEventReqDto request = CreateEventReqDto(
+      pet: pet.id,
+      type: selectedType,
+      date: _selectedDate!.dateTime.toIso8601String(),
+      isNotification: _isNotification,
+    );
+
+    if (_descriptionController.text.isNotEmpty) {
+      request.description = _descriptionController.text;
+    }
+
+    vm.dispatchLoadEventsThunk(
+      ctx: ctx,
+      request: request,
+    );
   }
 
   void _showEventTypeModalSelect({
@@ -80,7 +109,20 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
 
     return StoreConnector<RootState, _AddEditEventScreenViewModel>(
       converter: (store) {
-        return _AddEditEventScreenViewModel(pet: store.state.pet.data);
+        return _AddEditEventScreenViewModel(
+          isEditMode: false,
+          pet: store.state.pet.data,
+          isLoadingCreateEvent: store.state.createEvent.isLoading,
+          dispatchLoadEventsThunk: ({
+            required BuildContext ctx,
+            required CreateEventReqDto request,
+          }) {
+            return store.dispatch(loadCreateEventThunk(
+              request: request,
+              ctx: ctx,
+            ));
+          },
+        );
       },
       builder: (context, _AddEditEventScreenViewModel vm) {
         if (vm.pet == null) {
@@ -134,6 +176,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                     padding: EdgeInsets.symmetric(
                         horizontal: ThemeConstants.spacing(1)),
                     child: DatePickerWidget(
+                      lastDateToday: false,
                       labelText: L10n.of(context).date,
                       controller: _dateController,
                       validator: (v) => (v ?? '').requiredValidator(
@@ -169,17 +212,17 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                     child: Row(
                       children: [
                         Checkbox(
-                          value: isChecked,
+                          value: _isNotification,
                           onChanged: (bool? value) {
                             setState(() {
-                              isChecked = value!;
+                              _isNotification = value!;
                             });
                           },
                         ),
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              isChecked = !isChecked;
+                              _isNotification = !_isNotification;
                             });
                           },
                           child: Text(
@@ -198,17 +241,28 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: ThemeConstants.spacing(1)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ThemeConstants.spacing(1)),
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
                         if (!_validateForm()) {
                           return;
                         }
+                        _handleSubmit(
+                          pet: vm.pet!,
+                          ctx: context,
+                          options: eventOptions,
+                          vm: vm,
+                        );
                       },
-                      child: Text(
-                        L10n.of(context).create,
-                      ),
+                      child: vm.isLoadingCreateEvent
+                          ? ThemeConstants.getButtonSpinner()
+                          : Text(
+                              !vm.isEditMode
+                                  ? L10n.of(context).create
+                                  : L10n.of(context).update,
+                            ),
                     ),
                   ),
                 ],
@@ -223,6 +277,14 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
 
 class _AddEditEventScreenViewModel {
   final PetResDto? pet;
+  final bool isLoadingCreateEvent;
+  final bool isEditMode;
+  final dispatchLoadEventsThunk;
 
-  _AddEditEventScreenViewModel({required this.pet});
+  _AddEditEventScreenViewModel({
+    required this.pet,
+    required this.isLoadingCreateEvent,
+    required this.isEditMode,
+    required this.dispatchLoadEventsThunk,
+  });
 }

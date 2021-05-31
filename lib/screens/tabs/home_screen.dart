@@ -7,7 +7,7 @@ import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pets/effects.dart';
-import 'package:pdoc/widgets/event_card_widget.dart';
+import 'package:pdoc/widgets/event_row_widget.dart';
 import 'package:pdoc/widgets/pet_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -100,9 +100,9 @@ class HomeScreen extends StatelessWidget {
                     .headline5,
               ),
             ),
-            EventCardWidget(),
-            EventCardWidget(),
-            EventCardWidget(),
+            // EventCardWidget(),
+            // EventCardWidget(),
+            // EventCardWidget(),
           ],
         );
       },

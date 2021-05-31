@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'event_req_dto.dart';
+part of 'create_event_req_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-EventReqDto _$EventReqDtoFromJson(Map<String, dynamic> json) {
-  return EventReqDto(
+CreateEventReqDto _$CreateEventReqDtoFromJson(Map<String, dynamic> json) {
+  return CreateEventReqDto(
     pet: json['pet'] as String,
     type: _$enumDecode(_$EVENTEnumMap, json['type']),
     date: json['date'] as String,
-    description: json['description'] as String,
     isNotification: json['isNotification'] as bool,
+    description: json['description'] as String?,
   );
 }
 
-Map<String, dynamic> _$EventReqDtoToJson(EventReqDto instance) =>
+Map<String, dynamic> _$CreateEventReqDtoToJson(CreateEventReqDto instance) =>
     <String, dynamic>{
       'pet': instance.pet,
       'type': _$EVENTEnumMap[instance.type],

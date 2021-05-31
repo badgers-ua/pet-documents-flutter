@@ -88,6 +88,7 @@
   "done_text": "Done",
   "cancel_text": "Cancel",
   "no_pets_text": "Created pets will be displayed here.",
+  "no_events_text": "Created events will be displayed here.",
   "remove_owner_warning": "WARNING: {ownerName} will loose access to {petName}.",
   "@remove_owner_warning": {
     "placeholders": {

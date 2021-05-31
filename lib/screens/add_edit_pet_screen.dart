@@ -354,6 +354,7 @@ class AddEditPetScreen extends StatelessWidget {
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   DatePickerWidget(
+                    lastDateToday: true,
                     labelText: L10n.of(context)
                         .add_edit_pet_screen_date_of_birth_input_text,
                     controller: _dateController,

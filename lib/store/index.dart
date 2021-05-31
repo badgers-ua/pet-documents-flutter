@@ -2,12 +2,15 @@ import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/breeds_state.dart';
 import 'package:pdoc/models/device_token.dart';
+import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/store/add-owner/reducer.dart';
 import 'package:pdoc/store/breeds/reducer.dart';
+import 'package:pdoc/store/create-event/reducer.dart';
 import 'package:pdoc/store/delete-pet/reducers.dart';
 import 'package:pdoc/store/edit-pet/reducers.dart';
+import 'package:pdoc/store/events/reducer.dart';
 import 'package:pdoc/store/pet/reducers.dart';
 import 'package:pdoc/store/pets/reducers.dart';
 import 'package:pdoc/store/remove-owner/reducer.dart';
@@ -36,6 +39,8 @@ class RootState {
   final AppState addOwner;
   final AppState removeOwner;
   final AppState deletePet;
+  final AppState createEvent;
+  final AppState<List<EventResDto>> events;
 
   RootState({
     required this.auth,
@@ -49,6 +54,8 @@ class RootState {
     required this.addOwner,
     required this.removeOwner,
     required this.deletePet,
+    required this.createEvent,
+    required this.events,
   });
 
   RootState.initialState()
@@ -65,6 +72,8 @@ class RootState {
         editPet = AppState(),
         addOwner = AppState(),
         removeOwner = AppState(),
+        createEvent = AppState(),
+        events = AppState(data: []),
         deletePet = AppState();
 }
 
@@ -81,5 +90,7 @@ RootState appReducer(RootState state, action) {
     addOwner: addOwnerReducer(state.addOwner, action),
     removeOwner: removeOwnerReducer(state.removeOwner, action),
     deletePet: deletePetReducer(state.deletePet, action),
+    createEvent: createEventReducer(state.createEvent, action),
+    events: eventReducer(state.events, action),
   );
 }
