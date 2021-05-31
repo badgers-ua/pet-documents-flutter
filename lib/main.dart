@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
               );
             },
             builder: (context, _MyAppViewModel vm) {
-              // TODO: Verify infinite loader bug
+              // TODO: Infinite loader if on app launch API not available
               if (!vm.isInitialLoadCompleted && !vm.isUserLoaded) {
                 return Scaffold(
                   body: Center(
