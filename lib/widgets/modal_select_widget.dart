@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/extensions/options.dart';
 
 class ModalSelectOption<T> {
   final String label;
@@ -32,11 +33,12 @@ class _ModalSelectWidgetState extends State<ModalSelectWidget> {
   List<ModalSelectOption>? _filteredOptions;
 
   void _onChanged(String val) {
-    final filtered = _options!
+    final List<ModalSelectOption> filtered = _options!
         .where(
           (element) => element.label.toLowerCase().contains(val.toLowerCase()),
         )
         .toList();
+    filtered.sortByLabel();
     setState(() {
       _filteredOptions = filtered;
       _selectedIndex = null;
@@ -49,6 +51,7 @@ class _ModalSelectWidgetState extends State<ModalSelectWidget> {
 
   @override
   Widget build(BuildContext context) {
+    widget.options.sortByLabel();
     if (_options == null) {
       _options = widget.options;
     }
