@@ -41,10 +41,11 @@ class HomeScreen extends StatelessWidget {
       converter: (store) {
         final List<EventResDto> events = store.state.events.data!;
         events.sortByDate();
+        final List<EventResDto> futureEvents = events.getFutureEvents();
 
         return _HomeScreenViewModel(
           pets: store.state.pets.data!,
-          futureEvents: events.length > 2 ? events.sublist(0, 3) : events,
+          futureEvents: futureEvents.length > 2 ? futureEvents.sublist(0, 3) : futureEvents,
           isLoadingPets: store.state.pets.isLoading,
           isLoadingEvents: store.state.events.isLoading,
         );
