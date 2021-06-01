@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/event_res_dto.dart';
+import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/screens/add_edit_event_screen.dart';
 import 'package:pdoc/store/events/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/widgets/event_row_widget.dart';
@@ -15,16 +17,20 @@ class PetEventsSLiverListScreen extends StatelessWidget {
         store.dispatch(loadEventsThunk(ctx: context));
       },
       converter: (store) {
-        final List<EventResDto> events = store.state.events.data!.where((element) => element.petId == store.state.pet.data!.id).toList();
+        final List<EventResDto> events = store.state.events.data!
+            .where((element) => element.petId == store.state.pet.data!.id)
+            .toList();
         events.sortByDate();
 
         return _PetEventsSLiverListScreenViewModel(
           isLoadingEvents: store.state.events.isLoading,
+          isLoadingPet: store.state.pet.isLoading,
           events: events,
+          pet: store.state.pet.data,
         );
       },
       builder: (context, _PetEventsSLiverListScreenViewModel vm) {
-        if (vm.isLoadingEvents) {
+        if (vm.isLoadingEvents || vm.isLoadingPet) {
           return SliverFillRemaining(
             child: Center(
               child: CircularProgressIndicator(),
@@ -46,6 +52,9 @@ class PetEventsSLiverListScreen extends StatelessWidget {
               return Container(
                 child: EventRowWidget(
                   event: vm.events[index],
+                  onTap: () => Navigator.of(context).pushNamed(
+                      AddEditEventScreen.routeName,
+                      arguments: AddEditEventScreenProps(event: vm.events[index])),
                 ),
               );
             },
@@ -59,10 +68,14 @@ class PetEventsSLiverListScreen extends StatelessWidget {
 
 class _PetEventsSLiverListScreenViewModel {
   final bool isLoadingEvents;
+  final bool isLoadingPet;
+  final PetResDto? pet;
   final List<EventResDto> events;
 
   _PetEventsSLiverListScreenViewModel({
     required this.isLoadingEvents,
+    required this.isLoadingPet,
     required this.events,
+    required this.pet,
   });
 }

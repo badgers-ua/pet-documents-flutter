@@ -122,8 +122,16 @@
       }
     }
   },
-  "add_edit_event_app_bar_title": "Add event ({petName})",
-  "@add_edit_event_app_bar_title": {
+  "add_event_app_bar_title": "Add event ({petName})",
+  "@add_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "edit_event_app_bar_title": "Edit event ({petName})",
+  "@edit_event_app_bar_title": {
     "placeholders": {
       "petName": {
         "type": "String"

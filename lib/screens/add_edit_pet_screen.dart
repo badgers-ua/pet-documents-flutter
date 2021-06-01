@@ -224,20 +224,20 @@ class AddEditPetScreen extends StatelessWidget {
           ),
         );
 
-        if (isEditMode) {
+        return vm;
+      },
+      builder: (context, _AddEditPetScreenViewModel vm) {
+        if (vm.isEditMode) {
           _presetForm(
-            pet: currentPet,
+            pet: vm.pet!,
             ctx: context,
             genderOptions: genderOptions,
-            breedOptions: breedOptions,
+            breedOptions: vm.breedOptions,
             vm: vm,
             speciesOptions: speciesOptions,
           );
         }
 
-        return vm;
-      },
-      builder: (context, _AddEditPetScreenViewModel vm) {
         return Scaffold(
           appBar: AppBar(
               title: Text(

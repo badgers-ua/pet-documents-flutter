@@ -8,23 +8,24 @@ import 'package:pdoc/extensions/dio.dart';
 
 import 'actions.dart';
 
-Function loadCreateEventThunk = ({
+Function loadEditEventThunk = ({
   required CreateEventReqDto request,
   required BuildContext ctx,
+  required String eventId,
 }) =>
     (Store<RootState> store) async {
-      store.dispatch(LoadCreateEvent());
+      store.dispatch(LoadEditEvent());
       try {
         await Dio()
             .authenticatedDio(ctx: ctx)
-            .post('/event/create', data: request.toJson());
+            .patch('/event/$eventId', data: request.toJson());
 
-        store.dispatch(LoadCreateEventSuccess());
+        store.dispatch(LoadEditEventSuccess());
         store.dispatch(loadEventsThunk(ctx: ctx));
         Navigator.of(ctx).pop();
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
-        store.dispatch(LoadCreateEventFailure(payload: errorMsg));
+        store.dispatch(LoadEditEventFailure(payload: errorMsg));
       }
     };
