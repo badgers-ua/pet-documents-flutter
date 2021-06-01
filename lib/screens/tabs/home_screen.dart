@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                             child: EventRowWidget(
                           event: e,
                           prefix:
-                              '${vm.pets.firstWhere((element) => element.id == e.petId).name}: ',
+                              '(${vm.pets.firstWhere((element) => element.id == e.petId).name}): ',
                         )))
                     .toList(),
               ),
