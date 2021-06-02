@@ -156,5 +156,7 @@
   "event_estrus": "Estrus",
   "event_molt": "Molt",
   "event_type": "Event type",
-  "date": "Date"
+  "date": "Date",
+  "delete_event": "Delete event",
+  "delete_event_warning": "WARNING: This can't be undone."
 }

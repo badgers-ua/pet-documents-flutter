@@ -10,8 +10,10 @@ import 'package:pdoc/models/dto/request/create_event_req_dto.dart';
 import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/store/create-event/effects.dart';
+import 'package:pdoc/store/delete-event/effects.dart';
 import 'package:pdoc/store/edit-event/effects.dart';
 import 'package:pdoc/store/index.dart';
+import 'package:pdoc/widgets/confirmation_dialog_widget.dart';
 import 'package:pdoc/widgets/date_picker_widget.dart';
 import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:pdoc/extensions/string.dart';
@@ -50,18 +52,14 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     if (_validateForm()) {
       return;
     }
-    _eventTypeController.text =
-        eventOptions
-            .firstWhere((element) => element.value == event.type)
-            .label;
+    _eventTypeController.text = eventOptions.firstWhere((element) => element.value == event.type).label;
 
     final DateTime eventDate = DateTime.parse(event.date).toLocal();
     final String formattedDate =
-    // TODO: Users local format
-    intl.DateFormat('dd/MM/yyyy').format(eventDate).toString();
+        // TODO: Users local format
+        intl.DateFormat('dd/MM/yyyy').format(eventDate).toString();
     _dateController.text = formattedDate;
-    _selectedDate =
-        DatePickerValue(dateTime: eventDate, formattedDate: formattedDate);
+    _selectedDate = DatePickerValue(dateTime: eventDate, formattedDate: formattedDate);
 
     if (event.description != null) {
       _descriptionController.text = event.description!;
@@ -76,9 +74,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     required List<ModalSelectOption> options,
     required _AddEditEventScreenViewModel vm,
   }) {
-    final EVENT selectedType = options
-        .firstWhere((element) => element.label == _eventTypeController.text)
-        .value;
+    final EVENT selectedType = options.firstWhere((element) => element.label == _eventTypeController.text).value;
 
     final CreateEventReqDto request = CreateEventReqDto(
       petId: pet.id,
@@ -92,11 +88,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     }
 
     if (vm.isEditMode) {
-      vm.dispatchLoadEditEventThunk(
-          ctx: ctx,
-          request: request,
-          eventId: vm.event!.id
-      );
+      vm.dispatchLoadEditEventThunk(ctx: ctx, request: request, eventId: vm.event!.id);
       return;
     }
 
@@ -111,15 +103,12 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     required List<ModalSelectOption> options,
   }) async {
     final widget = ModalSelectWidget(
-      title: L10n
-          .of(ctx)
-          .event_type,
+      title: L10n.of(ctx).event_type,
       options: options,
     );
 
     if (Platform.isIOS) {
-      final ModalSelectOption? modalSelectOption =
-      await showCupertinoModalBottomSheet(
+      final ModalSelectOption? modalSelectOption = await showCupertinoModalBottomSheet(
         context: ctx,
         builder: (_) => widget,
       );
@@ -134,8 +123,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
       return;
     }
 
-    final ModalSelectOption? modalSelectOption =
-    await showMaterialModalBottomSheet(
+    final ModalSelectOption? modalSelectOption = await showMaterialModalBottomSheet(
       context: ctx,
       builder: (_) => widget,
     );
@@ -148,18 +136,37 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     _validateForm();
   }
 
+  Future<void> _showDeleteEventConfirmationDialog({
+    required BuildContext ctx,
+    required _AddEditEventScreenViewModel vm,
+  }) async {
+    return showDialog<void>(
+      context: ctx,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ConfirmationDialogWidget(
+          title: L10n.of(context).delete_event,
+          content: L10n.of(context).delete_event_warning,
+          enabled: !vm.isLoadingDeleteEvent,
+          onSubmit: () {
+            vm.dispatchDeleteEventThunk(
+              ctx: ctx,
+              eventId: vm.event!.id,
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute
-        .of(context)!
-        .settings
-        .arguments;
-    final AddEditEventScreenProps props = (arguments ??
-        AddEditEventScreenProps(event: null)) as AddEditEventScreenProps;
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+    final AddEditEventScreenProps props =
+        (arguments ?? AddEditEventScreenProps(event: null)) as AddEditEventScreenProps;
 
     List<ModalSelectOption<EVENT>> eventOptions = EVENT.values.map((v) {
-      return ModalSelectOption(
-          label: getEventLabel(ctx: context, event: v), value: v);
+      return ModalSelectOption(label: getEventLabel(ctx: context, event: v), value: v);
     }).toList();
 
     return StoreConnector<RootState, _AddEditEventScreenViewModel>(
@@ -170,6 +177,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
           pet: store.state.pet.data,
           isLoadingCreateEvent: store.state.createEvent.isLoading,
           isLoadingEditEvent: store.state.editEvent.isLoading,
+          isLoadingDeleteEvent: store.state.deleteEvent.isLoading,
           dispatchLoadCreateEventThunk: ({
             required BuildContext ctx,
             required CreateEventReqDto request,
@@ -186,6 +194,15 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
           }) {
             return store.dispatch(loadEditEventThunk(
               request: request,
+              ctx: ctx,
+              eventId: eventId,
+            ));
+          },
+          dispatchDeleteEventThunk: ({
+            required BuildContext ctx,
+            required String eventId,
+          }) {
+            return store.dispatch(loadDeleteEventThunk(
               ctx: ctx,
               eventId: eventId,
             ));
@@ -210,6 +227,32 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
           );
         }
 
+        Widget _renderAppBarActionButtons({required _AddEditEventScreenViewModel vm}) {
+          if (!vm.isEditMode) {
+            return Container();
+          }
+          if (!vm.isLoadingDeleteEvent) {
+            return IconButton(
+              onPressed: () {
+                _showDeleteEventConfirmationDialog(ctx: context, vm: vm);
+              },
+              icon: Icon(Icons.delete),
+            );
+          }
+
+          return Align(
+            child: Container(
+              margin: EdgeInsets.only(right: ThemeConstants.spacing(1)),
+              height: 18,
+              width: 18,
+              child: Opacity(
+                opacity: 0.3,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+              ),
+            ),
+          );
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -217,6 +260,9 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                   ? L10n.of(context).add_event_app_bar_title(vm.pet!.name)
                   : L10n.of(context).edit_event_app_bar_title(vm.pet!.name),
             ),
+            actions: [
+              _renderAppBarActionButtons(vm: vm),
+            ],
           ),
           body: Scrollbar(
             child: Form(
@@ -225,22 +271,17 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                 children: [
                   SizedBox(height: ThemeConstants.spacing(1)),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ThemeConstants.spacing(1)),
+                    padding: EdgeInsets.symmetric(horizontal: ThemeConstants.spacing(1)),
                     child: TextFormField(
                       controller: _eventTypeController,
-                      validator: (v) =>
-                          (v ?? '').requiredValidator(
-                            fieldName: L10n
-                                .of(context)
-                                .event_type,
-                            ctx: context,
-                          ),
-                      onTap: () =>
-                          _showEventTypeModalSelect(
-                            ctx: context,
-                            options: eventOptions,
-                          ),
+                      validator: (v) => (v ?? '').requiredValidator(
+                        fieldName: L10n.of(context).event_type,
+                        ctx: context,
+                      ),
+                      onTap: () => _showEventTypeModalSelect(
+                        ctx: context,
+                        options: eventOptions,
+                      ),
                       readOnly: true,
                       decoration: InputDecoration(
                         suffixIconConstraints: BoxConstraints(
@@ -251,29 +292,21 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                         ),
                         suffixIcon: Icon(Icons.keyboard_arrow_right),
                         border: OutlineInputBorder(),
-                        labelText: L10n
-                            .of(context)
-                            .event_type,
+                        labelText: L10n.of(context).event_type,
                       ),
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ThemeConstants.spacing(1)),
+                    padding: EdgeInsets.symmetric(horizontal: ThemeConstants.spacing(1)),
                     child: DatePickerWidget(
                       lastDateToday: false,
-                      labelText: L10n
-                          .of(context)
-                          .date,
+                      labelText: L10n.of(context).date,
                       controller: _dateController,
-                      validator: (v) =>
-                          (v ?? '').requiredValidator(
-                            fieldName: L10n
-                                .of(context)
-                                .date,
-                            ctx: context,
-                          ),
+                      validator: (v) => (v ?? '').requiredValidator(
+                        fieldName: L10n.of(context).date,
+                        ctx: context,
+                      ),
                       onFieldSubmitted: (DatePickerValue? val) {
                         _selectedDate = val;
                         _validateForm();
@@ -282,8 +315,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ThemeConstants.spacing(1)),
+                    padding: EdgeInsets.symmetric(horizontal: ThemeConstants.spacing(1)),
                     child: TextFormField(
                       controller: _descriptionController,
                       decoration: InputDecoration(
@@ -294,9 +326,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                           minHeight: 25,
                         ),
                         border: OutlineInputBorder(),
-                        labelText: L10n
-                            .of(context)
-                            .description,
+                        labelText: L10n.of(context).description,
                       ),
                     ),
                   ),
@@ -320,53 +350,37 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                           },
                           child: Text(
                             "Receive notification",
-                            style:
-                            Theme
-                                .of(context)
-                                .textTheme
-                                .subtitle1!
-                                .copyWith(
-                              color: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .caption!
-                                  .color,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  color: Theme.of(context).textTheme.caption!.color,
+                                  fontWeight: FontWeight.w400,
+                                ),
                           ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ThemeConstants.spacing(1)),
+                    padding: EdgeInsets.symmetric(horizontal: ThemeConstants.spacing(1)),
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: vm.isLoadingCreateEvent
+                      onPressed: (vm.isLoadingCreateEvent || vm.isLoadingEditEvent)
                           ? null
                           : () {
-                        if (!_validateForm()) {
-                          return;
-                        }
-                        _handleSubmit(
-                          pet: vm.pet!,
-                          ctx: context,
-                          options: eventOptions,
-                          vm: vm,
-                        );
-                      },
-                      child: (vm.isLoadingCreateEvent || vm.isLoadingCreateEvent)
+                              if (!_validateForm()) {
+                                return;
+                              }
+                              _handleSubmit(
+                                pet: vm.pet!,
+                                ctx: context,
+                                options: eventOptions,
+                                vm: vm,
+                              );
+                            },
+                      child: (vm.isLoadingCreateEvent || vm.isLoadingEditEvent)
                           ? ThemeConstants.getButtonSpinner()
                           : Text(
-                        !vm.isEditMode
-                            ? L10n
-                            .of(context)
-                            .create
-                            : L10n
-                            .of(context)
-                            .update,
-                      ),
+                              !vm.isEditMode ? L10n.of(context).create : L10n.of(context).update,
+                            ),
                     ),
                   ),
                 ],
@@ -384,9 +398,11 @@ class _AddEditEventScreenViewModel {
   final EventResDto? event;
   final bool isLoadingCreateEvent;
   final bool isLoadingEditEvent;
+  final bool isLoadingDeleteEvent;
   final bool isEditMode;
   final dispatchLoadCreateEventThunk;
   final dispatchLoadEditEventThunk;
+  final dispatchDeleteEventThunk;
 
   _AddEditEventScreenViewModel({
     required this.pet,
@@ -394,7 +410,9 @@ class _AddEditEventScreenViewModel {
     required this.isLoadingCreateEvent,
     required this.isLoadingEditEvent,
     required this.isEditMode,
+    required this.isLoadingDeleteEvent,
     required this.dispatchLoadCreateEventThunk,
     required this.dispatchLoadEditEventThunk,
+    required this.dispatchDeleteEventThunk,
   });
 }

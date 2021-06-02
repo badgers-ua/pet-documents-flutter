@@ -8,6 +8,7 @@ import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/store/add-owner/reducer.dart';
 import 'package:pdoc/store/breeds/reducer.dart';
 import 'package:pdoc/store/create-event/reducer.dart';
+import 'package:pdoc/store/delete-event/reducer.dart';
 import 'package:pdoc/store/delete-pet/reducers.dart';
 import 'package:pdoc/store/edit-event/reducer.dart';
 import 'package:pdoc/store/edit-pet/reducers.dart';
@@ -19,7 +20,7 @@ import 'package:pdoc/store/user/reducers.dart';
 
 import 'add-pet/reducers.dart';
 import 'auth/reducers.dart';
-import 'device_token/reducers.dart';
+import 'device-token/reducers.dart';
 
 class AppAction {
   AppAction();
@@ -42,6 +43,7 @@ class RootState {
   final AppState deletePet;
   final AppState createEvent;
   final AppState editEvent;
+  final AppState deleteEvent;
   final AppState<List<EventResDto>> events;
 
   RootState({
@@ -58,6 +60,7 @@ class RootState {
     required this.deletePet,
     required this.createEvent,
     required this.editEvent,
+    required this.deleteEvent,
     required this.events,
   });
 
@@ -77,6 +80,7 @@ class RootState {
         removeOwner = AppState(),
         createEvent = AppState(),
         editEvent = AppState(),
+        deleteEvent = AppState(),
         events = AppState(data: []),
         deletePet = AppState();
 }
@@ -96,6 +100,7 @@ RootState appReducer(RootState state, action) {
     deletePet: deletePetReducer(state.deletePet, action),
     createEvent: createEventReducer(state.createEvent, action),
     editEvent: editEventReducer(state.editEvent, action),
+    deleteEvent: deleteEventReducer(state.deleteEvent, action),
     events: eventReducer(state.events, action),
   );
 }

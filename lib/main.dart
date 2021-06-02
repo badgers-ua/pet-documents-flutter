@@ -15,7 +15,7 @@ import 'package:pdoc/screens/sign_up_screen.dart';
 import 'package:pdoc/screens/tabs_screen.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
-import 'package:pdoc/store/device_token/actions.dart';
+import 'package:pdoc/store/device-token/actions.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -111,18 +111,13 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         home: Builder(
-          builder: (BuildContext context) =>
-              StoreConnector<RootState, _MyAppViewModel>(
+          builder: (BuildContext context) => StoreConnector<RootState, _MyAppViewModel>(
             onInit: (store) async {
-              if ((await FlutterSecureStorage().read(key: 'refresh_token') ??
-                      '')
-                  .isEmpty) {
-                store.dispatch(
-                    LoadAccessTokenFailure(payload: 'No refresh token'));
+              if ((await FlutterSecureStorage().read(key: 'refresh_token') ?? '').isEmpty) {
+                store.dispatch(LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
-              store
-                  .dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
+              store.dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
             },
             converter: (store) {
               final Auth? auth = store.state.auth.data;

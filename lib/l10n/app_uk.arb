@@ -156,5 +156,7 @@
   "event_estrus": "Еструс",
   "event_molt": "Линька",
   "event_type": "Тип події",
-  "date": "Дата"
+  "date": "Дата",
+  "delete_event": "Видалити подію",
+  "delete_event_warning": "УВАГА: Підтвердіть видалення події."
 }

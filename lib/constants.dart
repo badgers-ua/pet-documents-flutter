@@ -14,7 +14,8 @@ class ThemeConstants {
         height: 16,
         width: 16,
         child: CircularProgressIndicator(
-            strokeWidth: 2),
+          strokeWidth: 2,
+        ),
       ),
     );
   }
