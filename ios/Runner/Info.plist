@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.796641729899-akfs81ib3adp62v5q8lfur6pqr75draf</string>
+            </array>
+        </dict>
+    </array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access to photo library required for selecting photo of your pet.</string>
 	<key>NSCameraUsageDescription</key>

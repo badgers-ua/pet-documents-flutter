@@ -1,14 +1,20 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_signin_button/button_builder.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/extensions/string.dart';
 import 'package:pdoc/models/auth.dart';
+import 'package:pdoc/models/dto/request/social_sign_in_req_dto.dart';
 import 'package:pdoc/screens/sign_up_screen.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/index.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInScreen extends StatelessWidget {
   static const routeName = '/sign-in';
@@ -26,21 +32,80 @@ class SignInScreen extends StatelessWidget {
     vm.dispatchLoadSignInThunk(ctx, email, password);
   }
 
+  Future<void> _signInWithGoogle({
+    required BuildContext ctx,
+    required _SignInScreenScreenViewModel vm,
+  }) async {
+    final PLATFORM? platform = getPlatformByPlatformName(osName: Platform.operatingSystem);
+
+    if (platform == null) {
+      print('Unknown platform');
+      return;
+    }
+
+    final GoogleSignInAccount? silentAccount = await GoogleSignIn().signInSilently();
+
+    if (silentAccount != null) {
+      final SocialSignInReqDto request = SocialSignInReqDto(
+        token: (await silentAccount.authentication).idToken!,
+        socialType: SOCIAL_TYPE.GOOGLE,
+        email: silentAccount.email,
+        firstName: silentAccount.displayName!.split(" ")[0],
+        lastName: silentAccount.displayName!.split(" ")[1],
+        deviceToken: vm.deviceToken,
+        platform: platform,
+      );
+
+      vm.dispatchLoadSocialSignInThunk(ctx: ctx, request: request);
+
+      return;
+    }
+    final googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      return;
+    }
+
+    final GoogleSignInAccount? account = googleUser;
+
+    if (account == null) {
+      return;
+    }
+
+    final SocialSignInReqDto request = SocialSignInReqDto(
+      token: (await account.authentication).idToken!,
+      socialType: SOCIAL_TYPE.GOOGLE,
+      email: account.email,
+      firstName: account.displayName!.split(" ")[0],
+      lastName: account.displayName!.split(" ")[1],
+      deviceToken: vm.deviceToken,
+      platform: platform,
+    );
+
+    vm.dispatchLoadSocialSignInThunk(ctx: ctx, request: request);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<RootState, _SignInScreenScreenViewModel>(
       converter: (store) {
         return _SignInScreenScreenViewModel(
           authState: store.state.auth,
-          dispatchLoadSignInThunk:
-              (BuildContext ctx, String email, String password) =>
-                  store.dispatch(
+          deviceToken: store.state.deviceToken.data!.deviceToken,
+          dispatchLoadSignInThunk: (BuildContext ctx, String email, String password) => store.dispatch(
             loadSignInThunk(
               ctx: ctx,
               email: _emailController.value.text,
               password: _passwordController.value.text,
             ),
           ),
+          dispatchLoadSocialSignInThunk: ({
+            required BuildContext ctx,
+            required SocialSignInReqDto request,
+          }) =>
+              store.dispatch(loadSocialSignInThunk(
+            ctx: ctx,
+            request: request,
+          )),
         );
       },
       distinct: true,
@@ -57,19 +122,18 @@ class SignInScreen extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.all(ThemeConstants.spacing(1)),
                 children: <Widget>[
-                  SizedBox(
-                    height: ThemeConstants.spacing(1),
-                  ),
                   SvgPicture.asset(
                     'assets/images/circle-paw.svg',
                     color: Theme.of(context).accentColor,
                   ),
                   SizedBox(
-                    height: ThemeConstants.spacing(2),
+                    height: ThemeConstants.spacing(1),
                   ),
-                  Text(
-                    L10n.of(context).sign_in_screen_welcome_text,
-                    style: Theme.of(context).textTheme.headline6,
+                  Align(
+                    child: Text(
+                      L10n.of(context).sign_in_screen_welcome_text,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ),
                   SizedBox(
                     height: ThemeConstants.spacing(1),
@@ -79,13 +143,11 @@ class SignInScreen extends StatelessWidget {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    validator: (input) => input!.isValidEmail()
-                        ? null
-                        : L10n.of(context).sign_in_screen_invalid_email_text,
+                    validator: (input) =>
+                        input!.isValidEmail() ? null : L10n.of(context).sign_in_screen_invalid_email_text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText:
-                          L10n.of(context).sign_in_screen_email_text_field_text,
+                      labelText: L10n.of(context).sign_in_screen_email_text_field_text,
                     ),
                   ),
                   SizedBox(
@@ -97,51 +159,58 @@ class SignInScreen extends StatelessWidget {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
-                    validator: (input) => input!.isValidPassword()
-                        ? null
-                        : L10n.of(context).sign_in_screen_invalid_password_text,
+                    validator: (input) =>
+                        input!.isValidPassword() ? null : L10n.of(context).sign_in_screen_invalid_password_text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context)
-                          .sign_in_screen_password_text_field_text,
+                      labelText: L10n.of(context).sign_in_screen_password_text_field_text,
                     ),
                   ),
                   SizedBox(
                     height: ThemeConstants.spacing(1),
                   ),
-                  SizedBox(
-                    height: 50,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: vm.authState.isLoading
-                          ? null
-                          : () => _onSubmit(context, vm),
-                      child: vm.authState.isLoading
-                          ? ThemeConstants.getButtonSpinner()
-                          : Text(
-                              L10n.of(context)
-                                  .sign_in_screen_sign_in_button_text,
-                            ),
+                  Align(
+                    child: SignInButtonBuilder(
+                      backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                      textColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                      onPressed: vm.authState.isLoading ? () {} : () => _onSubmit(context, vm),
+                      icon: Icons.email_outlined,
+                      iconColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                      text: L10n.of(context).sign_in_screen_sign_in_button_text,
                     ),
                   ),
-                  SizedBox(height: ThemeConstants.spacing(2)),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                            L10n.of(context).sign_in_screen_no_account_text),
+                  if (Platform.isIOS)
+                    Align(
+                      child: SignInButton(
+                        Theme.of(context).brightness == Brightness.dark ? Buttons.Apple : Buttons.AppleDark,
+                        onPressed: () {},
+                        text: L10n.of(context).sign_in_with_apple,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(SignUpScreen.routeName);
-                        },
-                        child: Text(L10n.of(context)
-                            .sign_in_screen_sign_up_button_text),
-                      ),
-                    ],
+                    ),
+                  Align(
+                    child: SignInButton(
+                      Theme.of(context).brightness == Brightness.dark ? Buttons.Google : Buttons.GoogleDark,
+                      onPressed: () => _signInWithGoogle(ctx: context, vm: vm),
+                      text: L10n.of(context).sign_in_with_google,
+                    ),
+                  ),
+                  SizedBox(height: ThemeConstants.spacing(1)),
+                  Align(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Text(L10n.of(context).sign_in_screen_no_account_text),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(SignUpScreen.routeName);
+                          },
+                          child: Text(L10n.of(context).sign_in_screen_sign_up_button_text),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -155,10 +224,14 @@ class SignInScreen extends StatelessWidget {
 
 class _SignInScreenScreenViewModel {
   final dispatchLoadSignInThunk;
+  final dispatchLoadSocialSignInThunk;
+  final String deviceToken;
   final AuthState authState;
 
   _SignInScreenScreenViewModel({
     required this.dispatchLoadSignInThunk,
+    required this.dispatchLoadSocialSignInThunk,
     required this.authState,
+    required this.deviceToken,
   });
 }

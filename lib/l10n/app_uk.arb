@@ -3,7 +3,7 @@
   "sign_in_screen_welcome_text": "Привіт",
   "sign_in_screen_email_text_field_text": "Ел. пошта",
   "sign_in_screen_password_text_field_text": "Пароль",
-  "sign_in_screen_sign_in_button_text": "Увійти",
+  "sign_in_screen_sign_in_button_text": "Увійти з Email",
   "sign_in_screen_invalid_email_text": "Некоректна ел. пошта.",
   "sign_in_screen_invalid_password_text": "Довжина паролю має становити від 6 до 20 символів.",
   "sign_in_screen_no_account_text": "Немає аккаунту?",
@@ -158,5 +158,7 @@
   "event_type": "Тип події",
   "date": "Дата",
   "delete_event": "Видалити подію",
-  "delete_event_warning": "УВАГА: Підтвердіть видалення події."
+  "delete_event_warning": "УВАГА: Підтвердіть видалення події.",
+  "sign_in_with_google": "Увійти з Google",
+  "sign_in_with_apple": "Увійти з Apple"
 }

@@ -47,6 +47,8 @@ dependencies:
   cached_network_image: ^3.0.0
   image_picker: ^0.7.5+3
   image_cropper: ^1.4.0
+  google_sign_in: ^5.0.4
+  flutter_signin_button: ^2.0.0
 
 dev_dependencies:
   flutter_test:

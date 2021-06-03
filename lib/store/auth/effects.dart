@@ -1,11 +1,10 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/dto/request/refresh_token_req_dto.dart';
 import 'package:pdoc/models/dto/request/sign_in_req_dto.dart';
+import 'package:pdoc/models/dto/request/social_sign_in_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:pdoc/screens/tabs_screen.dart';
@@ -13,6 +12,7 @@ import 'package:pdoc/store/add-owner/actions.dart';
 import 'package:pdoc/store/add-pet/actions.dart';
 import 'package:pdoc/store/breeds/actions.dart';
 import 'package:pdoc/store/edit-pet/actions.dart';
+import 'package:pdoc/store/events/actions.dart';
 import 'package:pdoc/store/pet/actions.dart';
 import 'package:pdoc/store/pets/actions.dart';
 import 'package:pdoc/store/remove-owner/actions.dart';
@@ -38,19 +38,16 @@ clearRefreshToken() async {
   await secureStorage.delete(key: 'refresh_token');
 }
 
-Function loadAccessTokenFromRefreshTokenThunk = ({required BuildContext ctx}) =>
-    (Store<RootState> store) async {
+Function loadAccessTokenFromRefreshTokenThunk = ({required BuildContext ctx}) => (Store<RootState> store) async {
       store.dispatch(LoadAccessToken());
-      final String refreshToken =
-          await secureStorage.read(key: 'refresh_token') ?? '';
+      final String refreshToken = await secureStorage.read(key: 'refresh_token') ?? '';
       final String deviceToken = store.state.deviceToken.data!.deviceToken;
       final RefreshTokenReqDto dto = RefreshTokenReqDto(
         refreshToken: refreshToken,
         deviceToken: deviceToken,
       );
       try {
-        final response =
-            await Dio().post('${Api.baseUrl}/auth/refresh-token', data: dto);
+        final response = await Dio().post('${Api.baseUrl}/auth/refresh-token', data: dto);
         final SignInResDto resDto = SignInResDto.fromJson(response.data);
 
         setRefreshToken(resDto.refreshToken);
@@ -89,13 +86,43 @@ Function loadSignInThunk = ({
       );
 
       try {
-        final response =
-            await Dio().post('${Api.baseUrl}/auth/login', data: dto);
+        final response = await Dio().post('${Api.baseUrl}/auth/login', data: dto);
         final SignInResDto resDto = SignInResDto.fromJson(response.data);
 
-        Timer(Duration(milliseconds: 50), () {
-          Navigator.of(ctx).pushReplacementNamed(TabsScreen.routeName);
-        });
+        Navigator.of(ctx).pushReplacementNamed(TabsScreen.routeName);
+
+        setRefreshToken(resDto.refreshToken);
+
+        store.dispatch(
+          LoadSignInSuccess(
+            payload: Auth(
+              accessToken: resDto.accessToken,
+              refreshToken: resDto.refreshToken,
+              expiresAt: resDto.expiresAt,
+              isAuthenticated: true,
+            ),
+          ),
+        );
+        store.dispatch(loadUserThunk(ctx: ctx));
+      } on DioError catch (e) {
+        final String errorMsg = e.getResponseError(ctx: ctx);
+        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
+        store.dispatch(LoadSignInFailure(payload: errorMsg));
+      }
+    };
+
+Function loadSocialSignInThunk = ({
+  required BuildContext ctx,
+  required SocialSignInReqDto request,
+}) =>
+    (Store<RootState> store) async {
+      store.dispatch(LoadSignIn());
+
+      try {
+        final response = await Dio().post('${Api.baseUrl}/auth/social-login', data: request);
+        final SignInResDto resDto = SignInResDto.fromJson(response.data);
+
+        Navigator.of(ctx).pushReplacementNamed(TabsScreen.routeName);
 
         setRefreshToken(resDto.refreshToken);
 
@@ -122,6 +149,7 @@ Function signOutThunk = ({
 }) =>
     (Store<RootState> store) async {
       clearRefreshToken();
+      // TODO: Clear everything
       store.dispatch(ClearAddOwnerState());
       store.dispatch(ClearAddPetState());
       store.dispatch(ClearAuthState());
@@ -131,5 +159,6 @@ Function signOutThunk = ({
       store.dispatch(ClearPetsState());
       store.dispatch(ClearRemoveOwnerState());
       store.dispatch(ClearUserState());
+      store.dispatch(ClearEventsState());
       Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
     };

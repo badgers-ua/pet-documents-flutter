@@ -3,7 +3,7 @@
   "sign_in_screen_welcome_text": "Welcome",
   "sign_in_screen_email_text_field_text": "Email",
   "sign_in_screen_password_text_field_text": "Password",
-  "sign_in_screen_sign_in_button_text": "Sign In",
+  "sign_in_screen_sign_in_button_text": "Sign in with Email",
   "sign_in_screen_invalid_email_text": "Invalid email.",
   "sign_in_screen_invalid_password_text": "Password must be between 6 and 20 characters.",
   "sign_in_screen_no_account_text": "Don't have an account yet?",
@@ -158,5 +158,7 @@
   "event_type": "Event type",
   "date": "Date",
   "delete_event": "Delete event",
-  "delete_event_warning": "WARNING: This can't be undone."
+  "delete_event_warning": "WARNING: This can't be undone.",
+  "sign_in_with_google": "Sign in with Google",
+  "sign_in_with_apple": "Sign in with Apple"
 }

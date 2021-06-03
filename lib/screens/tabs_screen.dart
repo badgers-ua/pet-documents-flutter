@@ -27,7 +27,7 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget _getAppBarTitle(BuildContext ctx, int index) {
     final List<String> _appBarTitles = [
       L10n.of(ctx).home_screen_app_bar_text,
-      L10n.of(ctx).chats_screen_app_bar_text,
+      // L10n.of(ctx).chats_screen_app_bar_text,
       L10n.of(ctx).settings_screen_app_bar_text,
     ];
 

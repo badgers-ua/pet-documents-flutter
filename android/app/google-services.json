@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "796641729899-qifqqadoks1i513bke7oitma65pvsaqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ua.yyesi.pdoc",
+            "certificate_hash": "87399ee74b984af3bda4fc3cd11bbf315bd05e65"
+          }
+        },
+        {
           "client_id": "796641729899-lciq9mll1rna7s321v2btbit2btopsif.apps.googleusercontent.com",
           "client_type": 3
         }
