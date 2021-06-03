@@ -43,23 +43,6 @@ class SignInScreen extends StatelessWidget {
       return;
     }
 
-    final GoogleSignInAccount? silentAccount = await GoogleSignIn().signInSilently();
-
-    if (silentAccount != null) {
-      final SocialSignInReqDto request = SocialSignInReqDto(
-        token: (await silentAccount.authentication).idToken!,
-        socialType: SOCIAL_TYPE.GOOGLE,
-        email: silentAccount.email,
-        firstName: silentAccount.displayName!.split(" ")[0],
-        lastName: silentAccount.displayName!.split(" ")[1],
-        deviceToken: vm.deviceToken,
-        platform: platform,
-      );
-
-      vm.dispatchLoadSocialSignInThunk(ctx: ctx, request: request);
-
-      return;
-    }
     final googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) {
       return;

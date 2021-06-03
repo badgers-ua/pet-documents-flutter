@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/dto/request/refresh_token_req_dto.dart';
 import 'package:pdoc/models/dto/request/sign_in_req_dto.dart';
@@ -160,5 +161,6 @@ Function signOutThunk = ({
       store.dispatch(ClearRemoveOwnerState());
       store.dispatch(ClearUserState());
       store.dispatch(ClearEventsState());
+      GoogleSignIn().signOut();
       Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
     };
