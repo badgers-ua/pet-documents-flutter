@@ -25,6 +25,10 @@ extension PasswordValidator on String {
   bool isValidPassword() {
     return this.length > 5 && this.length < 21;
   }
+
+  bool isPasswordMatchesWith(String password) {
+    return this == password;
+  }
 }
 
 extension BearerTokenFormatter on String {

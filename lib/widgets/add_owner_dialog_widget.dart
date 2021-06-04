@@ -85,11 +85,11 @@ class AddOwnerDialogWidget extends StatelessWidget {
                       },
                       validator: (input) => input!.isValidEmail()
                           ? null
-                          : L10n.of(context).sign_in_screen_invalid_email_text,
+                          : L10n.of(context).invalid_email_text,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: L10n.of(context)
-                            .sign_in_screen_email_text_field_text,
+                            .email,
                       ),
                     ),
                   ),

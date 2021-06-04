@@ -11,6 +11,7 @@ class UserResDto extends OwnerResDto {
     email,
     firstName,
     lastName,
+    isEmailConfirmed
   }) : super(
     id: id,
     email: email,

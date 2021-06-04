@@ -1,13 +1,14 @@
 {
   "sign_in_screen_app_bar_text": "Вхід",
   "sign_in_screen_welcome_text": "Привіт",
-  "sign_in_screen_email_text_field_text": "Ел. пошта",
-  "sign_in_screen_password_text_field_text": "Пароль",
+  "email": "Ел. пошта",
+  "password": "Пароль",
   "sign_in_screen_sign_in_button_text": "Увійти з Email",
-  "sign_in_screen_invalid_email_text": "Некоректна ел. пошта.",
-  "sign_in_screen_invalid_password_text": "Довжина паролю має становити від 6 до 20 символів.",
+  "invalid_email_text": "Некоректна ел. пошта.",
+  "invalid_password_text": "Довжина паролю має становити від 6 до 20 символів.",
+  "passwords_not_matched_text": "Паролі не співпадають.",
   "sign_in_screen_no_account_text": "Немає аккаунту?",
-  "sign_in_screen_sign_up_button_text": "Зареєструватись",
+  "sign_up": "Зареєструватись",
   "sign_up_screen_app_bar_text": "Реєстрація",
   "tabs_screen_home_tab_text": "Головна",
   "tabs_screen_chats_tab_text": "Чати",
@@ -160,5 +161,8 @@
   "delete_event": "Видалити подію",
   "delete_event_warning": "УВАГА: Підтвердіть видалення події.",
   "sign_in_with_google": "Увійти з Google",
-  "sign_in_with_apple": "Увійти з Apple"
+  "sign_in_with_apple": "Увійти з Apple",
+  "first_name": "Ім'я",
+  "last_name": "Прізвище",
+  "repeat_password": "Повторіть пароль"
 }

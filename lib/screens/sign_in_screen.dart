@@ -127,10 +127,10 @@ class SignInScreen extends StatelessWidget {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (input) =>
-                        input!.isValidEmail() ? null : L10n.of(context).sign_in_screen_invalid_email_text,
+                        input!.isValidEmail() ? null : L10n.of(context).invalid_email_text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context).sign_in_screen_email_text_field_text,
+                      labelText: L10n.of(context).email,
                     ),
                   ),
                   SizedBox(
@@ -143,10 +143,10 @@ class SignInScreen extends StatelessWidget {
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
                     validator: (input) =>
-                        input!.isValidPassword() ? null : L10n.of(context).sign_in_screen_invalid_password_text,
+                        input!.isValidPassword() ? null : L10n.of(context).invalid_password_text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context).sign_in_screen_password_text_field_text,
+                      labelText: L10n.of(context).password,
                     ),
                   ),
                   SizedBox(
@@ -190,7 +190,7 @@ class SignInScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).pushNamed(SignUpScreen.routeName);
                           },
-                          child: Text(L10n.of(context).sign_in_screen_sign_up_button_text),
+                          child: Text(L10n.of(context).sign_up),
                         ),
                       ],
                     ),

@@ -4,9 +4,9 @@ part 'sign_in_res_dto.g.dart';
 
 @JsonSerializable()
 class SignInResDto {
-  String accessToken;
-  String refreshToken;
-  int expiresAt;
+  final String accessToken;
+  final String refreshToken;
+  final int expiresAt;
 
   SignInResDto({
     required this.accessToken,
