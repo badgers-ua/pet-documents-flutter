@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/dto/request/sign_up_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
@@ -38,6 +39,12 @@ Function loadSignUpThunk = ({
         );
         store.dispatch(loadUserThunk(ctx: ctx));
         Navigator.of(ctx).pushReplacementNamed(TabsScreen.routeName);
+        ThemeConstants.showSnackBar(
+          ctx: ctx,
+          msg: L10n.of(ctx).confirmation_link_sent,
+          duration: Duration(seconds: 10),
+          color: Colors.green,
+        );
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);

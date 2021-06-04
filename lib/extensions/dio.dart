@@ -62,6 +62,6 @@ extension DioErrorExtension on DioError {
     required BuildContext ctx,
     required String errorMsg,
   }) {
-    ThemeConstants.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
+    ThemeConstants.showSnackBar(ctx: ctx, msg: errorMsg);
   }
 }

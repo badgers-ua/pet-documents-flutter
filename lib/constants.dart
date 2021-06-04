@@ -22,23 +22,24 @@ class ThemeConstants {
     );
   }
 
-  static void showErrorSnackBar({
+  static void showSnackBar({
     required BuildContext ctx,
-    required String errorMsg,
+    required String msg,
     Duration duration = const Duration(seconds: 3),
+    Color color = Colors.redAccent,
   }) {
     ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
     ScaffoldMessenger.of(ctx).showSnackBar(
       SnackBar(
         duration: duration,
-        backgroundColor: Colors.redAccent,
+        backgroundColor: color,
         action: SnackBarAction(
           label: L10n.of(ctx).scaffold_messenger_extension_dismiss_text,
           textColor: Colors.white,
           onPressed: () {},
         ),
         content: Text(
-          errorMsg,
+          msg,
           style: TextStyle(color: Colors.white),
         ),
         padding: EdgeInsets.symmetric(

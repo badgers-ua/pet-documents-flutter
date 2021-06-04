@@ -16,9 +16,9 @@ Function loadUserThunk = ({required BuildContext ctx}) => (Store<RootState> stor
         final UserResDto resDto = UserResDto.fromJson(response.data);
 
         if (!resDto.isEmailConfirmed) {
-          ThemeConstants.showErrorSnackBar(
+          ThemeConstants.showSnackBar(
             ctx: ctx,
-            errorMsg: L10n.of(ctx).not_confirmed_email_warning,
+            msg: L10n.of(ctx).not_confirmed_email_warning,
             duration: Duration(seconds: 60),
           );
         }

@@ -167,5 +167,6 @@
   "repeat_password": "Repeat password",
   "not_confirmed_email_warning": "Emails isn't confirmed, account will be deleted within 3 dates from registration date.",
   "weight_kg": "Weight (kg)",
-  "weight": "Weight"
+  "weight": "Weight",
+  "confirmation_link_sent": "Confirmation link sent to your email. Please use it to verify your account."
 }
