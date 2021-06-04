@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/store/user/actions.dart';
 import 'package:redux/redux.dart';
@@ -13,6 +14,14 @@ Function loadUserThunk = ({required BuildContext ctx}) => (Store<RootState> stor
       try {
         final response = await Dio().authenticatedDio(ctx: ctx).get('${Api.baseUrl}/profile');
         final UserResDto resDto = UserResDto.fromJson(response.data);
+
+        if (!resDto.isEmailConfirmed) {
+          ThemeConstants.showErrorSnackBar(
+            ctx: ctx,
+            errorMsg: L10n.of(ctx).not_confirmed_email_warning,
+            duration: Duration(seconds: 60),
+          );
+        }
 
         store.dispatch(LoadUserSuccess(payload: resDto));
       } on DioError catch (e) {

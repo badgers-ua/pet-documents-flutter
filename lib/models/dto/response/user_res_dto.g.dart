@@ -8,6 +8,7 @@ part of 'user_res_dto.dart';
 
 UserResDto _$UserResDtoFromJson(Map<String, dynamic> json) {
   return UserResDto(
+    isEmailConfirmed: json['isEmailConfirmed'] as bool,
     id: json['_id'],
     email: json['email'],
     firstName: json['firstName'],
@@ -21,4 +22,5 @@ Map<String, dynamic> _$UserResDtoToJson(UserResDto instance) =>
       'email': instance.email,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'isEmailConfirmed': instance.isEmailConfirmed,
     };

@@ -62,24 +62,6 @@ extension DioErrorExtension on DioError {
     required BuildContext ctx,
     required String errorMsg,
   }) {
-    ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
-    ScaffoldMessenger.of(ctx).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.redAccent,
-        action: SnackBarAction(
-          label: L10n.of(ctx).scaffold_messenger_extension_dismiss_text,
-          textColor: Colors.white,
-          onPressed: () {},
-        ),
-        content: Text(
-          errorMsg,
-          style: TextStyle(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: ThemeConstants.spacing(0.5),
-        ),
-        behavior: SnackBarBehavior.fixed,
-      ),
-    );
+    ThemeConstants.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
   }
 }

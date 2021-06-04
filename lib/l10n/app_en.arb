@@ -164,5 +164,6 @@
   "sign_in_with_apple": "Sign in with Apple",
   "first_name": "First name",
   "last_name": "Last name",
-  "repeat_password": "Repeat password"
+  "repeat_password": "Repeat password",
+  "not_confirmed_email_warning": "Emails isn't confirmed, account will be deleted within 3 dates from registration date."
 }

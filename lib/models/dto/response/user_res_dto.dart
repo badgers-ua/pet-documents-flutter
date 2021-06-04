@@ -5,13 +5,15 @@ part 'user_res_dto.g.dart';
 
 @JsonSerializable()
 class UserResDto extends OwnerResDto {
+  final bool isEmailConfirmed;
+
   UserResDto({
+    required this.isEmailConfirmed,
     @JsonKey(name: '_id')
     id,
     email,
     firstName,
     lastName,
-    isEmailConfirmed
   }) : super(
     id: id,
     email: email,

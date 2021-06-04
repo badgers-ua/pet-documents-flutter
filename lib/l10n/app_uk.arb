@@ -164,5 +164,6 @@
   "sign_in_with_apple": "Увійти з Apple",
   "first_name": "Ім'я",
   "last_name": "Прізвище",
-  "repeat_password": "Повторіть пароль"
+  "repeat_password": "Повторіть пароль",
+  "not_confirmed_email_warning": "Електронну адресу не підтверджено, аккаунт буде видалено через 3 дні після дати реєстрації."
 }
