@@ -37,7 +37,10 @@ Function loadSignUpThunk = ({
             ),
           ),
         );
-        store.dispatch(loadUserThunk(ctx: ctx));
+        store.dispatch(loadUserThunk(
+          ctx: ctx,
+          loadUserThunk: false,
+        ));
         Navigator.of(ctx).pushReplacementNamed(TabsScreen.routeName);
         ThemeConstants.showSnackBar(
           ctx: ctx,

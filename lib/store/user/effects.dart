@@ -9,7 +9,11 @@ import 'package:pdoc/extensions/dio.dart';
 import '../../constants.dart';
 import '../index.dart';
 
-Function loadUserThunk = ({required BuildContext ctx}) => (Store<RootState> store) async {
+Function loadUserThunk = ({
+  required BuildContext ctx,
+  showEmailNotConfirmedError = true,
+}) =>
+    (Store<RootState> store) async {
       store.dispatch(LoadUser());
       try {
         final response = await Dio().authenticatedDio(ctx: ctx).get('${Api.baseUrl}/profile');
