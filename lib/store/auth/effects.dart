@@ -173,4 +173,5 @@ Function signOutThunk = ({
       store.dispatch(ClearUserState());
       GoogleSignIn().signOut();
       Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
+      ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
     };

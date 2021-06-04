@@ -17,6 +17,7 @@ PetPreviewResDto _$PetPreviewResDtoFromJson(Map<String, dynamic> json) {
     dateOfBirth: json['dateOfBirth'],
     colour: json['colour'],
     notes: json['notes'],
+    weight: json['weight'],
   );
 }
 
@@ -29,6 +30,7 @@ Map<String, dynamic> _$PetPreviewResDtoToJson(PetPreviewResDto instance) =>
       'dateOfBirth': instance.dateOfBirth,
       'colour': instance.colour,
       'notes': instance.notes,
+      'weight': instance.weight,
       'breed': instance.breed,
       'owners': instance.owners,
     };
@@ -95,6 +97,7 @@ PetResDto _$PetResDtoFromJson(Map<String, dynamic> json) {
     dateOfBirth: json['dateOfBirth'],
     colour: json['colour'],
     notes: json['notes'],
+    weight: json['weight'],
   );
 }
 
@@ -106,6 +109,7 @@ Map<String, dynamic> _$PetResDtoToJson(PetResDto instance) => <String, dynamic>{
       'dateOfBirth': instance.dateOfBirth,
       'colour': instance.colour,
       'notes': instance.notes,
+      'weight': instance.weight,
       'breed': instance.breed?.toJson(),
       'owners': instance.owners.map((e) => e.toJson()).toList(),
     };

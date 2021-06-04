@@ -26,6 +26,7 @@ class AddEditPetScreen extends StatelessWidget {
   final TextEditingController _breedController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -335,6 +336,16 @@ class AddEditPetScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
+                  DatePickerWidget(
+                    lastDateToday: true,
+                    labelText: L10n.of(context)
+                        .add_edit_pet_screen_date_of_birth_input_text,
+                    controller: _dateController,
+                    onFieldSubmitted: (DatePickerValue? val) {
+                      _selectedDate = val;
+                    },
+                  ),
+                  SizedBox(height: ThemeConstants.spacing(1)),
                   TextFormField(
                     controller: _genderController,
                     onTap: () => showModalSelect(
@@ -353,14 +364,14 @@ class AddEditPetScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
-                  DatePickerWidget(
-                    lastDateToday: true,
-                    labelText: L10n.of(context)
-                        .add_edit_pet_screen_date_of_birth_input_text,
-                    controller: _dateController,
-                    onFieldSubmitted: (DatePickerValue? val) {
-                      _selectedDate = val;
-                    },
+                  TextFormField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    controller: _weightController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: L10n.of(context)
+                          .weight_kg,
+                    ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   TextFormField(
@@ -415,6 +426,9 @@ class AddEditPetScreen extends StatelessWidget {
                               if (_selectedDate != null) {
                                 createPetReqDto.dateOfBirth =
                                     _selectedDate!.dateTime.toIso8601String();
+                              }
+                              if (_weightController.text.isNotEmpty) {
+                                createPetReqDto.weight = int.parse(_weightController.text);
                               }
                               if (_colorController.text.isNotEmpty) {
                                 createPetReqDto.colour = _colorController.text;

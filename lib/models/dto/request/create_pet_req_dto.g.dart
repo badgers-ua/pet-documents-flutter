@@ -15,6 +15,7 @@ CreatePetReqDto _$CreatePetReqDtoFromJson(Map<String, dynamic> json) {
     dateOfBirth: json['dateOfBirth'] as String?,
     colour: json['colour'] as String?,
     notes: json['notes'] as String?,
+    weight: json['weight'] as int?,
   );
 }
 
@@ -27,6 +28,7 @@ Map<String, dynamic> _$CreatePetReqDtoToJson(CreatePetReqDto instance) =>
       'dateOfBirth': instance.dateOfBirth,
       'colour': instance.colour,
       'notes': instance.notes,
+      'weight': instance.weight,
     };
 
 K _$enumDecode<K, V>(

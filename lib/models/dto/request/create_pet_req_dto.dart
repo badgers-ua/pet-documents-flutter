@@ -12,6 +12,7 @@ class CreatePetReqDto {
   late String? dateOfBirth; // ISO String;
   late String? colour;
   late String? notes;
+  late int? weight;
 
   CreatePetReqDto({
     required this.name,
@@ -21,6 +22,7 @@ class CreatePetReqDto {
     this.dateOfBirth,
     this.colour,
     this.notes,
+    this.weight,
   });
 
   factory CreatePetReqDto.fromJson(Map<String, dynamic> json) =>

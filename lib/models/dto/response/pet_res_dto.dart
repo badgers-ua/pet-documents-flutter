@@ -58,6 +58,7 @@ abstract class _PetCommon {
   final String? dateOfBirth;
   final String? colour;
   final String? notes;
+  final int? weight;
 
   _PetCommon({
     required this.id,
@@ -67,6 +68,7 @@ abstract class _PetCommon {
     this.dateOfBirth,
     this.colour,
     this.notes,
+    this.weight,
   });
 }
 
@@ -85,6 +87,7 @@ class PetPreviewResDto extends _PetCommon {
     dateOfBirth,
     colour,
     notes,
+    weight,
   }) : super(
           id: id,
           name: name,
@@ -93,10 +96,10 @@ class PetPreviewResDto extends _PetCommon {
           dateOfBirth: dateOfBirth,
           colour: colour,
           notes: notes,
+          weight: weight,
         );
 
-  factory PetPreviewResDto.fromJson(Map<String, dynamic> json) =>
-      _$PetPreviewResDtoFromJson(json);
+  factory PetPreviewResDto.fromJson(Map<String, dynamic> json) => _$PetPreviewResDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$PetPreviewResDtoToJson(this);
 }
@@ -116,6 +119,7 @@ class PetResDto extends _PetCommon {
     dateOfBirth,
     colour,
     notes,
+    weight,
   }) : super(
           id: id,
           name: name,
@@ -124,10 +128,10 @@ class PetResDto extends _PetCommon {
           dateOfBirth: dateOfBirth,
           colour: colour,
           notes: notes,
+          weight: weight,
         );
 
-  factory PetResDto.fromJson(Map<String, dynamic> json) =>
-      _$PetResDtoFromJson(json);
+  factory PetResDto.fromJson(Map<String, dynamic> json) => _$PetResDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$PetResDtoToJson(this);
 
@@ -160,6 +164,11 @@ class PetResDto extends _PetCommon {
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_color_text,
           value: this.colour!,
+        ),
+      if (this.weight != null)
+        PetInfoRowWidgetProps(
+          label: L10n.of(ctx).weight,
+          value: '${this.weight} (kg)',
         ),
       PetInfoRowWidgetProps(
         label: L10n.of(ctx).pet_info_sliver_list_screen_owners_text,

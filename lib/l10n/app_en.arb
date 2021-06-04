@@ -165,5 +165,7 @@
   "first_name": "First name",
   "last_name": "Last name",
   "repeat_password": "Repeat password",
-  "not_confirmed_email_warning": "Emails isn't confirmed, account will be deleted within 3 dates from registration date."
+  "not_confirmed_email_warning": "Emails isn't confirmed, account will be deleted within 3 dates from registration date.",
+  "weight_kg": "Weight (kg)",
+  "weight": "Weight"
 }
