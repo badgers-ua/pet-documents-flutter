@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/app_state.dart';
@@ -113,8 +114,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
     );
 
     if (Platform.isIOS) {
-      final ModalSelectOption? modalSelectOption =
-          await showCupertinoModalBottomSheet(
+      final ModalSelectOption? modalSelectOption = await showCupertinoModalBottomSheet(
         context: ctx,
         builder: (_) => widget,
       );
@@ -132,8 +132,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       return;
     }
 
-    final ModalSelectOption? modalSelectOption =
-        await showMaterialModalBottomSheet(
+    final ModalSelectOption? modalSelectOption = await showMaterialModalBottomSheet(
       context: ctx,
       builder: (_) => widget,
     );
@@ -160,8 +159,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       builder: (BuildContext context) {
         return ConfirmationDialogWidget(
           title: L10n.of(context).remove_owner,
-          content: L10n.of(context)
-              .remove_owner_warning(selectedOwner.label, vm.pet!.name),
+          content: L10n.of(context).remove_owner_warning(selectedOwner.label, vm.pet!.name),
           enabled: true,
           onSubmit: () {
             vm.dispatchLoadRemoveOwnerThunk(
@@ -200,8 +198,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final PetProfileScreenProps props =
-        ModalRoute.of(context)!.settings.arguments as PetProfileScreenProps;
+    final PetProfileScreenProps props = ModalRoute.of(context)!.settings.arguments as PetProfileScreenProps;
 
     return StoreConnector<RootState, _PetProfileScreenViewModel>(
       onDispose: (store) {
@@ -218,8 +215,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
               ? []
               : petState.data!.owners
                   .map(
-                    (e) => ModalSelectOption(
-                        label: '${e.firstName} ${e.lastName}', value: e.id),
+                    (e) => ModalSelectOption(label: '${e.firstName} ${e.lastName}', value: e.id),
                   )
                   .toList(),
           pet: petState.data,
@@ -259,11 +255,12 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           );
         }
 
+        final PetResDto pet = vm.pet!;
+
         return DefaultTabController(
           length: 2,
           child: Builder(builder: (BuildContext context) {
-            final TabController tabController =
-                DefaultTabController.of(context)!;
+            final TabController tabController = DefaultTabController.of(context)!;
             tabController.addListener(() {
               if (!tabController.indexIsChanging) {
                 setState(() {
@@ -274,54 +271,57 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
             return Scaffold(
               body: Scrollbar(
                 child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
                       SliverOverlapAbsorber(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            context),
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                         sliver: SliverAppBar(
                           centerTitle: false,
-                          title: Text(vm.pet!.name),
+                          title: Text(pet.name),
                           pinned: true,
                           snap: true,
                           floating: true,
-                          expandedHeight: 200,
+                          expandedHeight: 250,
                           forceElevated: innerBoxIsScrolled,
                           flexibleSpace: FlexibleSpaceBar(
                             background: Container(
-                              decoration: BoxDecoration(color: Colors.black),
-                              child: CachedNetworkImage(
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                      colorFilter: ColorFilter.mode(
-                                        Colors.black.withOpacity(0.7),
-                                        BlendMode.dstATop,
+                              decoration: pet.avatar == null ? null : BoxDecoration(color: Colors.black),
+                              child: pet.avatar == null
+                                  ? Align(
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          ThemeConstants.getImageBySpecies(pet.species),
+                                          color: Theme.of(context).accentColor,
+                                          height: 150,
+                                          width: 150,
+                                        ),
                                       ),
+                                    )
+                                  : CachedNetworkImage(
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                            colorFilter: ColorFilter.mode(
+                                              Colors.black.withOpacity(0.7),
+                                              BlendMode.dstATop,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      imageUrl: pet.avatar!,
                                     ),
-                                  ),
-                                ),
-                                imageUrl:
-                                    'https://www.thesprucepets.com/thmb/DvxumVXUoBY2q0k3VVnOFRRz-dw=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/facts-about-black-cats-554102-hero-7281a22d75584d448290c359780c2ead.jpg',
-                              ),
                             ),
                           ),
                           bottom: TabBar(
                             tabs: [
-                              Tab(
-                                  text: L10n.of(context)
-                                      .pet_profile_screen_info_tab_text),
+                              Tab(text: L10n.of(context).pet_profile_screen_info_tab_text),
                               // TODO: [FEATURE] Chat
                               // Tab(
                               //     text: L10n.of(context)
                               //         .pet_profile_screen_chat_tab_text),
-                              Tab(
-                                  text: L10n.of(context)
-                                      .pet_profile_screen_events_tab_text),
+                              Tab(text: L10n.of(context).pet_profile_screen_events_tab_text),
                             ],
                           ),
                         ),
@@ -350,8 +350,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                   ? petActionButtons(ctx: context, vm: vm)
                   : FloatingActionButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(AddEditEventScreen.routeName);
+                        Navigator.of(context).pushNamed(AddEditEventScreen.routeName);
                       },
                       child: Icon(Icons.add),
                     ),
@@ -398,8 +397,7 @@ class _PetProfileTabScreen extends StatelessWidget {
           return CustomScrollView(
             slivers: <Widget>[
               SliverOverlapInjector(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               ),
               SliverPadding(
                 padding: EdgeInsets.symmetric(

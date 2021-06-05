@@ -166,4 +166,5 @@
   "repeat_password": "Repeat password",
   "weight_kg": "Weight (kg)",
   "weight": "Weight",
+  "avatar_upload_error": "Error while uploading photo."
 }

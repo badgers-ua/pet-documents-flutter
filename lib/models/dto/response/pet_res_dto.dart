@@ -59,6 +59,7 @@ abstract class _PetCommon {
   final String? colour;
   final String? notes;
   final int? weight;
+  final String? avatar;
 
   _PetCommon({
     required this.id,
@@ -69,6 +70,7 @@ abstract class _PetCommon {
     this.colour,
     this.notes,
     this.weight,
+    this.avatar,
   });
 }
 
@@ -88,6 +90,7 @@ class PetPreviewResDto extends _PetCommon {
     colour,
     notes,
     weight,
+    avatar
   }) : super(
           id: id,
           name: name,
@@ -97,6 +100,7 @@ class PetPreviewResDto extends _PetCommon {
           colour: colour,
           notes: notes,
           weight: weight,
+    avatar: avatar,
         );
 
   factory PetPreviewResDto.fromJson(Map<String, dynamic> json) => _$PetPreviewResDtoFromJson(json);
@@ -120,6 +124,7 @@ class PetResDto extends _PetCommon {
     colour,
     notes,
     weight,
+    avatar,
   }) : super(
           id: id,
           name: name,
@@ -129,6 +134,7 @@ class PetResDto extends _PetCommon {
           colour: colour,
           notes: notes,
           weight: weight,
+          avatar: avatar,
         );
 
   factory PetResDto.fromJson(Map<String, dynamic> json) => _$PetResDtoFromJson(json);

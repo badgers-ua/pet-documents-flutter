@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/dto/request/create_pet_req_dto.dart';
 import 'package:pdoc/models/dto/response/create_pet_res_dto.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
@@ -13,15 +16,22 @@ import 'actions.dart';
 Function loadCreatePetThunk = ({
   required CreatePetReqDto request,
   required BuildContext ctx,
+  required File? avatar,
 }) =>
     (Store<RootState> store) async {
       store.dispatch(LoadAddPet());
       try {
-        final res = await Dio()
-            .authenticatedDio(ctx: ctx)
-            .post('/pet/create', data: request.toJson());
-        final CreatePetResDto createPetResDto =
-            CreatePetResDto.fromJson(res.data);
+        if (avatar != null) {
+          final String avatarUrl = (await FirebaseConstants.uploadAvatar(ctx: ctx, image: avatar)) ?? '';
+
+
+          if (avatarUrl.isNotEmpty) {
+            request.avatar = avatarUrl;
+          }
+        }
+
+        final res = await Dio().authenticatedDio(ctx: ctx).post('/pet/create', data: request.toJson());
+        final CreatePetResDto createPetResDto = CreatePetResDto.fromJson(res.data);
         store.dispatch(LoadAddPetSuccess());
         store.dispatch(loadPetsThunk(ctx: ctx));
         Navigator.of(ctx).pushReplacementNamed(

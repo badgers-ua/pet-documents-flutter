@@ -49,6 +49,7 @@ dependencies:
   image_cropper: ^1.4.0
   google_sign_in: ^5.0.4
   flutter_signin_button: ^2.0.0
+  firebase_auth: ^1.3.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,8 @@ flutter:
   assets:
     - assets/images/circle-paw.svg
     - assets/images/paw.svg
+    - assets/images/cat.svg
+    - assets/images/dog.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

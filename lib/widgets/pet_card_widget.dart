@@ -25,7 +25,7 @@ class PetCardWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: SvgPicture.asset(
-                  'assets/images/paw.svg',
+                  ThemeConstants.getImageBySpecies(pet.species),
                   color: Theme.of(context).accentColor,
                   // TODO: Responsive
                   width: 72,

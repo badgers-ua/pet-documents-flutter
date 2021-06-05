@@ -15,9 +15,7 @@ Function loadCreateEventThunk = ({
     (Store<RootState> store) async {
       store.dispatch(LoadCreateEvent());
       try {
-        await Dio()
-            .authenticatedDio(ctx: ctx)
-            .post('/event/create', data: request.toJson());
+        await Dio().authenticatedDio(ctx: ctx).post('/event/create', data: request.toJson());
 
         store.dispatch(LoadCreateEventSuccess());
         store.dispatch(loadEventsThunk(ctx: ctx));

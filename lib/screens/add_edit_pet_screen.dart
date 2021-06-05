@@ -1,4 +1,5 @@
 import 'dart:io' show File, Platform;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -50,14 +51,11 @@ class AddEditPetScreen extends StatelessWidget {
     final widget = ModalSelectWidget(
       title: modalTitle,
       options: options,
-      helperText: !isBreeds
-          ? null
-          : L10n.of(ctx).modal_select_search_bar_breeds_hint_text,
+      helperText: !isBreeds ? null : L10n.of(ctx).modal_select_search_bar_breeds_hint_text,
     );
 
     if (Platform.isIOS) {
-      final ModalSelectOption? modalSelectOption =
-          await showCupertinoModalBottomSheet(
+      final ModalSelectOption? modalSelectOption = await showCupertinoModalBottomSheet(
         context: ctx,
         builder: (_) => widget,
       );
@@ -73,8 +71,7 @@ class AddEditPetScreen extends StatelessWidget {
       return;
     }
 
-    final ModalSelectOption? modalSelectOption =
-        await showMaterialModalBottomSheet(
+    final ModalSelectOption? modalSelectOption = await showMaterialModalBottomSheet(
       context: ctx,
       builder: (_) => widget,
     );
@@ -101,8 +98,7 @@ class AddEditPetScreen extends StatelessWidget {
 
     if (isSpecies) {
       _breedController.text = '';
-      vm.dispatchLoadBreedsBySpeciesThunk(
-          ctx: ctx, species: modalSelectOption.value);
+      vm.dispatchLoadBreedsBySpeciesThunk(ctx: ctx, species: modalSelectOption.value);
     }
 
     controller.text = modalSelectOption.label;
@@ -121,13 +117,9 @@ class AddEditPetScreen extends StatelessWidget {
       return;
     }
     _nameController.text = pet.name;
-    _speciesController.text = speciesOptions
-        .firstWhere((element) => element.value == pet.species)
-        .label;
+    _speciesController.text = speciesOptions.firstWhere((element) => element.value == pet.species).label;
     if (pet.gender != null) {
-      _genderController.text = genderOptions
-          .firstWhere((element) => element.value == pet.gender)
-          .label;
+      _genderController.text = genderOptions.firstWhere((element) => element.value == pet.gender).label;
     }
     if (pet.breed != null) {
       _breedController.text = pet.breed!.name;
@@ -138,8 +130,7 @@ class AddEditPetScreen extends StatelessWidget {
           // TODO: Users local format
           intl.DateFormat('dd/MM/yyyy').format(dateTimeBirth).toString();
       _dateController.text = formattedDate;
-      _selectedDate = DatePickerValue(
-          dateTime: dateTimeBirth, formattedDate: formattedDate);
+      _selectedDate = DatePickerValue(dateTime: dateTimeBirth, formattedDate: formattedDate);
     }
     if (pet.colour != null) {
       _colorController.text = pet.colour!;
@@ -152,13 +143,11 @@ class AddEditPetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<ModalSelectOption<SPECIES>> speciesOptions = SPECIES.values.map((v) {
-      return ModalSelectOption(
-          label: getSpeciesLabel(ctx: context, species: v), value: v);
+      return ModalSelectOption(label: getSpeciesLabel(ctx: context, species: v), value: v);
     }).toList();
 
     List<ModalSelectOption<GENDER>> genderOptions = GENDER.values.map((v) {
-      return ModalSelectOption(
-          label: getGenderLabel(ctx: context, gender: v), value: v);
+      return ModalSelectOption(label: getGenderLabel(ctx: context, gender: v), value: v);
     }).toList();
 
     return StoreConnector<RootState, _AddEditPetScreenViewModel>(
@@ -170,8 +159,7 @@ class AddEditPetScreen extends StatelessWidget {
           return;
         }
 
-        store.dispatch(loadBreedsBySpeciesThunk(
-            ctx: context, species: currentPet.species));
+        store.dispatch(loadBreedsBySpeciesThunk(ctx: context, species: currentPet.species));
       },
       converter: (store) {
         final PetResDto? currentPet = store.state.pet.data;
@@ -179,13 +167,11 @@ class AddEditPetScreen extends StatelessWidget {
         final bool isEditMode = currentPet != null;
 
         final SPECIES? selectedSpecies = store.state.breeds.selectedSpecies;
-        final List<StaticResDto> breeds = (selectedSpecies != null
-            ? store.state.breeds.data![selectedSpecies] ?? []
-            : []);
+        final List<StaticResDto> breeds =
+            (selectedSpecies != null ? store.state.breeds.data![selectedSpecies] ?? [] : []);
 
-        final List<ModalSelectOption<String>> breedOptions = breeds
-            .map((e) => ModalSelectOption(label: e.name, value: e.id))
-            .toList();
+        final List<ModalSelectOption<String>> breedOptions =
+            breeds.map((e) => ModalSelectOption(label: e.name, value: e.id)).toList();
 
         final vm = _AddEditPetScreenViewModel(
           isLoadingBreeds: store.state.breeds.isLoading,
@@ -204,23 +190,27 @@ class AddEditPetScreen extends StatelessWidget {
           dispatchLoadCreatePetThunk: ({
             required BuildContext ctx,
             required CreatePetReqDto request,
+            required File? avatar,
           }) =>
               store.dispatch(
             loadCreatePetThunk(
               ctx: ctx,
               request: request,
+              avatar: avatar,
             ),
           ),
           dispatchLoadEditPetThunk: ({
             required BuildContext ctx,
             required CreatePetReqDto request,
             required String petId,
+            required File avatar,
           }) =>
               store.dispatch(
             loadEditPetThunk(
               ctx: ctx,
               request: request,
               petId: petId,
+              avatar: avatar,
             ),
           ),
         );
@@ -264,26 +254,21 @@ class AddEditPetScreen extends StatelessWidget {
                     controller: _nameController,
                     onChanged: (v) => _validateForm(),
                     validator: (v) => (v ?? '').requiredValidator(
-                      fieldName:
-                          L10n.of(context).add_edit_pet_screen_name_input_text,
+                      fieldName: L10n.of(context).add_edit_pet_screen_name_input_text,
                       ctx: context,
                     ),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText:
-                          L10n.of(context).add_edit_pet_screen_name_input_text,
+                      labelText: L10n.of(context).add_edit_pet_screen_name_input_text,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   TextFormField(
                     controller: _speciesController,
                     validator: (v) => (v ?? '').requiredValidator(
-                        fieldName: L10n.of(context)
-                            .add_edit_pet_screen_species_input_text,
-                        ctx: context),
+                        fieldName: L10n.of(context).add_edit_pet_screen_species_input_text, ctx: context),
                     onTap: () => showModalSelect(
-                      modalTitle: L10n.of(context)
-                          .modal_select_app_bar_select_species_text,
+                      modalTitle: L10n.of(context).modal_select_app_bar_select_species_text,
                       ctx: context,
                       options: speciesOptions,
                       controller: _speciesController,
@@ -294,8 +279,7 @@ class AddEditPetScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       suffixIcon: Icon(Icons.keyboard_arrow_right),
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context)
-                          .add_edit_pet_screen_species_input_text,
+                      labelText: L10n.of(context).add_edit_pet_screen_species_input_text,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
@@ -304,8 +288,7 @@ class AddEditPetScreen extends StatelessWidget {
                     onTap: () => vm.isLoadingBreeds
                         ? null
                         : showModalSelect(
-                            modalTitle: L10n.of(context)
-                                .modal_select_app_bar_select_breeds_text,
+                            modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
                             ctx: context,
                             options: vm.breedOptions,
                             controller: _breedController,
@@ -313,8 +296,7 @@ class AddEditPetScreen extends StatelessWidget {
                             isBreeds: true,
                           ),
                     readOnly: true,
-                    enabled: !vm.isLoadingBreeds &&
-                        _speciesController.text.isNotEmpty,
+                    enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
                     decoration: InputDecoration(
                       suffixIconConstraints: BoxConstraints(
                         maxWidth: 48,
@@ -331,15 +313,13 @@ class AddEditPetScreen extends StatelessWidget {
                               ),
                             ),
                       border: OutlineInputBorder(),
-                      labelText:
-                          L10n.of(context).add_edit_pet_screen_breed_input_text,
+                      labelText: L10n.of(context).add_edit_pet_screen_breed_input_text,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   DatePickerWidget(
                     lastDateToday: true,
-                    labelText: L10n.of(context)
-                        .add_edit_pet_screen_date_of_birth_input_text,
+                    labelText: L10n.of(context).add_edit_pet_screen_date_of_birth_input_text,
                     controller: _dateController,
                     onFieldSubmitted: (DatePickerValue? val) {
                       _selectedDate = val;
@@ -349,8 +329,7 @@ class AddEditPetScreen extends StatelessWidget {
                   TextFormField(
                     controller: _genderController,
                     onTap: () => showModalSelect(
-                      modalTitle: L10n.of(context)
-                          .modal_select_app_bar_select_gender_text,
+                      modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
                       ctx: context,
                       options: genderOptions,
                       vm: vm,
@@ -359,8 +338,7 @@ class AddEditPetScreen extends StatelessWidget {
                     readOnly: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context)
-                          .add_edit_pet_screen_gender_input_text,
+                      labelText: L10n.of(context).add_edit_pet_screen_gender_input_text,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
@@ -369,8 +347,7 @@ class AddEditPetScreen extends StatelessWidget {
                     controller: _weightController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context)
-                          .weight_kg,
+                      labelText: L10n.of(context).weight_kg,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
@@ -378,8 +355,7 @@ class AddEditPetScreen extends StatelessWidget {
                     controller: _colorController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText:
-                          L10n.of(context).add_edit_pet_screen_color_input_text,
+                      labelText: L10n.of(context).add_edit_pet_screen_color_input_text,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
@@ -387,8 +363,7 @@ class AddEditPetScreen extends StatelessWidget {
                     controller: _descriptionController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: L10n.of(context)
-                          .description,
+                      labelText: L10n.of(context).description,
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
@@ -405,27 +380,22 @@ class AddEditPetScreen extends StatelessWidget {
                               CreatePetReqDto createPetReqDto = CreatePetReqDto(
                                 name: _nameController.text.trim(),
                                 species: speciesOptions
-                                    .firstWhere((element) =>
-                                        element.label ==
-                                        _speciesController.text)
+                                    .firstWhere((element) => element.label == _speciesController.text)
                                     .value,
                               );
 
                               if (_breedController.text.isNotEmpty) {
                                 createPetReqDto.breed = vm.breedOptions
-                                    .firstWhere((element) =>
-                                        element.label == _breedController.text)
+                                    .firstWhere((element) => element.label == _breedController.text)
                                     .value;
                               }
                               if (_genderController.text.isNotEmpty) {
                                 createPetReqDto.gender = genderOptions
-                                    .firstWhere((element) =>
-                                        element.label == _genderController.text)
+                                    .firstWhere((element) => element.label == _genderController.text)
                                     .value;
                               }
                               if (_selectedDate != null) {
-                                createPetReqDto.dateOfBirth =
-                                    _selectedDate!.dateTime.toIso8601String();
+                                createPetReqDto.dateOfBirth = _selectedDate!.dateTime.toIso8601String();
                               }
                               if (_weightController.text.isNotEmpty) {
                                 createPetReqDto.weight = int.parse(_weightController.text);
@@ -434,31 +404,29 @@ class AddEditPetScreen extends StatelessWidget {
                                 createPetReqDto.colour = _colorController.text;
                               }
                               if (_descriptionController.text.isNotEmpty) {
-                                createPetReqDto.notes =
-                                    _descriptionController.text;
+                                createPetReqDto.notes = _descriptionController.text;
                               }
 
                               if (!vm.isEditMode) {
                                 vm.dispatchLoadCreatePetThunk(
                                   ctx: context,
                                   request: createPetReqDto,
+                                  avatar: _selectedAvatar,
                                 );
                                 return;
                               }
 
                               vm.dispatchLoadEditPetThunk(
-                                  ctx: context,
-                                  request: createPetReqDto,
-                                  petId: vm.pet!.id);
+                                ctx: context,
+                                request: createPetReqDto,
+                                petId: vm.pet!.id,
+                                avatar: _selectedAvatar,
+                              );
                             },
                       child: vm.isLoadingCreatePet || vm.isLoadingEditPet
                           ? ThemeConstants.getButtonSpinner()
                           : Text(
-                              !vm.isEditMode
-                                  ? L10n.of(context)
-                                      .create
-                                  : L10n.of(context)
-                                      .update,
+                              !vm.isEditMode ? L10n.of(context).create : L10n.of(context).update,
                             ),
                     ),
                   ),

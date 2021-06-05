@@ -9,8 +9,13 @@ import 'package:pdoc/l10n/l10n.dart';
 
 class ImageCapture extends StatefulWidget {
   final Function(File file) onChange;
+  // TODO: Rethink image picker (CRUD operations)
+  final String? placeholderImageUrl;
 
-  ImageCapture({required this.onChange});
+  ImageCapture({
+    required this.onChange,
+    this.placeholderImageUrl,
+  });
 
   createState() => _ImageCaptureState();
 }
@@ -33,7 +38,7 @@ class _ImageCaptureState extends State<ImageCapture> {
         hideBottomControls: true,
       ),
       sourcePath: _imageFile!.path,
-      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 2),
+      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 2.5),
     );
 
     setState(() {

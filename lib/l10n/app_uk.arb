@@ -165,5 +165,6 @@
   "last_name": "Прізвище",
   "repeat_password": "Повторіть пароль",
   "weight_kg": "Вага (kg)",
-  "weight": "Вага"
+  "weight": "Вага",
+  "avatar_upload_error": "Помилка відправки фото."
 }
