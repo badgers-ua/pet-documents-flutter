@@ -11,7 +11,6 @@ import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pdoc/screens/sign_up_screen.dart';
 import 'package:pdoc/screens/tabs_screen.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
@@ -84,7 +83,6 @@ class _MyAppState extends State<MyApp> {
           TabsScreen.routeName: (context) => TabsScreen(),
           AddEditPetScreen.routeName: (context) => AddEditPetScreen(),
           PetProfileScreen.routeName: (context) => PetProfileScreen(),
-          SignUpScreen.routeName: (context) => SignUpScreen(),
           SignInScreen.routeName: (context) => SignInScreen(),
           AddEditEventScreen.routeName: (context) => AddEditEventScreen(),
         },

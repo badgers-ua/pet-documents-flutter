@@ -15,6 +15,7 @@ SocialSignInReqDto _$SocialSignInReqDtoFromJson(Map<String, dynamic> json) {
     lastName: json['lastName'] as String,
     deviceToken: json['deviceToken'] as String,
     platform: _$enumDecode(_$PLATFORMEnumMap, json['platform']),
+    avatar: json['avatar'] as String,
   );
 }
 
@@ -27,6 +28,7 @@ Map<String, dynamic> _$SocialSignInReqDtoToJson(SocialSignInReqDto instance) =>
       'lastName': instance.lastName,
       'deviceToken': instance.deviceToken,
       'platform': _$PLATFORMEnumMap[instance.platform],
+      'avatar': instance.avatar,
     };
 
 K _$enumDecode<K, V>(

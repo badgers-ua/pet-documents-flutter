@@ -38,6 +38,7 @@ class SocialSignInReqDto {
   final String lastName;
   final String deviceToken;
   final PLATFORM platform;
+  final String avatar;
 
   SocialSignInReqDto({
     required this.token,
@@ -47,6 +48,7 @@ class SocialSignInReqDto {
     required this.lastName,
     required this.deviceToken,
     required this.platform,
+    required this.avatar,
   });
 
   factory SocialSignInReqDto.fromJson(Map<String, dynamic> json) => _$SocialSignInReqDtoFromJson(json);

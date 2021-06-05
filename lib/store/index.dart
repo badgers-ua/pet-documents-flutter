@@ -16,7 +16,7 @@ import 'package:pdoc/store/events/reducer.dart';
 import 'package:pdoc/store/pet/reducers.dart';
 import 'package:pdoc/store/pets/reducers.dart';
 import 'package:pdoc/store/remove-owner/reducer.dart';
-import 'package:pdoc/store/sign-up/reducers.dart';
+import 'package:pdoc/store/sign-out/reducers.dart';
 import 'package:pdoc/store/user/reducers.dart';
 
 import 'add-pet/reducers.dart';
@@ -32,7 +32,7 @@ class AppAction {
 
 class RootState {
   final AuthState auth;
-  final AppState signUp;
+  final AppState signOut;
   final AppState<DeviceToken> deviceToken;
   final AppState<List<PetPreviewResDto>> pets;
   final AppState<PetResDto> pet;
@@ -50,7 +50,7 @@ class RootState {
 
   RootState({
     required this.auth,
-    required this.signUp,
+    required this.signOut,
     required this.deviceToken,
     required this.pets,
     required this.pet,
@@ -69,7 +69,7 @@ class RootState {
 
   RootState.initialState()
       : auth = AuthState(isLoadingAccessToken: true),
-        signUp = AppState(),
+        signOut = AppState(),
         deviceToken = AppState(),
         pets = AppState(data: []),
         pet = AppState(),
@@ -92,7 +92,7 @@ class RootState {
 RootState appReducer(RootState state, action) {
   return RootState(
     auth: authReducer(state.auth, action),
-    signUp: signUpReducer(state.signUp, action),
+    signOut: signOutReducer(state.signOut, action),
     deviceToken: deviceTokenReducer(state.deviceToken, action),
     pets: petsReducer(state.pets, action),
     pet: petReducer(state.pet, action),

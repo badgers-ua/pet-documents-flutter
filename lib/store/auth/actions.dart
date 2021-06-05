@@ -1,14 +1,6 @@
 import 'package:pdoc/models/auth.dart';
-import 'package:redux/redux.dart';
 
 import '../index.dart';
-
-void signOutThunk(Store<RootState> store) async {
-  // AuthService.clearRefreshToken();
-  // store.dispatch(ClearAuthState());
-  // store.dispatch(ClearUserState());
-  // store.dispatch(ClearPetsState());
-}
 
 class LoadAccessToken extends AppAction {}
 

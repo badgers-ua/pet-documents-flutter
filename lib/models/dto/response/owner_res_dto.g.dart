@@ -12,6 +12,7 @@ OwnerResDto _$OwnerResDtoFromJson(Map<String, dynamic> json) {
     email: json['email'] as String,
     firstName: json['firstName'] as String,
     lastName: json['lastName'] as String,
+    avatar: json['avatar'] as String,
   );
 }
 
@@ -21,4 +22,5 @@ Map<String, dynamic> _$OwnerResDtoToJson(OwnerResDto instance) =>
       'email': instance.email,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'avatar': instance.avatar,
     };
