@@ -16,13 +16,13 @@ import 'actions.dart';
 Function loadCreatePetThunk = ({
   required CreatePetReqDto request,
   required BuildContext ctx,
-  required File? avatar,
+  required File? newAvatar,
 }) =>
     (Store<RootState> store) async {
       store.dispatch(LoadAddPet());
       try {
-        if (avatar != null) {
-          final String avatarUrl = (await FirebaseConstants.uploadAvatar(ctx: ctx, image: avatar)) ?? '';
+        if (newAvatar != null) {
+          final String avatarUrl = (await FirebaseConstants.uploadAvatar(ctx: ctx, image: newAvatar)) ?? '';
 
 
           if (avatarUrl.isNotEmpty) {

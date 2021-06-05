@@ -188,7 +188,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           onSubmit: () {
             vm.dispatchLoadDeletePetThunk(
               ctx: ctx,
-              petId: vm.pet!.id,
+              pet: vm.pet,
             );
           },
         );
@@ -236,12 +236,12 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           ),
           dispatchLoadDeletePetThunk: ({
             required BuildContext ctx,
-            required String petId,
+            required PetResDto pet,
           }) =>
               store.dispatch(
             loadDeletePetThunk(
               ctx: ctx,
-              petId: petId,
+              pet: pet,
             ),
           ),
         );
@@ -253,6 +253,10 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
               child: CircularProgressIndicator(),
             ),
           );
+        }
+
+        if (vm.pet == null) {
+          return Scaffold();
         }
 
         final PetResDto pet = vm.pet!;

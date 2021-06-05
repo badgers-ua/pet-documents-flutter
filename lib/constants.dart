@@ -13,7 +13,7 @@ class ThemeConstants {
     return _padding * val;
   }
 
-  static String getImageBySpecies(SPECIES species) {
+  static String getImageBySpecies(SPECIES? species) {
     switch (species) {
       case SPECIES.CAT:
         return 'assets/images/cat.svg';

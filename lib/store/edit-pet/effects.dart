@@ -10,6 +10,7 @@ import 'package:pdoc/store/pet/effects.dart';
 import 'package:pdoc/store/pets/effects.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
+import 'package:pdoc/extensions/string.dart';
 
 import '../../constants.dart';
 import 'actions.dart';
@@ -18,17 +19,20 @@ Function loadEditPetThunk = ({
   required CreatePetReqDto request,
   required BuildContext ctx,
   required String petId,
-  required File? avatar,
+  required File? newAvatar,
 }) =>
     (Store<RootState> store) async {
       final PetResDto? currentPet = store.state.pet.data;
 
       final String currentPetAvatar = store.state.pet.data?.avatar ?? '';
+      final File? currentPetAvatarFile =
+          currentPetAvatar.isNotEmpty ? await currentPetAvatar.getFileFromCachedImage() : null;
 
-      final bool shouldUploadAvatar = currentPetAvatar.isEmpty && avatar != null;
-      final bool shouldEditAvatar = currentPetAvatar.isNotEmpty && avatar != null;
-      // TODO: ImageCapture widget not supports delete yet
-      final bool shouldDeleteAvatar = currentPetAvatar.isNotEmpty && avatar == null;
+      final bool isAvatarChanged = currentPetAvatarFile?.path != newAvatar?.path;
+
+      final bool shouldUploadAvatar = isAvatarChanged && currentPetAvatar.isEmpty && newAvatar != null;
+      final bool shouldEditAvatar = isAvatarChanged && currentPetAvatar.isNotEmpty && newAvatar != null;
+      final bool shouldDeleteAvatar = isAvatarChanged && currentPetAvatar.isNotEmpty && newAvatar == null;
 
       if (currentPet != null) {
         final isPetChanged = currentPet.name != request.name ||
@@ -50,12 +54,12 @@ Function loadEditPetThunk = ({
       store.dispatch(LoadEditPet());
 
       try {
-        late String? newAvatarUrl;
+        String? newAvatarUrl;
 
         if (shouldUploadAvatar) {
           newAvatarUrl = (await FirebaseConstants.uploadAvatar(
                 ctx: ctx,
-                image: avatar,
+                image: newAvatar,
               )) ??
               '';
         }
@@ -64,7 +68,7 @@ Function loadEditPetThunk = ({
           newAvatarUrl = (await FirebaseConstants.editAvatar(
                 ctx: ctx,
                 currentAvatarLink: currentPetAvatar,
-                image: avatar,
+                image: newAvatar,
               )) ??
               '';
         }
@@ -78,7 +82,7 @@ Function loadEditPetThunk = ({
 
         final bool uploadSuccess = shouldUploadAvatar && newAvatarUrl != null;
         final bool editSuccess = shouldEditAvatar && newAvatarUrl != null;
-        final bool deleteSuccess = shouldDeleteAvatar && newAvatarUrl != null;
+        final bool deleteSuccess = shouldDeleteAvatar;
 
         if (uploadSuccess || editSuccess || deleteSuccess) {
           request.avatar = newAvatarUrl;
@@ -86,10 +90,10 @@ Function loadEditPetThunk = ({
 
         final res = await Dio().authenticatedDio(ctx: ctx).patch('/pet/$petId', data: request.toJson());
         final CreatePetResDto createPetResDto = CreatePetResDto.fromJson(res.data);
+        Navigator.of(ctx).pop();
         store.dispatch(LoadEditPetSuccess());
         store.dispatch(loadPetsThunk(ctx: ctx));
         store.dispatch(loadPetThunk(ctx: ctx, petId: petId));
-        Navigator.of(ctx).pop();
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);

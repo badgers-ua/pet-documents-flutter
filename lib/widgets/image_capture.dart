@@ -2,19 +2,22 @@ import 'dart:io' show Platform;
 import 'dart:io' show File;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
+import 'package:pdoc/extensions/string.dart';
 
 class ImageCapture extends StatefulWidget {
   final Function(File file) onChange;
-  // TODO: Rethink image picker (CRUD operations)
-  final String? placeholderImageUrl;
+  final String noImageSvgAsset;
+  final String? initialImage;
 
   ImageCapture({
     required this.onChange,
-    this.placeholderImageUrl,
+    required this.noImageSvgAsset,
+    this.initialImage,
   });
 
   createState() => _ImageCaptureState();
@@ -22,6 +25,22 @@ class ImageCapture extends StatefulWidget {
 
 class _ImageCaptureState extends State<ImageCapture> {
   File? _imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    _setInitialImageFile();
+  }
+
+  Future<void> _setInitialImageFile() async {
+    if (widget.initialImage == null) {
+      return;
+    }
+    File formattedPickedFile = await widget.initialImage!.getFileFromCachedImage();
+    setState(() {
+      _imageFile = formattedPickedFile;
+    });
+  }
 
   Future<void> _cropImage() async {
     if (_imageFile == null) {
@@ -169,38 +188,55 @@ class _ImageCaptureState extends State<ImageCapture> {
       child: Column(
         children: <Widget>[
           if (_imageFile == null) ...[
-            TextField(
-              onTap: _showBottomSheet,
-              readOnly: true,
-              decoration: InputDecoration(
-                suffixIcon: Icon(Icons.image),
-                border: OutlineInputBorder(),
-                labelText: L10n.of(context).select_avatar,
-              ),
+            Column(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: SvgPicture.asset(
+                    widget.noImageSvgAsset,
+                    color: Theme.of(context).accentColor,
+                    height: 166,
+                    width: 166,
+                  ),
+                ),
+                SizedBox(height: ThemeConstants.spacing(1)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: _showBottomSheet,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
           if (_imageFile != null) ...[
             Column(
               children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  child: Image.file(_imageFile!),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.file(
+                    _imageFile!,
+                    width: 200,
+                    height: 166,
+                  ),
                 ),
                 SizedBox(height: ThemeConstants.spacing(1)),
-                Container(
-                  width: double.infinity,
-                  child: TextButton(
-                    style: TextButton.styleFrom(primary: Colors.white),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(L10n.of(context).delete_avatar),
-                        SizedBox(width: ThemeConstants.spacing(0.5)),
-                        Icon(Icons.delete),
-                      ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: _clear,
                     ),
-                    onPressed: _clear,
-                  ),
+                    SizedBox(width: ThemeConstants.spacing(1.5)),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: _showBottomSheet,
+                    ),
+                  ],
                 ),
               ],
             ),

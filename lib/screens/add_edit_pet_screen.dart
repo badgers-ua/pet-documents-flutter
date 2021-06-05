@@ -1,5 +1,4 @@
 import 'dart:io' show File, Platform;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -140,6 +139,10 @@ class AddEditPetScreen extends StatelessWidget {
     }
   }
 
+  SPECIES _getSpeciesByOptionLabel({required List<ModalSelectOption<SPECIES>> speciesOptions}) {
+    return  speciesOptions.firstWhere((element) => element.label == _speciesController.text).value;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ModalSelectOption<SPECIES>> speciesOptions = SPECIES.values.map((v) {
@@ -190,27 +193,27 @@ class AddEditPetScreen extends StatelessWidget {
           dispatchLoadCreatePetThunk: ({
             required BuildContext ctx,
             required CreatePetReqDto request,
-            required File? avatar,
+            required File? newAvatar,
           }) =>
               store.dispatch(
             loadCreatePetThunk(
               ctx: ctx,
               request: request,
-              avatar: avatar,
+              newAvatar: newAvatar,
             ),
           ),
           dispatchLoadEditPetThunk: ({
             required BuildContext ctx,
             required CreatePetReqDto request,
             required String petId,
-            required File avatar,
+            required File? newAvatar,
           }) =>
               store.dispatch(
             loadEditPetThunk(
               ctx: ctx,
               request: request,
               petId: petId,
-              avatar: avatar,
+              newAvatar: newAvatar,
             ),
           ),
         );
@@ -245,6 +248,9 @@ class AddEditPetScreen extends StatelessWidget {
                 padding: EdgeInsets.all(ThemeConstants.spacing(1)),
                 children: [
                   ImageCapture(
+                    initialImage: vm.pet?.avatar,
+                    noImageSvgAsset: ThemeConstants.getImageBySpecies(
+                        _speciesController.text.isNotEmpty ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions) : null),
                     onChange: (File file) {
                       _selectedAvatar = file;
                     },
@@ -379,9 +385,7 @@ class AddEditPetScreen extends StatelessWidget {
 
                               CreatePetReqDto createPetReqDto = CreatePetReqDto(
                                 name: _nameController.text.trim(),
-                                species: speciesOptions
-                                    .firstWhere((element) => element.label == _speciesController.text)
-                                    .value,
+                                species: _getSpeciesByOptionLabel(speciesOptions: speciesOptions),
                               );
 
                               if (_breedController.text.isNotEmpty) {
@@ -411,7 +415,7 @@ class AddEditPetScreen extends StatelessWidget {
                                 vm.dispatchLoadCreatePetThunk(
                                   ctx: context,
                                   request: createPetReqDto,
-                                  avatar: _selectedAvatar,
+                                  newAvatar: _selectedAvatar,
                                 );
                                 return;
                               }
@@ -420,7 +424,7 @@ class AddEditPetScreen extends StatelessWidget {
                                 ctx: context,
                                 request: createPetReqDto,
                                 petId: vm.pet!.id,
-                                avatar: _selectedAvatar,
+                                newAvatar: _selectedAvatar,
                               );
                             },
                       child: vm.isLoadingCreatePet || vm.isLoadingEditPet

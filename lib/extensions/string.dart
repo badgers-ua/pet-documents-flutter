@@ -1,15 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:pdoc/l10n/l10n.dart';
 
-extension EmailValidator on String {
+extension StringExtensions on String {
   bool isValidEmail() {
     return RegExp(
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
     ).hasMatch(this);
   }
-}
 
-extension RequiredValidator on String {
   String? requiredValidator({
     required String fieldName,
     required BuildContext ctx,
@@ -19,9 +20,7 @@ extension RequiredValidator on String {
     }
     return null;
   }
-}
 
-extension PasswordValidator on String {
   bool isValidPassword() {
     return this.length > 5 && this.length < 21;
   }
@@ -29,10 +28,14 @@ extension PasswordValidator on String {
   bool isPasswordMatchesWith(String password) {
     return this == password;
   }
-}
 
-extension BearerTokenFormatter on String {
   String toBearerToken() {
     return 'Bearer $this';
+  }
+
+  Future<File> getFileFromCachedImage() async {
+    final cache = DefaultCacheManager();
+    final file = await cache.getSingleFile(this);
+    return file;
   }
 }
