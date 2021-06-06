@@ -299,6 +299,7 @@ class AddEditPetScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
+                  // TODO: Hide under accordion
                   TextFormField(
                     controller: _breedController,
                     onTap: () => vm.isLoadingBreeds

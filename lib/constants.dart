@@ -7,7 +7,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/index.dart';
-import 'package:pdoc/store/user/effects.dart';
 import 'package:redux/redux.dart';
 
 import 'l10n/l10n.dart';
@@ -174,7 +173,7 @@ class FirebaseConstants {
 
 class Api {
   // Android
-  static const baseUrl = 'http://10.0.2.2:5000/api/v2';
+  // static const baseUrl = 'http://10.0.2.2:5000/api/v2';
 // static const baseUrl = 'http://localhost:5000/api/v2';
-// static const baseUrl = 'https://p-doc.com/api/v2';
+static const baseUrl = 'https://p-doc.com/api/v2';
 }

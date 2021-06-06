@@ -168,3 +168,6 @@ class _MyAppViewModel {
     required this.error,
   });
 }
+
+// TODO: Disable landscape mode
+// TODO: Firebase analytics

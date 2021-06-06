@@ -48,6 +48,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
     required _PetProfileScreenViewModel vm,
   }) {
     return SpeedDial(
+      // TODO: хуйово, замутити іконку не меню (олівець)
       icon: Icons.menu,
       backgroundColor: Theme.of(ctx).accentColor,
       foregroundColor: Theme.of(ctx).bottomAppBarColor,
@@ -64,6 +65,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
             Navigator.of(ctx).pushNamed(AddEditPetScreen.routeName);
           },
         ),
+        // TODO: додати інфо шо апка не юзає імейл для гівно розсилок
         SpeedDialChild(
           child: Icon(Icons.person_add),
           label: L10n.of(ctx).add_owner,

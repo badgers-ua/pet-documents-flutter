@@ -76,6 +76,7 @@ class EventRowWidget extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
               text: prefix,
+              // TODO: White theme bug (white text)
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

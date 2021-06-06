@@ -108,11 +108,11 @@ class HomeScreen extends StatelessWidget {
               ),
               Column(
                 children: vm.futureEvents
-                    .map((e) => Card(
-                            child: EventRowWidget(
+                // TODO: List divider
+                    .map((e) => EventRowWidget(
                           event: e,
                           prefix: '(${vm.pets.firstWhere((element) => element.id == e.petId).name}): ',
-                        )))
+                        ))
                     .toList(),
               ),
             ],

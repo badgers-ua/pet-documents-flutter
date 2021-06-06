@@ -26,7 +26,7 @@
   },
   "chats_screen_app_bar_text": "Чати",
   "settings_screen_app_bar_text": "Налаштування",
-  "add_edit_pet_screen_app_bar_text": "Створити улюбленця",
+  "add_edit_pet_screen_app_bar_text": "Додати улюбленця",
   "add_edit_pet_screen_app_bar_edit_text": "Редагувати {petName}",
   "@add_edit_pet_screen_app_bar_edit_text": {
     "placeholders": {

@@ -31,6 +31,7 @@ class PetCardWidget extends StatelessWidget {
               ),
               Spacer(),
               Text(pet.name, style: Theme.of(context).textTheme.headline6),
+              // TODO: Age instead of owners
               Text(L10n.of(context).pet_card_widget_subtitle(pet.owners.length.toString())),
             ],
           ),
