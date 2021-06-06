@@ -21,7 +21,6 @@ class PetEventsSLiverListScreen extends StatelessWidget {
             .where((element) => element.petId == store.state.pet.data!.id)
             .toList();
         // TODO: Future events first
-        // TODO: Differentiate using list titles past and future events
         events.sortByDate();
 
         return _PetEventsSLiverListScreenViewModel(

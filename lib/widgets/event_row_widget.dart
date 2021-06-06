@@ -98,6 +98,11 @@ class EventRowWidget extends StatelessWidget {
             onTap: onTap,
             child: listTile,
           )
-        : listTile;
+        : Column(
+          children: [
+            listTile,
+            Divider(),
+          ],
+        );
   }
 }
