@@ -5,7 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdoc/extensions/string.dart';
 import 'package:pdoc/l10n/l10n.dart';
-import 'package:pdoc/store/auth/effects.dart';
+import 'package:pdoc/models/auth.dart';
+import 'package:pdoc/store/auth/actions.dart';
 
 import '../constants.dart';
 import '../main.dart';
@@ -19,23 +20,34 @@ extension AuthenticatedDio on Dio {
     ));
     dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (RequestOptions requestOptions, handler) {
+        onRequest: (RequestOptions requestOptions, handler) async {
           dio.interceptors.requestLock.lock();
-          final String accessToken = MyApp.store.state.auth.data!.accessToken!;
 
           final int expiresAt = MyApp.store.state.auth.data!.expiresAt!;
           final int now = DateTime.now().microsecondsSinceEpoch;
-          final int jsNow =
-              int.parse(now.toString().substring(0, now.toString().length - 6));
+          final int jsNow = int.parse(now.toString().substring(0, now.toString().length - 6));
           final bool expiresInFiveMins = (expiresAt - jsNow) <= 300;
+          final String currentToken = MyApp.store.state.auth.data!.accessToken!;
+
+          String accessToken = currentToken;
 
           if (expiresInFiveMins) {
-            MyApp.store
-                .dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: ctx));
+            final Auth? auth = await RefreshTokenConstants.loadRefreshToken(store: MyApp.store, ctx: ctx);
+
+            if (auth == null) {
+              return;
+            }
+
+            MyApp.store.dispatch(
+              LoadAccessTokenSuccess(
+                  payload: auth
+              ),
+            );
+
+            accessToken = auth.accessToken!;
           }
 
-          requestOptions.headers[HttpHeaders.authorizationHeader] =
-              accessToken.toBearerToken();
+          requestOptions.headers[HttpHeaders.authorizationHeader] = accessToken.toBearerToken();
           dio.interceptors.requestLock.unlock();
           return handler.next(requestOptions);
         },
@@ -51,9 +63,7 @@ extension DioErrorExtension on DioError {
       final String errorMsg = this.response!.data["message"];
       return errorMsg;
     }
-    final String errorMsg = this.message.isNotEmpty
-        ? this.message
-        : L10n.of(ctx).something_went_wrong;
+    final String errorMsg = this.message.isNotEmpty ? this.message : L10n.of(ctx).something_went_wrong;
 
     return errorMsg;
   }

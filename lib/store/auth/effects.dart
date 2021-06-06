@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/dto/request/refresh_token_req_dto.dart';
 import 'package:pdoc/models/dto/request/social_sign_in_req_dto.dart';
@@ -14,49 +13,22 @@ import '../../constants.dart';
 import '../index.dart';
 import 'actions.dart';
 
-final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-
-setRefreshToken(String refreshToken) async {
-  await secureStorage.write(
-    key: 'refresh_token',
-    value: refreshToken,
-  );
-}
-
-clearRefreshToken() async {
-  await secureStorage.delete(key: 'refresh_token');
-}
-
 Function loadAccessTokenFromRefreshTokenThunk = ({required BuildContext ctx}) => (Store<RootState> store) async {
       store.dispatch(LoadAccessToken());
-      final String refreshToken = await secureStorage.read(key: 'refresh_token') ?? '';
-      final String deviceToken = store.state.deviceToken.data!.deviceToken;
-      final RefreshTokenReqDto dto = RefreshTokenReqDto(
-        refreshToken: refreshToken,
-        deviceToken: deviceToken,
-      );
-      try {
-        final response = await Dio().post('${Api.baseUrl}/auth/refresh-token', data: dto);
-        final SignInResDto resDto = SignInResDto.fromJson(response.data);
-
-        setRefreshToken(resDto.refreshToken);
-
-        store.dispatch(
-          LoadAccessTokenSuccess(
-            payload: Auth(
-              accessToken: resDto.accessToken,
-              refreshToken: resDto.refreshToken,
-              expiresAt: resDto.expiresAt,
-              isAuthenticated: true,
-            ),
-          ),
-        );
-        store.dispatch(loadUserThunk(ctx: ctx));
-      } on DioError catch (e) {
-        final String errorMsg = e.getResponseError(ctx: ctx);
-        e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
-        store.dispatch(LoadAccessTokenFailure(payload: errorMsg));
+      final Auth? auth = await RefreshTokenConstants.loadRefreshToken(ctx: ctx, store: store);
+      if (auth == null) {
+        return;
       }
+      store.dispatch(
+        LoadAccessTokenSuccess(
+            payload: auth
+        ),
+      );
+
+      if (store.state.user.data != null) {
+        return;
+      }
+      store.dispatch(loadUserThunk(ctx: ctx));
     };
 
 Function loadSocialSignInThunk = ({
@@ -72,7 +44,7 @@ Function loadSocialSignInThunk = ({
 
         Navigator.of(ctx).pushReplacementNamed(TabsScreen.routeName);
 
-        setRefreshToken(resDto.refreshToken);
+        SecureStorageConstants.setRefreshToken(resDto.refreshToken);
 
         store.dispatch(
           LoadSignInSuccess(

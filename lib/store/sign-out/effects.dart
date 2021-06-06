@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/dto/request/sign_out_req_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:pdoc/store/add-owner/actions.dart';
 import 'package:pdoc/store/add-pet/actions.dart';
 import 'package:pdoc/store/auth/actions.dart';
-import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/breeds/actions.dart';
 import 'package:pdoc/store/create-event/actions.dart';
 import 'package:pdoc/store/delete-event/actions.dart';
@@ -52,7 +52,7 @@ Function _clearStore = ({
   required BuildContext ctx,
 }) =>
     (Store<RootState> store) async {
-      clearRefreshToken();
+      SecureStorageConstants.clearRefreshToken();
       store.dispatch(ClearAddOwnerState());
       store.dispatch(ClearAddPetState());
       store.dispatch(ClearAuthState());
