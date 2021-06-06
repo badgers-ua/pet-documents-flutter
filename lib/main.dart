@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/device_token.dart';
-import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/screens/add_edit_event_screen.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (BuildContext context) => StoreConnector<RootState, _MyAppViewModel>(
             onInit: (store) async {
-              if ((await FlutterSecureStorage().read(key: 'refresh_token') ?? '').isEmpty) {
+              if ((await SecureStorageConstants.getRefreshToken()).isEmpty) {
                 store.dispatch(LoadAccessTokenFailure(payload: 'No refresh token'));
                 return;
               }
@@ -126,26 +126,26 @@ class _MyAppState extends State<MyApp> {
             },
             converter: (store) {
               final Auth? auth = store.state.auth.data;
-              final UserResDto? user = store.state.user.data;
               final bool isAuthenticated = auth != null && auth.isAuthenticated;
               return _MyAppViewModel(
                 isAuthenticated: isAuthenticated,
                 isInitialLoadCompleted: store.state.auth.isInitialLoadCompleted,
-                isUserLoaded: user != null,
               );
             },
+            ignoreChange: (state) => !state.auth.isInitialLoadCompleted,
             builder: (context, _MyAppViewModel vm) {
-              // TODO: Infinite loader if on app launch API not available
-              if (!vm.isInitialLoadCompleted && !vm.isUserLoaded) {
+              if (!vm.isInitialLoadCompleted) {
                 return Scaffold(
                   body: Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
               }
+
               if (!vm.isAuthenticated) {
                 return SignInScreen();
               }
+
               return TabsScreen();
             },
           ),
@@ -158,11 +158,9 @@ class _MyAppState extends State<MyApp> {
 class _MyAppViewModel {
   final bool isAuthenticated;
   final bool isInitialLoadCompleted;
-  final bool isUserLoaded;
 
   _MyAppViewModel({
     required this.isAuthenticated,
     required this.isInitialLoadCompleted,
-    required this.isUserLoaded,
   });
 }
