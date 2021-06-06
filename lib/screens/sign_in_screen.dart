@@ -8,10 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/auth.dart';
-import 'package:pdoc/models/dto/request/social_sign_in_req_dto.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/index.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInScreen extends StatelessWidget {
   static const routeName = '/sign-in';
@@ -20,36 +18,7 @@ class SignInScreen extends StatelessWidget {
     required BuildContext ctx,
     required _SignInScreenScreenViewModel vm,
   }) async {
-    final PLATFORM? platform = getPlatformByPlatformName(osName: Platform.operatingSystem);
-
-    if (platform == null) {
-      print('Unknown platform');
-      return;
-    }
-
-    final googleUser = await GoogleSignIn().signIn();
-    if (googleUser == null) {
-      return;
-    }
-
-    final GoogleSignInAccount? account = googleUser;
-
-    if (account == null) {
-      return;
-    }
-
-    final SocialSignInReqDto request = SocialSignInReqDto(
-      token: (await account.authentication).idToken!,
-      socialType: SOCIAL_TYPE.GOOGLE,
-      email: account.email,
-      firstName: account.displayName!.split(" ")[0],
-      lastName: account.displayName!.split(" ")[1],
-      deviceToken: vm.deviceToken,
-      platform: platform,
-      avatar: account.photoUrl!,
-    );
-
-    vm.dispatchLoadSocialSignInThunk(ctx: ctx, request: request);
+    vm.dispatchLoadGoogleFirebaseAuth(ctx: ctx);
   }
 
   @override
@@ -60,13 +29,11 @@ class SignInScreen extends StatelessWidget {
           authState: store.state.auth,
           error: store.state.deviceToken.errorMessage.isNotEmpty,
           deviceToken: store.state.deviceToken.data?.deviceToken ?? '',
-          dispatchLoadSocialSignInThunk: ({
+          dispatchLoadGoogleFirebaseAuth: ({
             required BuildContext ctx,
-            required SocialSignInReqDto request,
           }) =>
-              store.dispatch(loadSocialSignInThunk(
+              store.dispatch(loadGoogleFirebaseAuth(
             ctx: ctx,
-            request: request,
           )),
         );
       },
@@ -132,13 +99,13 @@ class SignInScreen extends StatelessWidget {
 }
 
 class _SignInScreenScreenViewModel {
-  final dispatchLoadSocialSignInThunk;
+  final dispatchLoadGoogleFirebaseAuth;
   final String deviceToken;
   final bool error;
   final AuthState authState;
 
   _SignInScreenScreenViewModel({
-    required this.dispatchLoadSocialSignInThunk,
+    required this.dispatchLoadGoogleFirebaseAuth,
     required this.authState,
     required this.error,
     required this.deviceToken,

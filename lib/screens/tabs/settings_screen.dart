@@ -60,6 +60,8 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+// TODO: send you feedback to developer
+
 class _SettingsScreenViewModel {
   final dispatchSignOut;
   final UserResDto? user;

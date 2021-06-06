@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/device_token.dart';
 import 'package:pdoc/screens/add_edit_event_screen.dart';
@@ -45,12 +44,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initFCM();
-    initFirebaseAuth();
-  }
-
-  void initFirebaseAuth() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.signInAnonymously();
   }
 
   void initFCM() async {
@@ -171,3 +164,4 @@ class _MyAppViewModel {
 
 // TODO: Disable landscape mode
 // TODO: Firebase analytics
+// TODO: Firebase crashlytics

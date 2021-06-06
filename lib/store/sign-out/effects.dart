@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdoc/constants.dart';
+import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/request/sign_out_req_dto.dart';
 import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:pdoc/store/add-owner/actions.dart';
@@ -52,19 +54,25 @@ Function _clearStore = ({
   required BuildContext ctx,
 }) =>
     (Store<RootState> store) async {
-      SecureStorageConstants.clearRefreshToken();
-      store.dispatch(ClearAddOwnerState());
-      store.dispatch(ClearAddPetState());
-      store.dispatch(ClearAuthState());
-      store.dispatch(ClearBreedsState());
-      store.dispatch(ClearCreateEventState());
-      store.dispatch(ClearDeleteEventState());
-      store.dispatch(ClearDeletePetState());
-      store.dispatch(ClearEditEventState());
-      store.dispatch(ClearEditPetState());
-      store.dispatch(ClearEventsState());
-      store.dispatch(ClearPetState());
-      store.dispatch(ClearPetsState());
-      store.dispatch(ClearRemoveOwnerState());
-      store.dispatch(ClearUserState());
+      try {
+        await FirebaseAuth.instance.signOut();
+      } catch (e) {
+        ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).something_went_wrong);
+      } finally {
+        SecureStorageConstants.clearRefreshToken();
+        store.dispatch(ClearAddOwnerState());
+        store.dispatch(ClearAddPetState());
+        store.dispatch(ClearAuthState());
+        store.dispatch(ClearBreedsState());
+        store.dispatch(ClearCreateEventState());
+        store.dispatch(ClearDeleteEventState());
+        store.dispatch(ClearDeletePetState());
+        store.dispatch(ClearEditEventState());
+        store.dispatch(ClearEditPetState());
+        store.dispatch(ClearEventsState());
+        store.dispatch(ClearPetState());
+        store.dispatch(ClearPetsState());
+        store.dispatch(ClearRemoveOwnerState());
+        store.dispatch(ClearUserState());
+      }
     };
