@@ -23,6 +23,7 @@ class PetEventsSLiverListScreen extends StatelessWidget {
         events.sortByDate();
 
         return _PetEventsSLiverListScreenViewModel(
+          error: store.state.events.errorMessage.isNotEmpty || store.state.pet.errorMessage.isNotEmpty,
           isLoadingEvents: store.state.events.isLoading,
           isLoadingPet: store.state.pet.isLoading,
           events: events,
@@ -34,6 +35,14 @@ class PetEventsSLiverListScreen extends StatelessWidget {
           return SliverFillRemaining(
             child: Center(
               child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (vm.error) {
+          return SliverFillRemaining(
+            child: Center(
+              child: Text(L10n.of(context).something_went_wrong),
             ),
           );
         }
@@ -69,12 +78,14 @@ class PetEventsSLiverListScreen extends StatelessWidget {
 class _PetEventsSLiverListScreenViewModel {
   final bool isLoadingEvents;
   final bool isLoadingPet;
+  final bool error;
   final PetResDto? pet;
   final List<EventResDto> events;
 
   _PetEventsSLiverListScreenViewModel({
     required this.isLoadingEvents,
     required this.isLoadingPet,
+    required this.error,
     required this.events,
     required this.pet,
   });

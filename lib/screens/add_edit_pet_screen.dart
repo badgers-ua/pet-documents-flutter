@@ -126,7 +126,7 @@ class AddEditPetScreen extends StatelessWidget {
     if (pet.dateOfBirth != null) {
       final DateTime dateTimeBirth = DateTime.parse(pet.dateOfBirth!).toLocal();
       final String formattedDate =
-      intl.DateFormat.yMMMd(Localizations.localeOf(ctx).languageCode).format(dateTimeBirth).toString();
+          intl.DateFormat.yMMMd(Localizations.localeOf(ctx).languageCode).format(dateTimeBirth).toString();
       _dateController.text = formattedDate;
       _selectedDate = DatePickerValue(dateTime: dateTimeBirth, formattedDate: formattedDate);
     }
@@ -139,7 +139,7 @@ class AddEditPetScreen extends StatelessWidget {
   }
 
   SPECIES _getSpeciesByOptionLabel({required List<ModalSelectOption<SPECIES>> speciesOptions}) {
-    return  speciesOptions.firstWhere((element) => element.label == _speciesController.text).value;
+    return speciesOptions.firstWhere((element) => element.label == _speciesController.text).value;
   }
 
   @override
@@ -170,7 +170,7 @@ class AddEditPetScreen extends StatelessWidget {
 
         final SPECIES? selectedSpecies = store.state.breeds.selectedSpecies;
         final List<StaticResDto> breeds =
-            (selectedSpecies != null ? store.state.breeds.data![selectedSpecies] ?? [] : []);
+            (selectedSpecies != null ? store.state.breeds.data[selectedSpecies] ?? [] : []);
 
         final List<ModalSelectOption<String>> breedOptions =
             breeds.map((e) => ModalSelectOption(label: e.name, value: e.id)).toList();
@@ -180,6 +180,7 @@ class AddEditPetScreen extends StatelessWidget {
           breedOptions: breedOptions,
           isEditMode: isEditMode,
           pet: currentPet,
+          error: store.state.pet.errorMessage.isNotEmpty,
           isLoadingCreatePet: store.state.addPet.isLoading,
           isLoadingEditPet: store.state.editPet.isLoading,
           dispatchLoadBreedsBySpeciesThunk: ({
@@ -220,6 +221,15 @@ class AddEditPetScreen extends StatelessWidget {
         return vm;
       },
       builder: (context, _AddEditPetScreenViewModel vm) {
+        if (vm.error) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: Text(L10n.of(context).something_went_wrong),
+            ),
+          );
+        }
+
         if (vm.isEditMode) {
           _presetForm(
             pet: vm.pet!,
@@ -248,8 +258,9 @@ class AddEditPetScreen extends StatelessWidget {
                 children: [
                   ImageCapture(
                     initialImage: vm.pet?.avatar,
-                    noImageSvgAsset: ThemeConstants.getImageBySpecies(
-                        _speciesController.text.isNotEmpty ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions) : null),
+                    noImageSvgAsset: ThemeConstants.getImageBySpecies(_speciesController.text.isNotEmpty
+                        ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions)
+                        : null),
                     onChange: (File file) {
                       _selectedAvatar = file;
                     },
@@ -451,6 +462,7 @@ class _AddEditPetScreenViewModel {
   final bool isLoadingEditPet;
   final bool isLoadingBreeds;
   final bool isEditMode;
+  final bool error;
   final PetResDto? pet;
   final List<ModalSelectOption<String>> breedOptions;
 
@@ -461,6 +473,7 @@ class _AddEditPetScreenViewModel {
     required this.isLoadingBreeds,
     required this.isLoadingCreatePet,
     required this.isLoadingEditPet,
+    required this.error,
     required this.breedOptions,
     required this.isEditMode,
     required this.pet,

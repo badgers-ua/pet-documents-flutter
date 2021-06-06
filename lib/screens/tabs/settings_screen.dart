@@ -16,6 +16,7 @@ class SettingsScreen extends StatelessWidget {
         return _SettingsScreenViewModel(
           isLoadingUser: store.state.user.isLoading,
           user: store.state.user.data,
+          error: store.state.user.errorMessage.isNotEmpty,
           dispatchSignOut: () => store.dispatch(loadSignOutThunk(
             ctx: context,
             request: SignOutReqDto(deviceToken: store.state.deviceToken.data!.deviceToken),
@@ -27,6 +28,10 @@ class SettingsScreen extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(),
           );
+        }
+
+        if (vm.error) {
+          return Center(child: L10n.of(context).something_went_wrong);
         }
 
         final UserResDto user = vm.user!;
@@ -59,10 +64,12 @@ class _SettingsScreenViewModel {
   final dispatchSignOut;
   final UserResDto? user;
   final bool isLoadingUser;
+  final bool error;
 
   _SettingsScreenViewModel({
     required this.dispatchSignOut,
     required this.user,
     required this.isLoadingUser,
+    required this.error,
   });
 }

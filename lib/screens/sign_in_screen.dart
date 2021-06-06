@@ -58,7 +58,8 @@ class SignInScreen extends StatelessWidget {
       converter: (store) {
         return _SignInScreenScreenViewModel(
           authState: store.state.auth,
-          deviceToken: store.state.deviceToken.data!.deviceToken,
+          error: store.state.deviceToken.errorMessage.isNotEmpty,
+          deviceToken: store.state.deviceToken.data?.deviceToken ?? '',
           dispatchLoadSocialSignInThunk: ({
             required BuildContext ctx,
             required SocialSignInReqDto request,
@@ -71,6 +72,15 @@ class SignInScreen extends StatelessWidget {
       },
       distinct: true,
       builder: (context, _SignInScreenScreenViewModel vm) {
+        if (vm.error) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: Text(L10n.of(context).something_went_wrong),
+            ),
+          );
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: Center(
@@ -124,11 +134,13 @@ class SignInScreen extends StatelessWidget {
 class _SignInScreenScreenViewModel {
   final dispatchLoadSocialSignInThunk;
   final String deviceToken;
+  final bool error;
   final AuthState authState;
 
   _SignInScreenScreenViewModel({
     required this.dispatchLoadSocialSignInThunk,
     required this.authState,
+    required this.error,
     required this.deviceToken,
   });
 }

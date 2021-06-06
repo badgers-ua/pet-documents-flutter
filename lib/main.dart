@@ -125,11 +125,13 @@ class _MyAppState extends State<MyApp> {
               store.dispatch(loadAccessTokenFromRefreshTokenThunk(ctx: context));
             },
             converter: (store) {
-              final Auth? auth = store.state.auth.data;
+              final AuthState authState = store.state.auth;
+              final Auth? auth = authState.data;
               final bool isAuthenticated = auth != null && auth.isAuthenticated;
               return _MyAppViewModel(
+                error: authState.errorMessageAccessToken.isNotEmpty || authState.errorMessage.isNotEmpty,
                 isAuthenticated: isAuthenticated,
-                isInitialLoadCompleted: store.state.auth.isInitialLoadCompleted,
+                isInitialLoadCompleted: authState.isInitialLoadCompleted,
               );
             },
             ignoreChange: (state) => !state.auth.isInitialLoadCompleted,
@@ -158,11 +160,11 @@ class _MyAppState extends State<MyApp> {
 class _MyAppViewModel {
   final bool isAuthenticated;
   final bool isInitialLoadCompleted;
+  final bool error;
 
   _MyAppViewModel({
     required this.isAuthenticated,
     required this.isInitialLoadCompleted,
+    required this.error,
   });
 }
-
-// TODO: Handle store error state in all screens

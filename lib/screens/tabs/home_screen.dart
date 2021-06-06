@@ -45,6 +45,7 @@ class HomeScreen extends StatelessWidget {
 
         return _HomeScreenViewModel(
           pets: store.state.pets.data!,
+          error: store.state.pets.errorMessage.isNotEmpty || store.state.events.errorMessage.isNotEmpty,
           futureEvents: futureEvents.length > 2 ? futureEvents.sublist(0, 3) : futureEvents,
           isLoadingPets: store.state.pets.isLoading,
           isLoadingEvents: store.state.events.isLoading,
@@ -53,6 +54,12 @@ class HomeScreen extends StatelessWidget {
       builder: (context, _HomeScreenViewModel vm) {
         if (vm.isLoadingPets || vm.isLoadingEvents) {
           return Center(child: CircularProgressIndicator());
+        }
+
+        if (vm.error) {
+          return Center(
+            child: Text(L10n.of(context).something_went_wrong),
+          );
         }
 
         if (vm.pets.isEmpty) {
@@ -85,8 +92,7 @@ class HomeScreen extends StatelessWidget {
                 return PetCardWidget(
                   pet: vm.pets[index],
                   onTap: () {
-                    handlePetCardPressed(
-                        ctx: context, petId: vm.pets[index].id);
+                    handlePetCardPressed(ctx: context, petId: vm.pets[index].id);
                   },
                 );
               },
@@ -105,8 +111,7 @@ class HomeScreen extends StatelessWidget {
                     .map((e) => Card(
                             child: EventRowWidget(
                           event: e,
-                          prefix:
-                              '(${vm.pets.firstWhere((element) => element.id == e.petId).name}): ',
+                          prefix: '(${vm.pets.firstWhere((element) => element.id == e.petId).name}): ',
                         )))
                     .toList(),
               ),
@@ -122,12 +127,14 @@ class _HomeScreenViewModel {
   final List<PetPreviewResDto> pets;
   final List<EventResDto> futureEvents;
   final bool isLoadingPets;
+  final bool error;
   final bool isLoadingEvents;
 
   _HomeScreenViewModel({
     required this.pets,
     required this.futureEvents,
     required this.isLoadingPets,
+    required this.error,
     required this.isLoadingEvents,
   });
 }

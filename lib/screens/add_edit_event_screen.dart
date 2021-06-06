@@ -174,6 +174,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
           isEditMode: props.event != null,
           event: props.event,
           pet: store.state.pet.data,
+          error: store.state.pet.errorMessage.isNotEmpty,
           isLoadingCreateEvent: store.state.createEvent.isLoading,
           isLoadingEditEvent: store.state.editEvent.isLoading,
           isLoadingDeleteEvent: store.state.deleteEvent.isLoading,
@@ -218,10 +219,11 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
           );
         }
 
-        if (vm.pet == null) {
+        if (vm.error) {
           return Scaffold(
+            appBar: AppBar(),
             body: Center(
-              child: Text("No Pet"),
+              child: Text(L10n.of(context).something_went_wrong),
             ),
           );
         }
@@ -399,6 +401,7 @@ class _AddEditEventScreenViewModel {
   final bool isLoadingEditEvent;
   final bool isLoadingDeleteEvent;
   final bool isEditMode;
+  final bool error;
   final dispatchLoadCreateEventThunk;
   final dispatchLoadEditEventThunk;
   final dispatchDeleteEventThunk;
@@ -410,6 +413,7 @@ class _AddEditEventScreenViewModel {
     required this.isLoadingEditEvent,
     required this.isEditMode,
     required this.isLoadingDeleteEvent,
+    required this.error,
     required this.dispatchLoadCreateEventThunk,
     required this.dispatchLoadEditEventThunk,
     required this.dispatchDeleteEventThunk,

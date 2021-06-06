@@ -211,9 +211,10 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         final AppState<PetResDto> petState = store.state.pet;
         final AppState<UserResDto> userState = store.state.user;
         return _PetProfileScreenViewModel(
+          error: petState.errorMessage.isNotEmpty || userState.errorMessage.isNotEmpty,
           removeOwnerOptions: petState.data == null
               ? []
-              : petState.data!.owners
+              : (petState.data?.owners ?? [])
                   .map(
                     (e) => ModalSelectOption(label: '${e.firstName} ${e.lastName}', value: e.id),
                   )
@@ -249,14 +250,20 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       builder: (context, _PetProfileScreenViewModel vm) {
         if (vm.isLoadingPet || vm.isLoadingUser) {
           return Scaffold(
+            appBar: AppBar(),
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
         }
 
-        if (vm.pet == null) {
-          return Scaffold();
+        if (vm.error) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: Text(L10n.of(context).something_went_wrong),
+            ),
+          );
         }
 
         final PetResDto pet = vm.pet!;
@@ -368,6 +375,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 class _PetProfileScreenViewModel {
   final bool isLoadingPet;
   final bool isLoadingUser;
+  final bool error;
   final PetResDto? pet;
   final UserResDto? user;
   final List<ModalSelectOption> removeOwnerOptions;
@@ -377,6 +385,7 @@ class _PetProfileScreenViewModel {
   _PetProfileScreenViewModel({
     required this.isLoadingPet,
     required this.isLoadingUser,
+    required this.error,
     required this.pet,
     required this.user,
     required this.removeOwnerOptions,
