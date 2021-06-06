@@ -164,3 +164,5 @@ class _MyAppViewModel {
     required this.isInitialLoadCompleted,
   });
 }
+
+// TODO: Handle store error state in all screens
