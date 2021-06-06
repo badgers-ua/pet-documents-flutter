@@ -27,9 +27,6 @@ class PetCardWidget extends StatelessWidget {
                 child: SvgPicture.asset(
                   ThemeConstants.getImageBySpecies(pet.species),
                   color: Theme.of(context).accentColor,
-                  // TODO: Responsive
-                  width: 72,
-                  height: 72,
                 ),
               ),
               Spacer(),
