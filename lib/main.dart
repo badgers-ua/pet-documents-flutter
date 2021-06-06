@@ -166,3 +166,4 @@ class _MyAppViewModel {
 
 // TODO: Firebase analytics
 // TODO: Firebase crashlytics
+// TODO: Bigger buttons
