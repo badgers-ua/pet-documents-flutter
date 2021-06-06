@@ -48,6 +48,7 @@ String getEventLabel({
   }
 }
 
+// TODO: Born/Dead event
 enum EVENT {
   @JsonValue(0)
   VACCINATION,
