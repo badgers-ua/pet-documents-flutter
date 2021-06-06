@@ -370,6 +370,9 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                               if (!_validateForm()) {
                                 return;
                               }
+
+                              // TODO: Sending nulls to API
+
                               _handleSubmit(
                                 pet: vm.pet!,
                                 ctx: context,
