@@ -15,11 +15,10 @@ class EventRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Users local format
-    final String formattedDateMonth = intl.DateFormat('dd/MM')
+    final String formattedDateMonth = intl.DateFormat.Md(Localizations.localeOf(context).languageCode)
         .format(DateTime.parse(event.date).toLocal())
         .toString();
-    final String formattedYear = intl.DateFormat('yyyy')
+    final String formattedYear = intl.DateFormat.y(Localizations.localeOf(context).languageCode)
         .format(DateTime.parse(event.date).toLocal())
         .toString();
 

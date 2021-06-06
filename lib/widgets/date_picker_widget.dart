@@ -42,8 +42,7 @@ class DatePickerWidget extends StatelessWidget {
                 Navigator.of(ctx).pop();
 
                 final String formattedDate =
-                    // TODO: Users local format
-                    intl.DateFormat('dd/MM/yyyy').format(v).toString();
+                    intl.DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(v).toString();
                 controller.text = formattedDate;
                 if (onFieldSubmitted != null) {
                   onFieldSubmitted!(

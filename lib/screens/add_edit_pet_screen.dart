@@ -126,8 +126,7 @@ class AddEditPetScreen extends StatelessWidget {
     if (pet.dateOfBirth != null) {
       final DateTime dateTimeBirth = DateTime.parse(pet.dateOfBirth!).toLocal();
       final String formattedDate =
-          // TODO: Users local format
-          intl.DateFormat('dd/MM/yyyy').format(dateTimeBirth).toString();
+      intl.DateFormat.yMMMd(Localizations.localeOf(ctx).languageCode).format(dateTimeBirth).toString();
       _dateController.text = formattedDate;
       _selectedDate = DatePickerValue(dateTime: dateTimeBirth, formattedDate: formattedDate);
     }

@@ -56,8 +56,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
 
     final DateTime eventDate = DateTime.parse(event.date).toLocal();
     final String formattedDate =
-        // TODO: Users local format
-        intl.DateFormat('dd/MM/yyyy').format(eventDate).toString();
+        intl.DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(eventDate).toString();
     _dateController.text = formattedDate;
     _selectedDate = DatePickerValue(dateTime: eventDate, formattedDate: formattedDate);
 
