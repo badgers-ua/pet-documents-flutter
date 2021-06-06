@@ -61,8 +61,7 @@ class EventRowWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      if (notificationIconWidget != null)
-                        notificationIconWidget,
+                      if (notificationIconWidget != null) notificationIconWidget,
                       Icon(Icons.arrow_forward_ios, color: Colors.grey),
                     ],
                   ),
@@ -76,7 +75,6 @@ class EventRowWidget extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
               text: prefix,
-              // TODO: White theme bug (white text)
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -85,6 +83,9 @@ class EventRowWidget extends StatelessWidget {
               text: getEventLabel(
                 ctx: context,
                 event: event.type,
+              ),
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
