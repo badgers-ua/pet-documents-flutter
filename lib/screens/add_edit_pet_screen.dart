@@ -18,20 +18,37 @@ import 'package:pdoc/widgets/image_capture.dart';
 import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:pdoc/extensions/string.dart';
 
-class AddEditPetScreen extends StatelessWidget {
+class AddEditPetScreen extends StatefulWidget {
   static const routeName = '/pet-create';
+
+  @override
+  _AddEditPetScreenState createState() => _AddEditPetScreenState();
+}
+
+class _AddEditPetScreenState extends State<AddEditPetScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController _speciesController = TextEditingController();
+
   final TextEditingController _breedController = TextEditingController();
+
   final TextEditingController _genderController = TextEditingController();
+
   final TextEditingController _dateController = TextEditingController();
+
   final TextEditingController _weightController = TextEditingController();
+
   final TextEditingController _colorController = TextEditingController();
+
   final TextEditingController _descriptionController = TextEditingController();
 
   DatePickerValue? _selectedDate;
+
   File? _selectedAvatar;
+
+  bool isExpanded = false;
 
   bool _validateForm() {
     return _formKey.currentState != null && _formKey.currentState!.validate();
@@ -299,89 +316,113 @@ class AddEditPetScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
-                  // TODO: Hide under accordion
-                  TextFormField(
-                    controller: _breedController,
-                    onTap: () => vm.isLoadingBreeds
-                        ? null
-                        : showModalSelect(
-                            modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
-                            ctx: context,
-                            options: vm.breedOptions,
-                            controller: _breedController,
-                            vm: vm,
-                            isBreeds: true,
-                          ),
-                    readOnly: true,
-                    enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
-                    decoration: InputDecoration(
-                      suffixIconConstraints: BoxConstraints(
-                        maxWidth: 48,
-                        maxHeight: 25,
-                        minWidth: 48,
-                        minHeight: 25,
-                      ),
-                      suffixIcon: !vm.isLoadingBreeds
-                          ? Icon(Icons.keyboard_arrow_right)
-                          : SizedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 23),
-                                child: CircularProgressIndicator(),
+                  ExpansionPanelList(
+                    elevation: 0,
+                    expansionCallback: (int index, bool isExpanded) {
+                      setState(() {
+                        this.isExpanded = !this.isExpanded;
+                      });
+                    },
+                    children: [
+                      ExpansionPanel(
+                        canTapOnHeader: true,
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        headerBuilder: (BuildContext context, bool isExpanded) {
+                          return ListTile(
+                            title: Text(L10n.of(context).optional_fields),
+                          );
+                        },
+                        body: Column(
+                          children: [
+                            SizedBox(height: 2),
+                            TextFormField(
+                              controller: _breedController,
+                              onTap: () => vm.isLoadingBreeds
+                                  ? null
+                                  : showModalSelect(
+                                      modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
+                                      ctx: context,
+                                      options: vm.breedOptions,
+                                      controller: _breedController,
+                                      vm: vm,
+                                      isBreeds: true,
+                                    ),
+                              readOnly: true,
+                              enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
+                              decoration: InputDecoration(
+                                suffixIconConstraints: BoxConstraints(
+                                  maxWidth: 48,
+                                  maxHeight: 25,
+                                  minWidth: 48,
+                                  minHeight: 25,
+                                ),
+                                suffixIcon: !vm.isLoadingBreeds
+                                    ? Icon(Icons.keyboard_arrow_right)
+                                    : SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: 23),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                border: OutlineInputBorder(),
+                                labelText: L10n.of(context).add_edit_pet_screen_breed_input_text,
                               ),
                             ),
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).add_edit_pet_screen_breed_input_text,
-                    ),
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  DatePickerWidget(
-                    lastDateToday: true,
-                    labelText: L10n.of(context).add_edit_pet_screen_date_of_birth_input_text,
-                    controller: _dateController,
-                    onFieldSubmitted: (DatePickerValue? val) {
-                      _selectedDate = val;
-                    },
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  TextFormField(
-                    controller: _genderController,
-                    onTap: () => showModalSelect(
-                      modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
-                      ctx: context,
-                      options: genderOptions,
-                      vm: vm,
-                      controller: _genderController,
-                    ),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).add_edit_pet_screen_gender_input_text,
-                    ),
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  TextFormField(
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    controller: _weightController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).weight_kg,
-                    ),
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  TextFormField(
-                    controller: _colorController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).add_edit_pet_screen_color_input_text,
-                    ),
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  TextFormField(
-                    controller: _descriptionController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).description,
-                    ),
+                            SizedBox(height: ThemeConstants.spacing(1)),
+                            DatePickerWidget(
+                              lastDateToday: true,
+                              labelText: L10n.of(context).add_edit_pet_screen_date_of_birth_input_text,
+                              controller: _dateController,
+                              onFieldSubmitted: (DatePickerValue? val) {
+                                _selectedDate = val;
+                              },
+                            ),
+                            SizedBox(height: ThemeConstants.spacing(1)),
+                            TextFormField(
+                              controller: _genderController,
+                              onTap: () => showModalSelect(
+                                modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
+                                ctx: context,
+                                options: genderOptions,
+                                vm: vm,
+                                controller: _genderController,
+                              ),
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: L10n.of(context).add_edit_pet_screen_gender_input_text,
+                              ),
+                            ),
+                            SizedBox(height: ThemeConstants.spacing(1)),
+                            TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              controller: _weightController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: L10n.of(context).weight_kg,
+                              ),
+                            ),
+                            SizedBox(height: ThemeConstants.spacing(1)),
+                            TextFormField(
+                              controller: _colorController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: L10n.of(context).add_edit_pet_screen_color_input_text,
+                              ),
+                            ),
+                            SizedBox(height: ThemeConstants.spacing(1)),
+                            TextFormField(
+                              controller: _descriptionController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: L10n.of(context).description,
+                              ),
+                            ),
+                          ],
+                        ),
+                        isExpanded: this.isExpanded,
+                      )
+                    ],
                   ),
                   SizedBox(height: ThemeConstants.spacing(1)),
                   Container(
