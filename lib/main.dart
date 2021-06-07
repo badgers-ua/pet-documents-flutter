@@ -90,6 +90,10 @@ class _MyAppState extends State<MyApp> {
         },
         theme: ThemeData(
           brightness: Brightness.light,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+          ),
           checkboxTheme: CheckboxThemeData(
             fillColor: MaterialStateProperty.resolveWith(
               (_) => Colors.blue,
@@ -101,6 +105,10 @@ class _MyAppState extends State<MyApp> {
         ),
         darkTheme: ThemeData(
           brightness: Brightness.dark,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.tealAccent,
+            foregroundColor: Colors.black,
+          ),
           checkboxTheme: CheckboxThemeData(
             fillColor: MaterialStateProperty.resolveWith(
               (_) => Colors.blue,
