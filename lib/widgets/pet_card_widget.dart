@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/extensions/string.dart';
 
 class PetCardWidget extends StatelessWidget {
   final GestureTapCallback? onTap;
@@ -31,8 +32,11 @@ class PetCardWidget extends StatelessWidget {
               ),
               Spacer(),
               Text(pet.name, style: Theme.of(context).textTheme.headline6),
-              // TODO: Age instead of owners
-              Text(L10n.of(context).pet_card_widget_subtitle(pet.owners.length.toString())),
+              Text(
+                pet.dateOfBirth != null
+                    ? L10n.of(context).pet_card_widget_subtitle((pet.dateOfBirth!).calculateAge(ctx: context))
+                    : L10n.of(context).age_unknown,
+              ),
             ],
           ),
         ),

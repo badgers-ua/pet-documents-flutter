@@ -16,10 +16,10 @@
   "home_screen_app_bar_text": "Home",
   "home_screen_pets_title_text": "My pets",
   "home_screen_events_title_text": "Upcoming events",
-  "pet_card_widget_subtitle": "Owners: {ownersCount}",
+  "pet_card_widget_subtitle": "Age: {age}",
   "@pet_card_widget_subtitle": {
     "placeholders": {
-      "ownersCount": {
+      "age": {
         "type": "String"
       }
     }
@@ -56,6 +56,8 @@
   "pet_info_sliver_list_screen_color_text": "Color",
   "pet_info_sliver_list_screen_description_text": "Description",
   "pet_info_sliver_list_screen_owners_text": "Owners",
+  "age": "Age",
+  "age_unknown": "Age unknown",
   "pet_info_sliver_list_screen_owners_me_text": "Me",
   "species_enum_cat": "Cat",
   "species_enum_dog": "Dog",
@@ -166,5 +168,7 @@
   "repeat_password": "Repeat password",
   "weight_kg": "Weight (kg)",
   "weight": "Weight",
-  "avatar_upload_error": "Error while uploading photo."
+  "avatar_upload_error": "Error while uploading photo.",
+  "age_year": "y",
+  "age_month": "m"
 }

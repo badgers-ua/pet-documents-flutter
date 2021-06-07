@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart' as intl;
 import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pdoc/l10n/l10n.dart';
@@ -5,7 +6,7 @@ import 'package:pdoc/models/dto/response/owner_res_dto.dart';
 import 'package:pdoc/models/dto/response/static_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/widgets/pet_info_row_widget.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:pdoc/extensions/string.dart';
 
 part 'pet_res_dto.g.dart';
 
@@ -79,19 +80,19 @@ class PetPreviewResDto extends _PetCommon {
   final String? breed;
   final List<String?> owners;
 
-  PetPreviewResDto({
-    this.breed,
-    required this.owners,
-    required id,
-    required name,
-    required SPECIES species,
-    GENDER? gender,
-    dateOfBirth,
-    colour,
-    notes,
-    weight,
-    avatar
-  }) : super(
+  PetPreviewResDto(
+      {this.breed,
+      required this.owners,
+      required id,
+      required name,
+      required SPECIES species,
+      GENDER? gender,
+      dateOfBirth,
+      colour,
+      notes,
+      weight,
+      avatar})
+      : super(
           id: id,
           name: name,
           species: species,
@@ -100,7 +101,7 @@ class PetPreviewResDto extends _PetCommon {
           colour: colour,
           notes: notes,
           weight: weight,
-    avatar: avatar,
+          avatar: avatar,
         );
 
   factory PetPreviewResDto.fromJson(Map<String, dynamic> json) => _$PetPreviewResDtoFromJson(json);
@@ -160,12 +161,18 @@ class PetResDto extends _PetCommon {
           label: L10n.of(ctx).pet_info_sliver_list_screen_gender_text,
           value: getGenderLabel(ctx: ctx, gender: this.gender!),
         ),
-      if (this.dateOfBirth != null)
+      if (this.dateOfBirth != null) ...[
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_date_born_text,
-          value:
-              '(Age: ${(Duration(days: DateTime.now().difference(DateTime.parse(this.dateOfBirth!).toLocal()).inDays).inDays / 365).toStringAsPrecision(1)}) ${intl.DateFormat('dd/MM/yyyy').format(DateTime.parse(this.dateOfBirth!).toLocal()).toString()}',
+          value: intl.DateFormat.yMMMd(Localizations.localeOf(ctx).languageCode)
+              .format(DateTime.parse(this.dateOfBirth!).toLocal())
+              .toString(),
         ),
+        PetInfoRowWidgetProps(
+          label: L10n.of(ctx).age,
+          value: this.dateOfBirth!.calculateAge(ctx: ctx),
+        )
+      ],
       if (this.colour != null)
         PetInfoRowWidgetProps(
           label: L10n.of(ctx).pet_info_sliver_list_screen_color_text,

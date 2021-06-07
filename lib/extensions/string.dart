@@ -38,4 +38,44 @@ extension StringExtensions on String {
     final file = await cache.getSingleFile(this);
     return file;
   }
+
+  String calculateAge({required BuildContext ctx}) {
+    if (this != '') {
+      var birthDate = DateTime.tryParse(this);
+      if (birthDate != null) {
+        final now = new DateTime.now();
+
+        int years = now.year - birthDate.year;
+        int months = now.month - birthDate.month;
+        int days = now.day - birthDate.day;
+
+        if (months < 0 || (months == 0 && days < 0)) {
+          years--;
+          months += (days < 0 ? 11 : 12);
+        }
+
+        if (days < 0) {
+          final monthAgo = new DateTime(now.year, now.month - 1, birthDate.day);
+          days = now.difference(monthAgo).inDays + 1;
+        }
+
+        final _Age age = _Age(years: years, months: months, days: days);
+
+        return '${age.years} ${L10n.of(ctx).age_year}, ${age.months} ${L10n.of(ctx).age_month}';
+      } else {
+        print('calculateAge: not a valid date');
+      }
+    } else {
+      print('calculateAge: date is empty');
+    }
+    return '';
+  }
+}
+
+class _Age {
+  int years;
+  int months;
+  int days;
+
+  _Age({this.years = 0, this.months = 0, this.days = 0});
 }
