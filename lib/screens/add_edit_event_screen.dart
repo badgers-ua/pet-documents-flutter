@@ -350,7 +350,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                             });
                           },
                           child: Text(
-                            "Receive notification",
+                            L10n.of(context).receive_notification,
                             style: Theme.of(context).textTheme.subtitle1!.copyWith(
                                   color: Theme.of(context).textTheme.caption!.color,
                                   fontWeight: FontWeight.w400,

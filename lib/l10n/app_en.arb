@@ -170,5 +170,6 @@
   "weight": "Weight",
   "avatar_upload_error": "Error while uploading photo.",
   "age_year": "y",
-  "age_month": "m"
+  "age_month": "m",
+  "receive_notification": "Receive notification"
 }

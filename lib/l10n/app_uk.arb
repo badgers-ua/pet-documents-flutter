@@ -170,5 +170,6 @@
   "weight": "Вага",
   "avatar_upload_error": "Помилка відправки фото.",
   "age_year": "р",
-  "age_month": "м"
+  "age_month": "м",
+  "receive_notification": "Отримати сповіщення"
 }
