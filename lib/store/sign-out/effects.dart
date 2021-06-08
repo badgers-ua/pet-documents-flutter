@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +38,7 @@ Function loadSignOutThunk = ({
         store.dispatch(LoadSignOutSuccess());
         Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
         ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
-        Timer(Duration(seconds: 2), () {
-          store.dispatch(_clearStore(ctx: ctx));
-        });
+        store.dispatch(_clearStore(ctx: ctx));
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);

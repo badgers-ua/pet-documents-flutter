@@ -247,6 +247,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           ),
         );
       },
+      ignoreChange: (state) => state.pet.data == null,
       builder: (context, _PetProfileScreenViewModel vm) {
         if (vm.isLoadingPet || vm.isLoadingUser) {
           return Scaffold(

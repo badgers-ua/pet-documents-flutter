@@ -23,6 +23,7 @@ class SettingsScreen extends StatelessWidget {
           )),
         );
       },
+      ignoreChange: (state) => state.user.data == null,
       builder: (context, _SettingsScreenViewModel vm) {
         if (vm.isLoadingUser) {
           return Center(
