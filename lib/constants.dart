@@ -47,7 +47,7 @@ class RefreshTokenConstants {
       deviceToken: deviceToken,
     );
     try {
-      final response = await Dio().post('${Api.baseUrl}/auth/refresh-token', data: dto);
+      final response = await Dio().post('${Api.baseUrl}/auth/refresh-token', data: dto.toJson());
       final SignInResDto resDto = SignInResDto.fromJson(response.data);
 
       await SecureStorageConstants.setRefreshToken(resDto.refreshToken);
