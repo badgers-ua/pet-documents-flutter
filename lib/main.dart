@@ -139,6 +139,7 @@ class _MyAppState extends State<MyApp> {
             },
             ignoreChange: (state) => !state.auth.isInitialLoadCompleted,
             builder: (context, _MyAppViewModel vm) {
+              // TODO: Infinite load if API unavailable
               if (!vm.isInitialLoadCompleted) {
                 return Scaffold(
                   body: Center(
