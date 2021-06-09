@@ -303,7 +303,9 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                                       child: Container(
                                         child: SvgPicture.asset(
                                           ThemeConstants.getImageBySpecies(pet.species),
-                                          color: Theme.of(context).accentColor,
+                                          color: Theme.of(context).brightness == Brightness.light
+                                              ? Colors.white
+                                              : Theme.of(context).accentColor,
                                           height: 150,
                                           width: 150,
                                         ),
