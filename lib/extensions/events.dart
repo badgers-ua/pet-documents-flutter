@@ -7,8 +7,15 @@ extension EventsExtenssion on List<EventResDto> {
         .compareTo(DateTime.parse(curr.date).millisecondsSinceEpoch));
   }
 
+
+  // TODO: Fix date times
   List<EventResDto> getFutureEvents() {
     final int now = DateTime.now().millisecondsSinceEpoch;
-    return this.where((element) => DateTime.parse(element.date).millisecondsSinceEpoch > now).toList();
+    return this.where((element) => DateTime.parse(element.date).millisecondsSinceEpoch >= now).toList();
+  }
+
+  List<EventResDto> getPastEvents() {
+    final int now = DateTime.now().millisecondsSinceEpoch;
+    return this.where((element) => DateTime.parse(element.date).millisecondsSinceEpoch <= now).toList();
   }
 }

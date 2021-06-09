@@ -15,7 +15,8 @@
   "tabs_screen_settings_tab_text": "Settings",
   "home_screen_app_bar_text": "Home",
   "home_screen_pets_title_text": "My pets",
-  "home_screen_events_title_text": "Upcoming events",
+  "upcoming_events": "Upcoming events",
+  "past_events": "Past events",
   "pet_card_widget_subtitle": "Age: {age}",
   "@pet_card_widget_subtitle": {
     "placeholders": {

@@ -443,8 +443,6 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                                 return;
                               }
 
-                              // TODO: Sending nulls to API
-
                               CreatePetReqDto createPetReqDto = CreatePetReqDto(
                                 name: _nameController.text.trim(),
                                 species: _getSpeciesByOptionLabel(speciesOptions: speciesOptions),

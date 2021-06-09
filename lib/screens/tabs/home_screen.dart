@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(ThemeConstants.spacing(0.5)),
                 child: Text(
-                  L10n.of(context).home_screen_events_title_text,
+                  L10n.of(context).upcoming_events,
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),

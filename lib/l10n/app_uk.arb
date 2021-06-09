@@ -15,7 +15,8 @@
   "tabs_screen_settings_tab_text": "Налаштування",
   "home_screen_app_bar_text": "Головна",
   "home_screen_pets_title_text": "Мої улюбленці",
-  "home_screen_events_title_text": "Майбутні події",
+  "upcoming_events": "Майбутні події",
+  "past_events": "Минулі події",
   "pet_card_widget_subtitle": "Вік: {age}",
   "@pet_card_widget_subtitle": {
     "placeholders": {
