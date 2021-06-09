@@ -331,6 +331,8 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                       ),
                     ),
                   ),
+                  // TODO: Full row button,
+                  // TODO: Shouldn't be enabled if past date selected,
                   Container(
                     height: 60,
                     child: Row(
