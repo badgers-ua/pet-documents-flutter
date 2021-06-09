@@ -41,6 +41,7 @@ Function loadEditPetThunk = ({
             currentPet.gender != request.gender ||
             currentPet.dateOfBirth != request.dateOfBirth ||
             currentPet.colour != request.colour ||
+            currentPet.weight != request.weight ||
             currentPet.notes != request.notes ||
             shouldUploadAvatar ||
             shouldEditAvatar ||
@@ -84,9 +85,7 @@ Function loadEditPetThunk = ({
         final bool editSuccess = shouldEditAvatar && newAvatarUrl != null;
         final bool deleteSuccess = shouldDeleteAvatar;
 
-        if (uploadSuccess || editSuccess || deleteSuccess) {
-          request.avatar = newAvatarUrl;
-        }
+          request.avatar = (uploadSuccess || editSuccess || deleteSuccess) ? newAvatarUrl : currentPetAvatar;
 
         final res = await Dio().authenticatedDio(ctx: ctx).patch('/pet/$petId', data: request.toJson());
         final CreatePetResDto createPetResDto = CreatePetResDto.fromJson(res.data);

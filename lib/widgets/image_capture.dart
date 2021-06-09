@@ -10,7 +10,7 @@ import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/extensions/string.dart';
 
 class ImageCapture extends StatefulWidget {
-  final Function(File file) onChange;
+  final Function(File? file) onChange;
   final String noImageSvgAsset;
   final String? initialImage;
 
@@ -64,7 +64,7 @@ class _ImageCaptureState extends State<ImageCapture> {
       _imageFile = cropped ?? _imageFile;
     });
 
-    widget.onChange(_imageFile!);
+    widget.onChange(_imageFile);
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -79,11 +79,14 @@ class _ImageCaptureState extends State<ImageCapture> {
       _imageFile = formattedPickedFile;
     });
 
+    widget.onChange(_imageFile);
+
     _cropImage();
   }
 
   void _clear() {
     setState(() => _imageFile = null);
+    widget.onChange(_imageFile);
   }
 
   void _showBottomSheet() {

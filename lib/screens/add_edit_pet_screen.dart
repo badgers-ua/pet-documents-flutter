@@ -121,14 +121,14 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     _validateForm();
   }
 
-  void _presetForm({
+  Future<void> _presetForm({
     required BuildContext ctx,
     required PetResDto pet,
     required List<ModalSelectOption<SPECIES>> speciesOptions,
     required List<ModalSelectOption<GENDER>> genderOptions,
     required List<ModalSelectOption<String>> breedOptions,
     required _AddEditPetScreenViewModel vm,
-  }) {
+  }) async {
     if (_validateForm()) {
       return;
     }
@@ -139,6 +139,9 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     }
     if (pet.breed != null) {
       _breedController.text = pet.breed!.name;
+    }
+    if (pet.weight != null) {
+      _weightController.text = pet.weight!.toString();
     }
     if (pet.dateOfBirth != null) {
       final DateTime dateTimeBirth = DateTime.parse(pet.dateOfBirth!).toLocal();
@@ -152,6 +155,11 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     }
     if (pet.notes != null) {
       _descriptionController.text = pet.notes!;
+    }
+    if (pet.avatar != null) {
+      File formattedPickedFile = await pet.avatar!.getFileFromCachedImage();
+
+      _selectedAvatar = formattedPickedFile;
     }
   }
 
@@ -278,7 +286,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                     noImageSvgAsset: ThemeConstants.getImageBySpecies(_speciesController.text.isNotEmpty
                         ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions)
                         : null),
-                    onChange: (File file) {
+                    onChange: (File? file) {
                       _selectedAvatar = file;
                     },
                   ),
@@ -453,7 +461,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                                     .value;
                               }
                               if (_selectedDate != null) {
-                                createPetReqDto.dateOfBirth = _selectedDate!.dateTime.toIso8601String();
+                                createPetReqDto.dateOfBirth = _selectedDate!.dateTime.toUtc().toIso8601String();
                               }
                               if (_weightController.text.isNotEmpty) {
                                 createPetReqDto.weight = int.parse(_weightController.text);
