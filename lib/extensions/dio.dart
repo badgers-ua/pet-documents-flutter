@@ -60,12 +60,18 @@ extension AuthenticatedDio on Dio {
 extension DioErrorExtension on DioError {
   String getResponseError({required BuildContext ctx}) {
     if (this.response != null) {
-      final String errorMsg = this.response!.data["message"];
-      return errorMsg;
+      final dynamic errorMsg = this.response!.data["message"];
+      if (errorMsg is String) {
+        return '${errorMsg.capitalize()}.';
+      }
+      if (errorMsg is List<dynamic>) {
+        return errorMsg.map((e) => '${e.toString().capitalize()}.').join('\n');
+      }
+      return L10n.of(ctx).something_went_wrong;
     }
     final String errorMsg = this.message.isNotEmpty ? this.message : L10n.of(ctx).something_went_wrong;
 
-    return errorMsg;
+    return errorMsg.capitalize();
   }
 
   void showErrorSnackBar({
