@@ -50,6 +50,8 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
 
   bool isExpanded = false;
 
+  final ScrollController _scrollController = ScrollController();
+
   bool _validateForm() {
     return _formKey.currentState != null && _formKey.currentState!.validate();
   }
@@ -167,6 +169,57 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     return speciesOptions.firstWhere((element) => element.label == _speciesController.text).value;
   }
 
+  _onSubmit({
+    required _AddEditPetScreenViewModel vm,
+    required List<ModalSelectOption<GENDER>> genderOptions,
+    required List<ModalSelectOption<SPECIES>> speciesOptions,
+  }) {
+    if (!_validateForm()) {
+      _scrollController.jumpTo(0);
+      return;
+    }
+
+    CreatePetReqDto createPetReqDto = CreatePetReqDto(
+      name: _nameController.text.trim(),
+      species: _getSpeciesByOptionLabel(speciesOptions: speciesOptions),
+    );
+
+    if (_breedController.text.isNotEmpty) {
+      createPetReqDto.breed = vm.breedOptions.firstWhere((element) => element.label == _breedController.text).value;
+    }
+    if (_genderController.text.isNotEmpty) {
+      createPetReqDto.gender = genderOptions.firstWhere((element) => element.label == _genderController.text).value;
+    }
+    if (_selectedDate != null) {
+      createPetReqDto.dateOfBirth = _selectedDate!.dateTime.toUtc().toIso8601String();
+    }
+    if (_weightController.text.isNotEmpty) {
+      createPetReqDto.weight = int.parse(_weightController.text);
+    }
+    if (_colorController.text.isNotEmpty) {
+      createPetReqDto.colour = _colorController.text;
+    }
+    if (_descriptionController.text.isNotEmpty) {
+      createPetReqDto.notes = _descriptionController.text;
+    }
+
+    if (!vm.isEditMode) {
+      vm.dispatchLoadCreatePetThunk(
+        ctx: context,
+        request: createPetReqDto,
+        newAvatar: _selectedAvatar,
+      );
+      return;
+    }
+
+    vm.dispatchLoadEditPetThunk(
+      ctx: context,
+      request: createPetReqDto,
+      petId: vm.pet!.id,
+      newAvatar: _selectedAvatar,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ModalSelectOption<SPECIES>> speciesOptions = SPECIES.values.map((v) {
@@ -266,6 +319,193 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
           );
         }
 
+        final List<Widget> _formWidgets = [
+          ImageCapture(
+            initialImage: vm.pet?.avatar,
+            noImageSvgAsset: ThemeConstants.getImageBySpecies(_speciesController.text.isNotEmpty
+                ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions)
+                : null),
+            onChange: (File? file) {
+              _selectedAvatar = file;
+            },
+          ),
+          SizedBox(height: ThemeConstants.spacing(1)),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            controller: _nameController,
+            onChanged: (v) => _validateForm(),
+            maxLength: 20,
+            validator: (v) => (v ?? '').requiredValidator(
+              fieldName: L10n.of(context).add_edit_pet_screen_name_input_text,
+              ctx: context,
+            ),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: L10n.of(context).add_edit_pet_screen_name_input_text,
+            ),
+          ),
+          SizedBox(height: ThemeConstants.spacing(1)),
+          TextFormField(
+            controller: _speciesController,
+            validator: (v) => (v ?? '').requiredValidator(
+                fieldName: L10n.of(context).add_edit_pet_screen_species_input_text, ctx: context),
+            onTap: () => showModalSelect(
+              modalTitle: L10n.of(context).modal_select_app_bar_select_species_text,
+              ctx: context,
+              options: speciesOptions,
+              controller: _speciesController,
+              vm: vm,
+              isSpecies: true,
+            ),
+            readOnly: true,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.keyboard_arrow_right),
+              border: OutlineInputBorder(),
+              labelText: L10n.of(context).add_edit_pet_screen_species_input_text,
+            ),
+          ),
+          SizedBox(height: ThemeConstants.spacing(1)),
+          ExpansionPanelList(
+            elevation: 0,
+            expansionCallback: (int index, bool isExpanded) {
+              setState(() {
+                this.isExpanded = !this.isExpanded;
+              });
+            },
+            children: [
+              ExpansionPanel(
+                canTapOnHeader: true,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return ListTile(
+                    title: Text(L10n.of(context).optional_fields),
+                  );
+                },
+                body: Column(
+                  children: [
+                    SizedBox(height: 2),
+                    TextFormField(
+                      controller: _breedController,
+                      onTap: () => vm.isLoadingBreeds
+                          ? null
+                          : showModalSelect(
+                        modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
+                        ctx: context,
+                        options: vm.breedOptions,
+                        controller: _breedController,
+                        vm: vm,
+                        isBreeds: true,
+                      ),
+                      readOnly: true,
+                      enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
+                      decoration: InputDecoration(
+                        suffixIconConstraints: BoxConstraints(
+                          maxWidth: 48,
+                          maxHeight: 25,
+                          minWidth: 48,
+                          minHeight: 25,
+                        ),
+                        suffixIcon: !vm.isLoadingBreeds
+                            ? Icon(Icons.keyboard_arrow_right)
+                            : SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 23),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        border: OutlineInputBorder(),
+                        labelText: L10n.of(context).add_edit_pet_screen_breed_input_text,
+                      ),
+                    ),
+                    SizedBox(height: ThemeConstants.spacing(1)),
+                    DatePickerWidget(
+                      lastDateToday: true,
+                      labelText: L10n.of(context).add_edit_pet_screen_date_of_birth_input_text,
+                      controller: _dateController,
+                      onFieldSubmitted: (DatePickerValue? val) {
+                        _selectedDate = val;
+                      },
+                    ),
+                    SizedBox(height: ThemeConstants.spacing(1)),
+                    TextFormField(
+                      controller: _genderController,
+                      onTap: () => showModalSelect(
+                        modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
+                        ctx: context,
+                        options: genderOptions,
+                        vm: vm,
+                        controller: _genderController,
+                      ),
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: L10n.of(context).add_edit_pet_screen_gender_input_text,
+                      ),
+                    ),
+                    SizedBox(height: ThemeConstants.spacing(1)),
+                    TextFormField(
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      textInputAction: TextInputAction.next,
+                      controller: _weightController,
+                      maxLength: 4,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: L10n.of(context).weight_kg,
+                      ),
+                    ),
+                    SizedBox(height: ThemeConstants.spacing(1)),
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      controller: _colorController,
+                      maxLength: 20,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: L10n.of(context).add_edit_pet_screen_color_input_text,
+                      ),
+                    ),
+                    SizedBox(height: ThemeConstants.spacing(1)),
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      controller: _descriptionController,
+                      minLines: 4,
+                      maxLines: 4,
+                      maxLength: 140,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: L10n.of(context).description,
+                      ),
+                    ),
+                  ],
+                ),
+                isExpanded: this.isExpanded,
+              )
+            ],
+          ),
+          SizedBox(height: ThemeConstants.spacing(1)),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: (vm.isLoadingCreatePet || vm.isLoadingEditPet)
+                  ? null
+                  : () {
+                _onSubmit(
+                  vm: vm,
+                  genderOptions: genderOptions,
+                  speciesOptions: speciesOptions,
+                );
+              },
+              child: vm.isLoadingCreatePet || vm.isLoadingEditPet
+                  ? ThemeConstants.getButtonSpinner()
+                  : Text(
+                !vm.isEditMode ? L10n.of(context).create : L10n.of(context).update,
+              ),
+            ),
+          ),
+        ];
+
         return Scaffold(
           appBar: AppBar(
               title: Text(
@@ -278,223 +518,13 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
           body: Scrollbar(
             child: Form(
               key: _formKey,
-              child: ListView(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _formWidgets.length,
                 padding: EdgeInsets.all(ThemeConstants.spacing(1)),
-                children: [
-                  ImageCapture(
-                    initialImage: vm.pet?.avatar,
-                    noImageSvgAsset: ThemeConstants.getImageBySpecies(_speciesController.text.isNotEmpty
-                        ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions)
-                        : null),
-                    onChange: (File? file) {
-                      _selectedAvatar = file;
-                    },
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  TextFormField(
-                    controller: _nameController,
-                    onChanged: (v) => _validateForm(),
-                    validator: (v) => (v ?? '').requiredValidator(
-                      fieldName: L10n.of(context).add_edit_pet_screen_name_input_text,
-                      ctx: context,
-                    ),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).add_edit_pet_screen_name_input_text,
-                    ),
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  TextFormField(
-                    controller: _speciesController,
-                    validator: (v) => (v ?? '').requiredValidator(
-                        fieldName: L10n.of(context).add_edit_pet_screen_species_input_text, ctx: context),
-                    onTap: () => showModalSelect(
-                      modalTitle: L10n.of(context).modal_select_app_bar_select_species_text,
-                      ctx: context,
-                      options: speciesOptions,
-                      controller: _speciesController,
-                      vm: vm,
-                      isSpecies: true,
-                    ),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.keyboard_arrow_right),
-                      border: OutlineInputBorder(),
-                      labelText: L10n.of(context).add_edit_pet_screen_species_input_text,
-                    ),
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  ExpansionPanelList(
-                    elevation: 0,
-                    expansionCallback: (int index, bool isExpanded) {
-                      setState(() {
-                        this.isExpanded = !this.isExpanded;
-                      });
-                    },
-                    children: [
-                      ExpansionPanel(
-                        canTapOnHeader: true,
-                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return ListTile(
-                            title: Text(L10n.of(context).optional_fields),
-                          );
-                        },
-                        body: Column(
-                          children: [
-                            SizedBox(height: 2),
-                            TextFormField(
-                              controller: _breedController,
-                              onTap: () => vm.isLoadingBreeds
-                                  ? null
-                                  : showModalSelect(
-                                      modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
-                                      ctx: context,
-                                      options: vm.breedOptions,
-                                      controller: _breedController,
-                                      vm: vm,
-                                      isBreeds: true,
-                                    ),
-                              readOnly: true,
-                              enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
-                              decoration: InputDecoration(
-                                suffixIconConstraints: BoxConstraints(
-                                  maxWidth: 48,
-                                  maxHeight: 25,
-                                  minWidth: 48,
-                                  minHeight: 25,
-                                ),
-                                suffixIcon: !vm.isLoadingBreeds
-                                    ? Icon(Icons.keyboard_arrow_right)
-                                    : SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(right: 23),
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      ),
-                                border: OutlineInputBorder(),
-                                labelText: L10n.of(context).add_edit_pet_screen_breed_input_text,
-                              ),
-                            ),
-                            SizedBox(height: ThemeConstants.spacing(1)),
-                            DatePickerWidget(
-                              lastDateToday: true,
-                              labelText: L10n.of(context).add_edit_pet_screen_date_of_birth_input_text,
-                              controller: _dateController,
-                              onFieldSubmitted: (DatePickerValue? val) {
-                                _selectedDate = val;
-                              },
-                            ),
-                            SizedBox(height: ThemeConstants.spacing(1)),
-                            TextFormField(
-                              controller: _genderController,
-                              onTap: () => showModalSelect(
-                                modalTitle: L10n.of(context).modal_select_app_bar_select_gender_text,
-                                ctx: context,
-                                options: genderOptions,
-                                vm: vm,
-                                controller: _genderController,
-                              ),
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: L10n.of(context).add_edit_pet_screen_gender_input_text,
-                              ),
-                            ),
-                            SizedBox(height: ThemeConstants.spacing(1)),
-                            TextFormField(
-                              keyboardType: TextInputType.numberWithOptions(decimal: true),
-                              controller: _weightController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: L10n.of(context).weight_kg,
-                              ),
-                            ),
-                            SizedBox(height: ThemeConstants.spacing(1)),
-                            TextFormField(
-                              controller: _colorController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: L10n.of(context).add_edit_pet_screen_color_input_text,
-                              ),
-                            ),
-                            SizedBox(height: ThemeConstants.spacing(1)),
-                            TextFormField(
-                              controller: _descriptionController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: L10n.of(context).description,
-                              ),
-                            ),
-                          ],
-                        ),
-                        isExpanded: this.isExpanded,
-                      )
-                    ],
-                  ),
-                  SizedBox(height: ThemeConstants.spacing(1)),
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: (vm.isLoadingCreatePet || vm.isLoadingEditPet)
-                          ? null
-                          : () {
-                              if (!_validateForm()) {
-                                return;
-                              }
-
-                              CreatePetReqDto createPetReqDto = CreatePetReqDto(
-                                name: _nameController.text.trim(),
-                                species: _getSpeciesByOptionLabel(speciesOptions: speciesOptions),
-                              );
-
-                              if (_breedController.text.isNotEmpty) {
-                                createPetReqDto.breed = vm.breedOptions
-                                    .firstWhere((element) => element.label == _breedController.text)
-                                    .value;
-                              }
-                              if (_genderController.text.isNotEmpty) {
-                                createPetReqDto.gender = genderOptions
-                                    .firstWhere((element) => element.label == _genderController.text)
-                                    .value;
-                              }
-                              if (_selectedDate != null) {
-                                createPetReqDto.dateOfBirth = _selectedDate!.dateTime.toUtc().toIso8601String();
-                              }
-                              if (_weightController.text.isNotEmpty) {
-                                createPetReqDto.weight = int.parse(_weightController.text);
-                              }
-                              if (_colorController.text.isNotEmpty) {
-                                createPetReqDto.colour = _colorController.text;
-                              }
-                              if (_descriptionController.text.isNotEmpty) {
-                                createPetReqDto.notes = _descriptionController.text;
-                              }
-
-                              if (!vm.isEditMode) {
-                                vm.dispatchLoadCreatePetThunk(
-                                  ctx: context,
-                                  request: createPetReqDto,
-                                  newAvatar: _selectedAvatar,
-                                );
-                                return;
-                              }
-
-                              vm.dispatchLoadEditPetThunk(
-                                ctx: context,
-                                request: createPetReqDto,
-                                petId: vm.pet!.id,
-                                newAvatar: _selectedAvatar,
-                              );
-                            },
-                      child: vm.isLoadingCreatePet || vm.isLoadingEditPet
-                          ? ThemeConstants.getButtonSpinner()
-                          : Text(
-                              !vm.isEditMode ? L10n.of(context).create : L10n.of(context).update,
-                            ),
-                    ),
-                  ),
-                ],
+                itemBuilder: (_, i)  {
+                  return _formWidgets[i];
+                },
               ),
             ),
           ),

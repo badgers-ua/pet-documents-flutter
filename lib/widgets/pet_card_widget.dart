@@ -31,7 +31,13 @@ class PetCardWidget extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Text(pet.name, style: Theme.of(context).textTheme.headline6),
+              Text(
+                pet.name,
+                style: Theme.of(context).textTheme.headline6,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Spacer(),
               Text(
                 pet.dateOfBirth != null
                     ? L10n.of(context).pet_card_widget_subtitle((pet.dateOfBirth!).calculateAge(ctx: context))

@@ -301,6 +301,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                               child: pet.avatar == null
                                   ? Align(
                                       child: Container(
+                                        padding: EdgeInsets.only(top: ThemeConstants.spacing(4)),
                                         child: SvgPicture.asset(
                                           ThemeConstants.getImageBySpecies(pet.species),
                                           color: Theme.of(context).brightness == Brightness.light
