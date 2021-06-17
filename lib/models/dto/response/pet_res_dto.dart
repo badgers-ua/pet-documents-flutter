@@ -59,7 +59,7 @@ abstract class _PetCommon {
   final String? dateOfBirth;
   final String? colour;
   final String? notes;
-  final int? weight;
+  final dynamic weight; // int | double
   final String? avatar;
 
   _PetCommon({

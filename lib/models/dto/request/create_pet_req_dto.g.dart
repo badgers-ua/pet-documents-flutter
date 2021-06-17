@@ -15,7 +15,7 @@ CreatePetReqDto _$CreatePetReqDtoFromJson(Map<String, dynamic> json) {
     dateOfBirth: json['dateOfBirth'] as String?,
     colour: json['colour'] as String?,
     notes: json['notes'] as String?,
-    weight: json['weight'] as int?,
+    weight: (json['weight'] as num?)?.toDouble(),
     avatar: json['avatar'] as String?,
   );
 }

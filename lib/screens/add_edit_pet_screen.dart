@@ -194,7 +194,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
       createPetReqDto.dateOfBirth = _selectedDate!.dateTime.toUtc().toIso8601String();
     }
     if (_weightController.text.isNotEmpty) {
-      createPetReqDto.weight = int.parse(_weightController.text);
+      createPetReqDto.weight = double.parse(_weightController.text);
     }
     if (_colorController.text.isNotEmpty) {
       createPetReqDto.colour = _colorController.text;
@@ -448,7 +448,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                       keyboardType: TextInputType.numberWithOptions(decimal: true),
                       textInputAction: TextInputAction.next,
                       controller: _weightController,
-                      maxLength: 4,
+                      maxLength: 5,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: L10n.of(context).weight_kg,

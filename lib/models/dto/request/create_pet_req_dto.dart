@@ -12,7 +12,7 @@ class CreatePetReqDto {
   late String? dateOfBirth; // ISO String;
   late String? colour;
   late String? notes;
-  late int? weight;
+  late double? weight;
   late String? avatar;
 
   CreatePetReqDto({
