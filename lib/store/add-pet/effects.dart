@@ -39,6 +39,7 @@ Function loadCreatePetThunk = ({
           arguments: PetProfileScreenProps(petId: createPetResDto.id),
         );
       } on DioError catch (e) {
+        // TODO: Avatar uploaded but request to api failed (solution: upload avatar by api)
         final String errorMsg = e.getResponseError(ctx: ctx);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadAddPetFailure(payload: errorMsg));
