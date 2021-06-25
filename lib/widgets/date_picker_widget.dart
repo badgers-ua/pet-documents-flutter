@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:pdoc/models/date_picker_value.dart';
 
+//TODO: Selected date initial state
 class DatePickerWidget extends StatelessWidget {
   final String labelText;
   final ValueChanged<DatePickerValue>? onFieldSubmitted;
