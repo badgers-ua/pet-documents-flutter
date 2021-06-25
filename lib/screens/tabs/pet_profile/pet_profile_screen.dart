@@ -266,6 +266,13 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           );
         }
 
+        if (vm.pet == null) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Container(),
+          );
+        }
+
         final PetResDto pet = vm.pet!;
 
         return DefaultTabController(

@@ -1,9 +1,9 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:http_parser/src/media_type.dart';
 
-part 'create_pet_req_dto.g.dart';
-
-@JsonSerializable()
 class CreatePetReqDto {
   final String name;
   final SPECIES species;
@@ -13,7 +13,7 @@ class CreatePetReqDto {
   late String? colour;
   late String? notes;
   late double? weight;
-  late String? avatar;
+  late File? avatar;
 
   CreatePetReqDto({
     required this.name,
@@ -27,8 +27,26 @@ class CreatePetReqDto {
     this.avatar,
   });
 
-  factory CreatePetReqDto.fromJson(Map<String, dynamic> json) =>
-      _$CreatePetReqDtoFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CreatePetReqDtoToJson(this);
+  Future<FormData> toFormData() async {
+    final FormData formData = FormData.fromMap({
+      'name': this.name,
+      'species': this.species.index.toString(),
+      'breed': this.breed,
+      'gender': this.gender?.index.toString(),
+      'dateOfBirth': this.dateOfBirth, // ISO String;
+      'colour': this.colour,
+      'notes': this.notes,
+      'weight': this.weight?.toString(),
+      'avatar': this.avatar != null
+          ? await MultipartFile.fromFile(
+              this.avatar!.path,
+              contentType: MediaType(
+                'image',
+                this.avatar!.path.split('.').last,
+              ),
+            )
+          : null,
+    });
+    return formData;
+  }
 }

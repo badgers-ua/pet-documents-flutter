@@ -202,12 +202,14 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     if (_descriptionController.text.isNotEmpty) {
       createPetReqDto.notes = _descriptionController.text;
     }
+    if(_selectedAvatar != null) {
+      createPetReqDto.avatar = this._selectedAvatar;
+    }
 
     if (!vm.isEditMode) {
       vm.dispatchLoadCreatePetThunk(
         ctx: context,
         request: createPetReqDto,
-        newAvatar: _selectedAvatar,
       );
       return;
     }
@@ -216,7 +218,6 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
       ctx: context,
       request: createPetReqDto,
       petId: vm.pet!.id,
-      newAvatar: _selectedAvatar,
     );
   }
 
@@ -271,27 +272,23 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
           dispatchLoadCreatePetThunk: ({
             required BuildContext ctx,
             required CreatePetReqDto request,
-            required File? newAvatar,
           }) =>
               store.dispatch(
             loadCreatePetThunk(
               ctx: ctx,
               request: request,
-              newAvatar: newAvatar,
             ),
           ),
           dispatchLoadEditPetThunk: ({
             required BuildContext ctx,
             required CreatePetReqDto request,
             required String petId,
-            required File? newAvatar,
           }) =>
               store.dispatch(
             loadEditPetThunk(
               ctx: ctx,
               request: request,
               petId: petId,
-              newAvatar: newAvatar,
             ),
           ),
         );

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/actions.dart';
@@ -17,9 +16,6 @@ Function loadDeletePetThunk = ({
     (Store<RootState> store) async {
       store.dispatch(LoadDeletePet());
       try {
-        if (pet.avatar != null) {
-          await FirebaseConstants.deleteAvatar(ctx: ctx, currentAvatarLink: pet.avatar!);
-        }
         await Dio().authenticatedDio(ctx: ctx).delete('/pet/${pet.id}');
         Navigator.of(ctx).popUntil((route) => route.isFirst);
         store.dispatch(LoadDeletePetSuccess());

@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
@@ -59,7 +56,7 @@ class RefreshTokenConstants {
         isAuthenticated: true,
       );
 
-    return auth;
+      return auth;
     } on DioError catch (e) {
       final String errorMsg = e.getResponseError(ctx: ctx);
       e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
@@ -125,49 +122,6 @@ class ThemeConstants {
         behavior: SnackBarBehavior.fixed,
       ),
     );
-  }
-}
-
-class FirebaseConstants {
-  static Future<String?> editAvatar({
-    required BuildContext ctx,
-    required String currentAvatarLink,
-    required File image,
-  }) async {
-    try {
-      await FirebaseConstants.deleteAvatar(ctx: ctx, currentAvatarLink: currentAvatarLink);
-      return await FirebaseConstants.uploadAvatar(ctx: ctx, image: image);
-    } on FirebaseException catch (e) {
-      ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).avatar_upload_error);
-    }
-  }
-
-  static Future<void> deleteAvatar({
-    required BuildContext ctx,
-    required String currentAvatarLink,
-  }) async {
-    final FirebaseStorage _storage = FirebaseStorage.instance;
-    try {
-      final Reference ref = _storage.refFromURL(currentAvatarLink);
-      return await ref.delete();
-    } on FirebaseException catch (e) {
-      ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).avatar_upload_error);
-    }
-  }
-
-  static Future<String?> uploadAvatar({
-    required BuildContext ctx,
-    required File image,
-  }) async {
-    final FirebaseStorage _storage = FirebaseStorage.instance;
-    final String filePath = 'pet-photos/${DateTime.now().millisecondsSinceEpoch}.${image.path.split('.').last}';
-    try {
-      final TaskSnapshot uploadTask = await _storage.ref().child(filePath).putFile(image);
-      final String imageUrl = await uploadTask.ref.getDownloadURL();
-      return imageUrl;
-    } on FirebaseException catch (e) {
-      ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).avatar_upload_error);
-    }
   }
 }
 

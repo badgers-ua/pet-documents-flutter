@@ -14,6 +14,7 @@ AuthState authReducer(AuthState state, action) {
     );
   }
   if (action is LoadAccessTokenSuccess) {
+    print(action.payload.accessToken);
     return AuthState(
       isLoadingAccessToken: false,
       isLoading: false,

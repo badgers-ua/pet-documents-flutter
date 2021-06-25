@@ -12,14 +12,12 @@ import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
 import 'package:pdoc/extensions/string.dart';
 
-import '../../constants.dart';
 import 'actions.dart';
 
 Function loadEditPetThunk = ({
   required CreatePetReqDto request,
   required BuildContext ctx,
   required String petId,
-  required File? newAvatar,
 }) =>
     (Store<RootState> store) async {
       final PetResDto? currentPet = store.state.pet.data;
@@ -28,11 +26,7 @@ Function loadEditPetThunk = ({
       final File? currentPetAvatarFile =
           currentPetAvatar.isNotEmpty ? await currentPetAvatar.getFileFromCachedImage() : null;
 
-      final bool isAvatarChanged = currentPetAvatarFile?.path != newAvatar?.path;
-
-      final bool shouldUploadAvatar = isAvatarChanged && currentPetAvatar.isEmpty && newAvatar != null;
-      final bool shouldEditAvatar = isAvatarChanged && currentPetAvatar.isNotEmpty && newAvatar != null;
-      final bool shouldDeleteAvatar = isAvatarChanged && currentPetAvatar.isNotEmpty && newAvatar == null;
+      final bool isAvatarChanged = currentPetAvatarFile?.path != request.avatar?.path;
 
       if (currentPet != null) {
         final isPetChanged = currentPet.name != request.name ||
@@ -43,9 +37,7 @@ Function loadEditPetThunk = ({
             currentPet.colour != request.colour ||
             currentPet.weight != request.weight ||
             currentPet.notes != request.notes ||
-            shouldUploadAvatar ||
-            shouldEditAvatar ||
-            shouldDeleteAvatar;
+            isAvatarChanged;
         if (!isPetChanged) {
           Navigator.of(ctx).pop();
           return;
@@ -55,39 +47,7 @@ Function loadEditPetThunk = ({
       store.dispatch(LoadEditPet());
 
       try {
-        String? newAvatarUrl;
-
-        if (shouldUploadAvatar) {
-          newAvatarUrl = (await FirebaseConstants.uploadAvatar(
-                ctx: ctx,
-                image: newAvatar,
-              )) ??
-              '';
-        }
-
-        if (shouldEditAvatar) {
-          newAvatarUrl = (await FirebaseConstants.editAvatar(
-                ctx: ctx,
-                currentAvatarLink: currentPetAvatar,
-                image: newAvatar,
-              )) ??
-              '';
-        }
-
-        if (shouldDeleteAvatar) {
-          await FirebaseConstants.deleteAvatar(
-            ctx: ctx,
-            currentAvatarLink: currentPetAvatar,
-          );
-        }
-
-        final bool uploadSuccess = shouldUploadAvatar && newAvatarUrl != null;
-        final bool editSuccess = shouldEditAvatar && newAvatarUrl != null;
-        final bool deleteSuccess = shouldDeleteAvatar;
-
-          request.avatar = (uploadSuccess || editSuccess || deleteSuccess) ? newAvatarUrl : currentPetAvatar;
-
-        final res = await Dio().authenticatedDio(ctx: ctx).patch('/pet/$petId', data: request.toJson());
+        final res = await Dio().authenticatedDio(ctx: ctx).patch('/pet/$petId', data: await request.toFormData());
         final CreatePetResDto createPetResDto = CreatePetResDto.fromJson(res.data);
         Navigator.of(ctx).pop();
         store.dispatch(LoadEditPetSuccess());
