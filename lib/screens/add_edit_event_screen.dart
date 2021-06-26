@@ -37,6 +37,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   bool _isNotification = false;
+  bool _isNotificationFieldEnabled = false;
   DatePickerValue? _selectedDate;
 
   bool _validateForm() {
@@ -58,13 +59,31 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     final String formattedDate =
         intl.DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(eventDate).toString();
     _dateController.text = formattedDate;
-    _selectedDate = DatePickerValue(dateTime: eventDate, formattedDate: formattedDate);
+    _setSelectedDate(datePickerValue: DatePickerValue(dateTime: eventDate, formattedDate: formattedDate));
 
     if (event.description != null) {
       _descriptionController.text = event.description!;
     }
 
     _isNotification = event.isNotification;
+  }
+
+  _setSelectedDate({required DatePickerValue? datePickerValue}) {
+    _selectedDate = datePickerValue;
+    if (datePickerValue == null) {
+      return;
+    }
+    final bool isPastOrTodayDate = !DateTime.now().difference(datePickerValue.dateTime).isNegative;
+    if (!isPastOrTodayDate) {
+      setState(() {
+        this._isNotificationFieldEnabled = true;
+      });
+      return;
+    }
+    setState(() {
+      this._isNotificationFieldEnabled = false;
+      this._isNotification = false;
+    });
   }
 
   void _handleSubmit({
@@ -309,7 +328,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                         ctx: context,
                       ),
                       onFieldSubmitted: (DatePickerValue? val) {
-                        _selectedDate = val;
+                        _setSelectedDate(datePickerValue: val);
                         _validateForm();
                       },
                     ),
@@ -331,37 +350,42 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                       ),
                     ),
                   ),
-                  // TODO: Full row button,
-                  // TODO: Shouldn't be enabled if past date selected,
-                  Container(
-                    height: 60,
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: _isNotification,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isNotification = value!;
-                            });
-                          },
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isNotification = !_isNotification;
-                            });
-                          },
-                          child: Text(
-                            L10n.of(context).receive_notification,
-                            style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                  color: Theme.of(context).textTheme.caption!.color,
-                                  fontWeight: FontWeight.w400,
+                  _isNotificationFieldEnabled
+                      ? Container(
+                          height: 60,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: _isNotification,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _isNotification = value!;
+                                  });
+                                },
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (!this._isNotificationFieldEnabled) {
+                                      return;
+                                    }
+                                    setState(() {
+                                      _isNotification = !_isNotification;
+                                    });
+                                  },
+                                  child: Text(
+                                    L10n.of(context).receive_notification,
+                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                          color: Theme.of(context).textTheme.caption!.color,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                  ),
                                 ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : SizedBox(height: ThemeConstants.spacing(1)),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: ThemeConstants.spacing(1)),
                     width: double.infinity,
