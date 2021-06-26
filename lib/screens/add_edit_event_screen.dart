@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
@@ -59,7 +60,10 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     final String formattedDate =
         intl.DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(eventDate).toString();
     _dateController.text = formattedDate;
-    _setSelectedDate(datePickerValue: DatePickerValue(dateTime: eventDate, formattedDate: formattedDate));
+
+    Timer(const Duration(milliseconds: 0), () {
+      _setSelectedDate(datePickerValue: DatePickerValue(dateTime: eventDate, formattedDate: formattedDate));
+    });
 
     if (event.description != null) {
       _descriptionController.text = event.description!;

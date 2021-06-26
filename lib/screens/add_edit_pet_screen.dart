@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show File, Platform;
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
@@ -159,7 +160,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
       _descriptionController.text = pet.notes!;
     }
     if (vm.petAvatarUrl.isNotEmpty) {
-      File formattedPickedFile = await vm.petAvatarUrl  .getFileFromCachedImage();
+      File formattedPickedFile = await vm.petAvatarUrl.getFileFromCachedImage();
 
       _selectedAvatar = formattedPickedFile;
     }
@@ -202,7 +203,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     if (_descriptionController.text.isNotEmpty) {
       createPetReqDto.notes = _descriptionController.text;
     }
-    if(_selectedAvatar != null) {
+    if (_selectedAvatar != null) {
       createPetReqDto.avatar = this._selectedAvatar;
     }
 
@@ -239,6 +240,12 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
         if (!editMode) {
           return;
         }
+
+        Timer(const Duration(milliseconds: 0), () {
+          setState(() {
+            this.isExpanded = true;
+          });
+        });
 
         store.dispatch(loadBreedsBySpeciesThunk(ctx: context, species: currentPet.species));
       },
@@ -320,9 +327,8 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
         final List<Widget> _formWidgets = [
           ImageCapture(
             initialImage: vm.petAvatarUrl,
-            noImageSvgAsset: ThemeConstants.getImageBySpecies(_speciesController.text.isNotEmpty
-                ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions)
-                : null),
+            noImageSvgAsset: ThemeConstants.getImageBySpecies(
+                _speciesController.text.isNotEmpty ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions) : null),
             onChange: (File? file) {
               _selectedAvatar = file;
             },
@@ -346,8 +352,8 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
           SizedBox(height: ThemeConstants.spacing(1)),
           TextFormField(
             controller: _speciesController,
-            validator: (v) => (v ?? '').requiredValidator(
-                fieldName: L10n.of(context).add_edit_pet_screen_species_input_text, ctx: context),
+            validator: (v) => (v ?? '')
+                .requiredValidator(fieldName: L10n.of(context).add_edit_pet_screen_species_input_text, ctx: context),
             onTap: () => showModalSelect(
               modalTitle: L10n.of(context).modal_select_app_bar_select_species_text,
               ctx: context,
@@ -388,13 +394,13 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                       onTap: () => vm.isLoadingBreeds
                           ? null
                           : showModalSelect(
-                        modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
-                        ctx: context,
-                        options: vm.breedOptions,
-                        controller: _breedController,
-                        vm: vm,
-                        isBreeds: true,
-                      ),
+                              modalTitle: L10n.of(context).modal_select_app_bar_select_breeds_text,
+                              ctx: context,
+                              options: vm.breedOptions,
+                              controller: _breedController,
+                              vm: vm,
+                              isBreeds: true,
+                            ),
                       readOnly: true,
                       enabled: !vm.isLoadingBreeds && _speciesController.text.isNotEmpty,
                       decoration: InputDecoration(
@@ -407,11 +413,11 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                         suffixIcon: !vm.isLoadingBreeds
                             ? Icon(Icons.keyboard_arrow_right)
                             : SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 23),
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 23),
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
                         border: OutlineInputBorder(),
                         labelText: L10n.of(context).add_edit_pet_screen_breed_input_text,
                       ),
@@ -489,17 +495,17 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
               onPressed: (vm.isLoadingCreatePet || vm.isLoadingEditPet)
                   ? null
                   : () {
-                _onSubmit(
-                  vm: vm,
-                  genderOptions: genderOptions,
-                  speciesOptions: speciesOptions,
-                );
-              },
+                      _onSubmit(
+                        vm: vm,
+                        genderOptions: genderOptions,
+                        speciesOptions: speciesOptions,
+                      );
+                    },
               child: vm.isLoadingCreatePet || vm.isLoadingEditPet
                   ? ThemeConstants.getButtonSpinner()
                   : Text(
-                !vm.isEditMode ? L10n.of(context).create : L10n.of(context).update,
-              ),
+                      !vm.isEditMode ? L10n.of(context).create : L10n.of(context).update,
+                    ),
             ),
           ),
         ];
@@ -520,7 +526,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
                 controller: _scrollController,
                 itemCount: _formWidgets.length,
                 padding: EdgeInsets.all(ThemeConstants.spacing(1)),
-                itemBuilder: (_, i)  {
+                itemBuilder: (_, i) {
                   return _formWidgets[i];
                 },
               ),
