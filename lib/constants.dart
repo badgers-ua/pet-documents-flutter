@@ -169,6 +169,7 @@ class AnalyticsConstants {
   static final ownerAdded = 'owner_added';
   static final ownerRemoved = 'owner_removed';
   static final hasAvatar = 'has_avatar';
+  static final species = 'species';
   static final error = 'error';
   static final errorMessage = 'error_message';
 }

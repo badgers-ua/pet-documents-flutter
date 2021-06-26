@@ -36,8 +36,13 @@ class AnalyticsService {
     );
   }
 
-  Future logBreedsLoaded() async {
-    await _analytics.logEvent(name: AnalyticsConstants.breedsLoaded);
+  Future logBreedsLoaded({required String species}) async {
+    await _analytics.logEvent(
+      name: AnalyticsConstants.breedsLoaded,
+      parameters: {
+        AnalyticsConstants.species: species,
+      },
+    );
   }
 
   Future logEventCreated() async {

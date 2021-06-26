@@ -33,7 +33,7 @@ Function loadBreedsBySpeciesThunk = ({
             response.data.map((item) => StaticResDto.fromJson(item)).cast<StaticResDto>().toList();
         final Map<SPECIES, List<StaticResDto>> payload = {species: breeds};
         store.dispatch(LoadBreedsSuccess(payload: payload));
-        locator<AnalyticsService>().logBreedsLoaded();
+        locator<AnalyticsService>().logBreedsLoaded(species: species.index.toString());
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
         locator<AnalyticsService>().logError(errorMsg: errorMsg);
