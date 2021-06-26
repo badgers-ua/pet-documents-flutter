@@ -4,15 +4,17 @@ import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
-import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
 import 'package:pdoc/store/events/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pets/effects.dart';
-import 'package:pdoc/widgets/event_row_widget.dart';
-import 'package:pdoc/widgets/pet_card_widget.dart';
 import 'package:pdoc/extensions/events.dart';
+import 'package:pdoc/ui/screens/tabs/pet_profile/pet_profile_screen.dart';
+import 'package:pdoc/ui/widgets/event_row_widget.dart';
+import 'package:pdoc/ui/widgets/pet_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const routeName = '/tab-home';
+
   void handlePetCardPressed({
     required BuildContext ctx,
     required String petId,

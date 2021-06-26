@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdoc/l10n/l10n.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class ConfirmationDialogWidget extends StatelessWidget {
   final String title;

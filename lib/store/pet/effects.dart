@@ -4,11 +4,13 @@ import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/image_url.dart';
 import 'package:pdoc/models/pet_state.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/image-urls/actions.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
 
+import '../../locator.dart';
 import 'actions.dart';
 
 Function loadPetThunk = ({
@@ -35,8 +37,11 @@ Function loadPetThunk = ({
             ),
           ),
         );
+
+        locator<AnalyticsService>().logPetLoaded();
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
+        locator<AnalyticsService>().logError(errorMsg: errorMsg);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadPetFailure(payload: errorMsg));
       }

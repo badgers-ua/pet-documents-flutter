@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -11,20 +12,22 @@ import 'package:pdoc/models/dto/request/remove_owner_req_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/models/pet_state.dart';
-import 'package:pdoc/screens/add_edit_event_screen.dart';
-import 'package:pdoc/screens/add_edit_pet_screen.dart';
-import 'package:pdoc/screens/tabs/pet_profile/tabs/pet_events_sliver_list_screen.dart';
-import 'package:pdoc/screens/tabs/pet_profile/tabs/pet_info_sliver_list_screen.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/delete-pet/effects.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/actions.dart';
 import 'package:pdoc/store/pet/effects.dart';
 import 'package:pdoc/store/remove-owner/effects.dart';
-import 'package:pdoc/widgets/add_owner_dialog_widget.dart';
-import 'package:pdoc/widgets/confirmation_dialog_widget.dart';
-import 'package:pdoc/widgets/modal_select_widget.dart';
+import 'package:pdoc/ui/screens/tabs/pet_profile/tabs/pet_events_sliver_list_screen.dart';
+import 'package:pdoc/ui/screens/tabs/pet_profile/tabs/pet_info_sliver_list_screen.dart';
+import 'package:pdoc/ui/widgets/add_owner_dialog_widget.dart';
+import 'package:pdoc/ui/widgets/confirmation_dialog_widget.dart';
+import 'package:pdoc/ui/widgets/modal_select_widget.dart';
 
-import '../../../constants.dart';
+import '../../../../constants.dart';
+import '../../../../locator.dart';
+import '../../add_edit_event_screen.dart';
+import '../../add_edit_pet_screen.dart';
 
 class PetProfileScreenProps {
   final String petId;
@@ -35,7 +38,7 @@ class PetProfileScreenProps {
 }
 
 class PetProfileScreen extends StatefulWidget {
-  static const routeName = '/pet-profile';
+  static const routeName = '/pet-profile-tabs';
 
   @override
   _PetProfileScreenState createState() => _PetProfileScreenState();
@@ -43,6 +46,20 @@ class PetProfileScreen extends StatefulWidget {
 
 class _PetProfileScreenState extends State<PetProfileScreen> {
   int _currentTabIndex = 0;
+
+  final FirebaseAnalyticsObserver observer = locator<AnalyticsService>().getAnalyticsObserver();
+
+  void _sendCurrentTabToAnalytics() {
+    observer.analytics.setCurrentScreen(
+      screenName: '${PetProfileScreen.routeName}/$_currentTabIndex',
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _sendCurrentTabToAnalytics();
+  }
 
   SpeedDial petActionButtons({
     required BuildContext ctx,
@@ -294,11 +311,16 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           child: Builder(builder: (BuildContext context) {
             final TabController tabController = DefaultTabController.of(context)!;
             tabController.addListener(() {
-              if (!tabController.indexIsChanging) {
-                setState(() {
-                  _currentTabIndex = tabController.index;
-                });
+              if (tabController.indexIsChanging) {
+                return;
               }
+              if (tabController.index == _currentTabIndex) {
+                return;
+              }
+              setState(() {
+                _currentTabIndex = tabController.index;
+              });
+              _sendCurrentTabToAnalytics();
             });
             return Scaffold(
               body: Scrollbar(
@@ -321,20 +343,20 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                               child: vm.petAvatarUrl.isEmpty
                                   ? svgAvatar
                                   : CachedNetworkImage(
-                                imageBuilder: (context, imageProvider) => Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                      colorFilter: ColorFilter.mode(
-                                        Colors.black.withOpacity(0.7),
-                                        BlendMode.dstATop,
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                            colorFilter: ColorFilter.mode(
+                                              Colors.black.withOpacity(0.7),
+                                              BlendMode.dstATop,
+                                            ),
+                                          ),
+                                        ),
                                       ),
+                                      imageUrl: vm.petAvatarUrl,
                                     ),
-                                  ),
-                                ),
-                                imageUrl: vm.petAvatarUrl,
-                              ),
                             ),
                           ),
                           bottom: TabBar(

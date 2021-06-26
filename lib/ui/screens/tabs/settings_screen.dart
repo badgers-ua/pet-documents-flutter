@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/request/sign_out_req_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
@@ -9,6 +8,8 @@ import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/sign-out/effects.dart';
 
 class SettingsScreen extends StatelessWidget {
+  static const routeName = '/tab-settings';
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<RootState, _SettingsScreenViewModel>(

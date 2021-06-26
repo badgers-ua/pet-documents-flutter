@@ -6,6 +6,7 @@ import 'package:pdoc/models/dto/request/create_pet_req_dto.dart';
 import 'package:pdoc/models/dto/request/edit_pet_req_dto.dart';
 import 'package:pdoc/models/dto/response/create_pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/pet/effects.dart';
 import 'package:pdoc/store/pets/effects.dart';
@@ -13,6 +14,7 @@ import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
 import 'package:pdoc/extensions/string.dart';
 
+import '../../locator.dart';
 import 'actions.dart';
 
 Function loadEditPetThunk = ({
@@ -64,8 +66,10 @@ Function loadEditPetThunk = ({
         store.dispatch(LoadEditPetSuccess());
         store.dispatch(loadPetsThunk(ctx: ctx));
         store.dispatch(loadPetThunk(ctx: ctx, petId: petId));
+        locator<AnalyticsService>().logPetEdited(hasAvatar: _request.avatar != null);
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
+        locator<AnalyticsService>().logError(errorMsg: errorMsg);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadEditPetFailure(payload: errorMsg));
       }

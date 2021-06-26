@@ -3,11 +3,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:redux/redux.dart';
 
 import 'l10n/l10n.dart';
+import 'locator.dart';
 import 'models/auth.dart';
 import 'models/dto/request/refresh_token_req_dto.dart';
 import 'models/dto/response/sign_in_res_dto.dart';
@@ -57,9 +59,12 @@ class RefreshTokenConstants {
         isAuthenticated: true,
       );
 
+      locator<AnalyticsService>().logSilentToken();
+
       return auth;
     } on DioError catch (e) {
       final String errorMsg = e.getResponseError(ctx: ctx);
+      locator<AnalyticsService>().logError(errorMsg: errorMsg);
       e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
       store.dispatch(LoadAccessTokenFailure(payload: errorMsg));
     }
@@ -144,6 +149,28 @@ class FirebaseConstants {
       return '';
     }
   }
+}
+
+class AnalyticsConstants {
+  static final googleLogin = 'login_google';
+  static final firebaseGoogleLogin = 'login_firebase_google';
+  static final silentToken = 'silent_token';
+  static final logOut = 'logout';
+  static final petCreated = 'pet_created';
+  static final petEdited = 'pet_edited';
+  static final petDeleted = 'pet_deleted';
+  static final petLoaded = 'pet_loaded';
+  static final petsLoaded = 'pets_loaded';
+  static final eventCreated = 'event_created';
+  static final eventEdited = 'event_edited';
+  static final eventDeleted = 'event_deleted';
+  static final eventsLoaded = 'events_loaded';
+  static final breedsLoaded = 'breeds_loaded';
+  static final ownerAdded = 'owner_added';
+  static final ownerRemoved = 'owner_removed';
+  static final hasAvatar = 'has_avatar';
+  static final error = 'error';
+  static final errorMessage = 'error_message';
 }
 
 class Api {

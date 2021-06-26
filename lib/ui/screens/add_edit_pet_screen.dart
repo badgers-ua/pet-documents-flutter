@@ -14,13 +14,13 @@ import 'package:pdoc/store/add-pet/effects.dart';
 import 'package:pdoc/store/breeds/effects.dart';
 import 'package:pdoc/store/edit-pet/effects.dart';
 import 'package:pdoc/store/index.dart';
-import 'package:pdoc/widgets/date_picker_widget.dart';
-import 'package:pdoc/widgets/image_capture.dart';
-import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:pdoc/extensions/string.dart';
+import 'package:pdoc/ui/widgets/date_picker_widget.dart';
+import 'package:pdoc/ui/widgets/image_capture.dart';
+import 'package:pdoc/ui/widgets/modal_select_widget.dart';
 
 class AddEditPetScreen extends StatefulWidget {
-  static const routeName = '/pet-create';
+  static const routeName = '/pet-create-edit';
 
   @override
   _AddEditPetScreenState createState() => _AddEditPetScreenState();

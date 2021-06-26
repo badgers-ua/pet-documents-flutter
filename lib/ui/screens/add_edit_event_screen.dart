@@ -14,10 +14,10 @@ import 'package:pdoc/store/create-event/effects.dart';
 import 'package:pdoc/store/delete-event/effects.dart';
 import 'package:pdoc/store/edit-event/effects.dart';
 import 'package:pdoc/store/index.dart';
-import 'package:pdoc/widgets/confirmation_dialog_widget.dart';
-import 'package:pdoc/widgets/date_picker_widget.dart';
-import 'package:pdoc/widgets/modal_select_widget.dart';
 import 'package:pdoc/extensions/string.dart';
+import 'package:pdoc/ui/widgets/confirmation_dialog_widget.dart';
+import 'package:pdoc/ui/widgets/date_picker_widget.dart';
+import 'package:pdoc/ui/widgets/modal_select_widget.dart';
 
 class AddEditEventScreenProps {
   final EventResDto? event;
@@ -26,7 +26,7 @@ class AddEditEventScreenProps {
 }
 
 class AddEditEventScreen extends StatefulWidget {
-  static const routeName = '/add-edit-event';
+  static const routeName = '/event-create-edit';
 
   @override
   _AddEditEventScreenState createState() => _AddEditEventScreenState();

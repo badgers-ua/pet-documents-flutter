@@ -5,7 +5,7 @@ import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/owner_res_dto.dart';
 import 'package:pdoc/models/dto/response/static_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
-import 'package:pdoc/widgets/pet_info_row_widget.dart';
+import 'package:pdoc/ui/widgets/pet_info_row_widget.dart';
 import 'package:pdoc/extensions/string.dart';
 
 part 'pet_res_dto.g.dart';

@@ -8,12 +8,14 @@ import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/auth.dart';
 import 'package:pdoc/models/dto/request/social_sign_in_req_dto.dart';
 import 'package:pdoc/models/dto/response/sign_in_res_dto.dart';
-import 'package:pdoc/screens/tabs_screen.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/user/effects.dart';
+import 'package:pdoc/ui/screens/tabs_screen.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
 
 import '../../constants.dart';
+import '../../locator.dart';
 import '../index.dart';
 import 'actions.dart';
 
@@ -59,8 +61,11 @@ Function loadGoogleFirebaseAuth = ({required BuildContext ctx}) => (Store<RootSt
           avatar: account.photoUrl!,
         );
 
+        locator<AnalyticsService>().logFirebaseGoogleLogin();
+
         store.dispatch(loadSocialSignInThunk(ctx: ctx, request: request));
       } catch (e) {
+        locator<AnalyticsService>().logError(errorMsg: L10n.of(ctx).something_went_wrong);
         ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).something_went_wrong);
       }
     };
@@ -106,6 +111,7 @@ Function loadSocialSignInThunk = ({
             ),
           ),
         );
+        locator<AnalyticsService>().logGoogleLogin();
         store.dispatch(loadUserThunk(ctx: ctx));
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);

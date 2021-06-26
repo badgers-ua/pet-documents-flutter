@@ -3,13 +3,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/response/event_res_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
-import 'package:pdoc/screens/add_edit_event_screen.dart';
+import 'package:pdoc/ui/screens/add_edit_event_screen.dart';
 import 'package:pdoc/store/events/effects.dart';
 import 'package:pdoc/store/index.dart';
-import 'package:pdoc/widgets/event_row_widget.dart';
+import 'package:pdoc/ui/widgets/event_row_widget.dart';
 import 'package:pdoc/extensions/events.dart';
 
-import '../../../../constants.dart';
+import '../../../../../constants.dart';
 
 class PetEventsSLiverListScreen extends StatelessWidget {
   Widget renderEventsListWidget({

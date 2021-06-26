@@ -1,12 +1,15 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pdoc/l10n/l10n.dart';
-import 'package:pdoc/screens/add_edit_pet_screen.dart';
-import 'package:pdoc/screens/tabs/settings_screen.dart';
+import 'package:pdoc/locator.dart';
+import 'package:pdoc/services/analytics_service.dart';
+import 'package:pdoc/ui/screens/tabs/settings_screen.dart';
 
+import 'add_edit_pet_screen.dart';
 import 'tabs/home_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  static const routeName = '/tabs';
+  static const routeName = '/main-tabs';
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
@@ -14,6 +17,20 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _currentTabIndex = 0;
+
+  final FirebaseAnalyticsObserver observer = locator<AnalyticsService>().getAnalyticsObserver();
+
+  void _sendCurrentTabToAnalytics() {
+    observer.analytics.setCurrentScreen(
+      screenName: '${TabsScreen.routeName}/$_currentTabIndex',
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _sendCurrentTabToAnalytics();
+  }
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -38,6 +55,7 @@ class _TabsScreenState extends State<TabsScreen> {
     setState(() {
       _currentTabIndex = index;
     });
+    _sendCurrentTabToAnalytics();
   }
 
   @override

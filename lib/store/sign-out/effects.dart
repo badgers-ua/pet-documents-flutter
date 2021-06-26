@@ -5,7 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/request/sign_out_req_dto.dart';
-import 'package:pdoc/screens/sign_in_screen.dart';
+import 'package:pdoc/ui/screens/sign_in_screen.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/add-owner/actions.dart';
 import 'package:pdoc/store/add-pet/actions.dart';
 import 'package:pdoc/store/auth/actions.dart';
@@ -24,6 +25,7 @@ import 'package:pdoc/store/user/actions.dart';
 import 'package:redux/redux.dart';
 import 'package:pdoc/extensions/dio.dart';
 
+import '../../locator.dart';
 import 'actions.dart';
 
 Function loadSignOutThunk = ({
@@ -39,8 +41,10 @@ Function loadSignOutThunk = ({
         Navigator.of(ctx).pushReplacementNamed(SignInScreen.routeName);
         ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
         store.dispatch(_clearStore(ctx: ctx));
+        locator<AnalyticsService>().logLogout();
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
+        locator<AnalyticsService>().logError(errorMsg: errorMsg);
         e.showErrorSnackBar(ctx: ctx, errorMsg: errorMsg);
         store.dispatch(LoadSignOutFailure(payload: errorMsg));
       }
@@ -53,6 +57,7 @@ Function _clearStore = ({
       try {
         await FirebaseAuth.instance.signOut();
       } catch (e) {
+        locator<AnalyticsService>().logError(errorMsg: L10n.of(ctx).something_went_wrong);
         ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).something_went_wrong);
       } finally {
         SecureStorageConstants.clearRefreshToken();

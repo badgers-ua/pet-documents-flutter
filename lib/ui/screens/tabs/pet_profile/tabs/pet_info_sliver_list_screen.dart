@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pdoc/widgets/pet_info_row_widget.dart';
+import 'package:pdoc/ui/widgets/pet_info_row_widget.dart';
 
 class PetInfoSliverListScreen extends StatelessWidget {
   final List<PetInfoRowWidgetProps> petRowList;

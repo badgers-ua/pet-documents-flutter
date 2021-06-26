@@ -6,24 +6,26 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/models/device_token.dart';
-import 'package:pdoc/screens/add_edit_event_screen.dart';
-import 'package:pdoc/screens/add_edit_pet_screen.dart';
-import 'package:pdoc/screens/tabs/pet_profile/pet_profile_screen.dart';
-import 'package:pdoc/screens/sign_in_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pdoc/screens/tabs_screen.dart';
+import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/auth/actions.dart';
 import 'package:pdoc/store/auth/effects.dart';
 import 'package:pdoc/store/device-token/actions.dart';
 import 'package:pdoc/store/index.dart';
+import 'package:pdoc/ui/screens/add_edit_event_screen.dart';
+import 'package:pdoc/ui/screens/add_edit_pet_screen.dart';
+import 'package:pdoc/ui/screens/sign_in_screen.dart';
+import 'package:pdoc/ui/screens/tabs/pet_profile/pet_profile_screen.dart';
+import 'package:pdoc/ui/screens/tabs_screen.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 import 'l10n/l10n.dart';
+import 'locator.dart';
 import 'models/auth.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
@@ -74,6 +76,7 @@ class _MyAppState extends State<MyApp> {
     return StoreProvider<RootState>(
       store: MyApp.store,
       child: MaterialApp(
+        navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
         supportedLocales: L10n.all,
         localizationsDelegates: [
           AppLocalizations.delegate,
@@ -173,6 +176,5 @@ class _MyAppViewModel {
   });
 }
 
-// TODO: Firebase analytics
 // TODO: Firebase crashlytics
 // TODO: Bigger buttons
