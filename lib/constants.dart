@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
@@ -125,9 +126,29 @@ class ThemeConstants {
   }
 }
 
+class FirebaseConstants {
+  static Future<String> getAvatarUrl({
+    required String avatarName,
+    required BuildContext ctx,
+  }) async {
+    if (avatarName.isEmpty) {
+      return avatarName;
+    }
+    try {
+      final FirebaseStorage _storage = FirebaseStorage.instance;
+      final file = _storage.ref(avatarName);
+      final url = await file.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      ThemeConstants.showSnackBar(ctx: ctx, msg: L10n.of(ctx).avatar_upload_error);
+      return '';
+    }
+  }
+}
+
 class Api {
   // Android
   static const baseUrl = 'http://10.0.2.2:5000/api/v2';
 // static const baseUrl = 'http://localhost:5000/api/v2';
-// static const baseUrl = 'https://p-doc.com/api/v2';
+//   static const baseUrl = 'https://p-doc.com/api/v2';
 }

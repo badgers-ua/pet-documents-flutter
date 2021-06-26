@@ -1,11 +1,11 @@
-import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/models/pet_state.dart';
 
 import '../index.dart';
 
 class LoadPet extends AppAction {}
 
 class LoadPetSuccess extends AppAction {
-  final PetResDto payload;
+  final Pet payload;
 
   LoadPetSuccess({required this.payload});
 }

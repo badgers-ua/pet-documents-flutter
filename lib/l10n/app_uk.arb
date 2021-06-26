@@ -169,7 +169,7 @@
   "repeat_password": "Повторіть пароль",
   "weight_kg": "Вага (kg)",
   "weight": "Вага",
-  "avatar_upload_error": "Помилка відправки фото.",
+  "avatar_download_error": "Помилка завантаження фото.",
   "age_year": "р",
   "age_month": "м",
   "receive_notification": "Отримати сповіщення",

@@ -1,13 +1,13 @@
 import 'package:pdoc/models/app_state.dart';
-import 'package:pdoc/models/dto/response/pet_res_dto.dart';
+import 'package:pdoc/models/pet_state.dart';
 
 import 'actions.dart';
 
-AppState<PetResDto> petReducer(AppState<PetResDto> state, action) {
+AppState<Pet> petReducer(AppState<Pet> state, action) {
   if (action is LoadPet) {
     return AppState(
       isLoading: true,
-      data: null,
+      data: Pet(avatarUrl: '', petResDto: null),
       errorMessage: '',
     );
   }
@@ -21,12 +21,14 @@ AppState<PetResDto> petReducer(AppState<PetResDto> state, action) {
   if (action is LoadPetFailure) {
     return AppState(
       isLoading: false,
-      data: null,
+      data: Pet(avatarUrl: '', petResDto: null),
       errorMessage: action.payload,
     );
   }
   if (action is ClearPetState) {
-    return AppState();
+    return AppState(
+      data: Pet(avatarUrl: '', petResDto: null),
+    );
   }
   return state;
 }

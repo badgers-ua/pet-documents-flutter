@@ -173,7 +173,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
         return _AddEditEventScreenViewModel(
           isEditMode: props.event != null,
           event: props.event,
-          pet: store.state.pet.data,
+          pet: store.state.pet.data!.petResDto,
           error: store.state.pet.errorMessage.isNotEmpty,
           isLoadingCreateEvent: store.state.createEvent.isLoading,
           isLoadingEditEvent: store.state.editEvent.isLoading,

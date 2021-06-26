@@ -10,6 +10,7 @@ import 'package:pdoc/models/app_state.dart';
 import 'package:pdoc/models/dto/request/remove_owner_req_dto.dart';
 import 'package:pdoc/models/dto/response/pet_res_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
+import 'package:pdoc/models/pet_state.dart';
 import 'package:pdoc/screens/add_edit_event_screen.dart';
 import 'package:pdoc/screens/add_edit_pet_screen.dart';
 import 'package:pdoc/screens/tabs/pet_profile/tabs/pet_events_sliver_list_screen.dart';
@@ -208,18 +209,19 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         store.dispatch(loadPetThunk(ctx: context, petId: props.petId));
       },
       converter: (store) {
-        final AppState<PetResDto> petState = store.state.pet;
+        final AppState<Pet> petState = store.state.pet;
         final AppState<UserResDto> userState = store.state.user;
         return _PetProfileScreenViewModel(
           error: petState.errorMessage.isNotEmpty || userState.errorMessage.isNotEmpty,
           removeOwnerOptions: petState.data == null
               ? []
-              : (petState.data?.owners ?? [])
+              : (petState.data?.petResDto?.owners ?? [])
                   .map(
                     (e) => ModalSelectOption(label: '${e.firstName} ${e.lastName}', value: e.id),
                   )
                   .toList(),
-          pet: petState.data,
+          pet: petState.data!.petResDto,
+          petAvatarUrl: petState.data!.avatarUrl,
           isLoadingPet: petState.isLoading,
           user: userState.data,
           isLoadingUser: userState.isLoading,
@@ -275,6 +277,18 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
         final PetResDto pet = vm.pet!;
 
+        final Widget svgAvatar = Align(
+          child: Container(
+            padding: EdgeInsets.only(top: ThemeConstants.spacing(4)),
+            child: SvgPicture.asset(
+              ThemeConstants.getImageBySpecies(pet.species),
+              color: Theme.of(context).brightness == Brightness.light ? Colors.white : Theme.of(context).accentColor,
+              height: 150,
+              width: 150,
+            ),
+          ),
+        );
+
         return DefaultTabController(
           length: 2,
           child: Builder(builder: (BuildContext context) {
@@ -303,36 +317,24 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                           forceElevated: innerBoxIsScrolled,
                           flexibleSpace: FlexibleSpaceBar(
                             background: Container(
-                              decoration: pet.avatar == null ? null : BoxDecoration(color: Colors.black),
-                              child: pet.avatar == null
-                                  ? Align(
-                                      child: Container(
-                                        padding: EdgeInsets.only(top: ThemeConstants.spacing(4)),
-                                        child: SvgPicture.asset(
-                                          ThemeConstants.getImageBySpecies(pet.species),
-                                          color: Theme.of(context).brightness == Brightness.light
-                                              ? Colors.white
-                                              : Theme.of(context).accentColor,
-                                          height: 150,
-                                          width: 150,
-                                        ),
-                                      ),
-                                    )
+                              decoration: vm.petAvatarUrl.isEmpty ? null : BoxDecoration(color: Colors.black),
+                              child: vm.petAvatarUrl.isEmpty
+                                  ? svgAvatar
                                   : CachedNetworkImage(
-                                      imageBuilder: (context, imageProvider) => Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
-                                            colorFilter: ColorFilter.mode(
-                                              Colors.black.withOpacity(0.7),
-                                              BlendMode.dstATop,
-                                            ),
-                                          ),
-                                        ),
+                                imageBuilder: (context, imageProvider) => Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.black.withOpacity(0.7),
+                                        BlendMode.dstATop,
                                       ),
-                                      imageUrl: pet.avatar!,
                                     ),
+                                  ),
+                                ),
+                                imageUrl: vm.petAvatarUrl,
+                              ),
                             ),
                           ),
                           bottom: TabBar(
@@ -387,6 +389,7 @@ class _PetProfileScreenViewModel {
   final bool isLoadingUser;
   final bool error;
   final PetResDto? pet;
+  final String petAvatarUrl;
   final UserResDto? user;
   final List<ModalSelectOption> removeOwnerOptions;
   final dispatchLoadRemoveOwnerThunk;
@@ -397,6 +400,7 @@ class _PetProfileScreenViewModel {
     required this.isLoadingUser,
     required this.error,
     required this.pet,
+    required this.petAvatarUrl,
     required this.user,
     required this.removeOwnerOptions,
     required this.dispatchLoadRemoveOwnerThunk,

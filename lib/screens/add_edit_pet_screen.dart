@@ -158,8 +158,8 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
     if (pet.notes != null) {
       _descriptionController.text = pet.notes!;
     }
-    if (pet.avatar != null) {
-      File formattedPickedFile = await pet.avatar!.getFileFromCachedImage();
+    if (vm.petAvatarUrl.isNotEmpty) {
+      File formattedPickedFile = await vm.petAvatarUrl  .getFileFromCachedImage();
 
       _selectedAvatar = formattedPickedFile;
     }
@@ -233,7 +233,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
 
     return StoreConnector<RootState, _AddEditPetScreenViewModel>(
       onInit: (store) {
-        final PetResDto? currentPet = store.state.pet.data;
+        final PetResDto? currentPet = store.state.pet.data!.petResDto;
         final bool editMode = currentPet != null;
 
         if (!editMode) {
@@ -243,7 +243,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
         store.dispatch(loadBreedsBySpeciesThunk(ctx: context, species: currentPet.species));
       },
       converter: (store) {
-        final PetResDto? currentPet = store.state.pet.data;
+        final PetResDto? currentPet = store.state.pet.data!.petResDto;
 
         final bool isEditMode = currentPet != null;
 
@@ -259,6 +259,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
           breedOptions: breedOptions,
           isEditMode: isEditMode,
           pet: currentPet,
+          petAvatarUrl: store.state.pet.data!.avatarUrl,
           error: store.state.pet.errorMessage.isNotEmpty,
           isLoadingCreatePet: store.state.addPet.isLoading,
           isLoadingEditPet: store.state.editPet.isLoading,
@@ -318,7 +319,7 @@ class _AddEditPetScreenState extends State<AddEditPetScreen> {
 
         final List<Widget> _formWidgets = [
           ImageCapture(
-            initialImage: vm.pet?.avatar,
+            initialImage: vm.petAvatarUrl,
             noImageSvgAsset: ThemeConstants.getImageBySpecies(_speciesController.text.isNotEmpty
                 ? _getSpeciesByOptionLabel(speciesOptions: speciesOptions)
                 : null),
@@ -541,6 +542,7 @@ class _AddEditPetScreenViewModel {
   final bool isEditMode;
   final bool error;
   final PetResDto? pet;
+  final String petAvatarUrl;
   final List<ModalSelectOption<String>> breedOptions;
 
   _AddEditPetScreenViewModel({
@@ -554,5 +556,6 @@ class _AddEditPetScreenViewModel {
     required this.breedOptions,
     required this.isEditMode,
     required this.pet,
+    required this.petAvatarUrl,
   });
 }

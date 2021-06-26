@@ -62,7 +62,7 @@ class PetEventsSLiverListScreen extends StatelessWidget {
       },
       converter: (store) {
         final List<EventResDto> events =
-            store.state.events.data!.where((element) => element.petId == store.state.pet.data!.id).toList();
+            store.state.events.data!.where((element) => element.petId == store.state.pet.data!.petResDto!.id).toList();
         events.sortByDate();
 
         return _PetEventsSLiverListScreenViewModel(
@@ -85,7 +85,7 @@ class PetEventsSLiverListScreen extends StatelessWidget {
               event: eventResDto,
             );
           }).toList(),
-          pet: store.state.pet.data,
+          pet: store.state.pet.data!.petResDto,
         );
       },
       builder: (context, _PetEventsSLiverListScreenViewModel vm) {
