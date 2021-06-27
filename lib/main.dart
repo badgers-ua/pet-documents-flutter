@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:isolate';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,12 +28,26 @@ import 'l10n/l10n.dart';
 import 'locator.dart';
 import 'models/auth.dart';
 
+_initializeCrashlytics() {
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  Isolate.current.addErrorListener(RawReceivePort((pair) async {
+    final List<dynamic> errorAndStacktrace = pair;
+    await FirebaseCrashlytics.instance.recordError(
+      errorAndStacktrace.first,
+      errorAndStacktrace.last,
+    );
+  }).sendPort);
+}
+
 Future<void> main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
-  runApp(MyApp());
+  _initializeCrashlytics();
+  runZonedGuarded<Future<void>>(() async {
+    runApp(MyApp());
+  }, FirebaseCrashlytics.instance.recordError);
 }
 
 class MyApp extends StatefulWidget {
