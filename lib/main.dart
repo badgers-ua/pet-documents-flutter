@@ -194,5 +194,4 @@ class _MyAppViewModel {
   });
 }
 
-// TODO: Firebase crashlytics
 // TODO: Bigger buttons
