@@ -7,8 +7,12 @@ class AnalyticsService {
 
   FirebaseAnalyticsObserver getAnalyticsObserver() => FirebaseAnalyticsObserver(analytics: _analytics);
 
-  Future setUserProperties({required String userId}) async {
+  Future setUserId({required String userId}) async {
     await _analytics.setUserId(userId);
+  }
+
+  Future removeUserId() async {
+    await _analytics.setUserId(null);
   }
 
   Future logFirebaseGoogleLogin() async {

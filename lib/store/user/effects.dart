@@ -21,7 +21,7 @@ Function loadUserThunk = ({
         final response = await Dio().authenticatedDio(ctx: ctx).get('${Api.baseUrl}/profile');
         final UserResDto resDto = UserResDto.fromJson(response.data);
         store.dispatch(LoadUserSuccess(payload: resDto));
-        locator<AnalyticsService>().setUserProperties(userId: resDto.id);
+        locator<AnalyticsService>().setUserId(userId: resDto.id);
         locator<CrashlyticsService>().setUserIdentifier(userId: resDto.id);
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);

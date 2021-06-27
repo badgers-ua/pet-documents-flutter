@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdoc/constants.dart';
 import 'package:pdoc/l10n/l10n.dart';
 import 'package:pdoc/models/dto/request/sign_out_req_dto.dart';
+import 'package:pdoc/services/crashlitycs_service.dart';
 import 'package:pdoc/ui/screens/sign_in_screen.dart';
 import 'package:pdoc/services/analytics_service.dart';
 import 'package:pdoc/store/add-owner/actions.dart';
@@ -42,6 +43,8 @@ Function loadSignOutThunk = ({
         ScaffoldMessenger.of(ctx).removeCurrentSnackBar();
         store.dispatch(_clearStore(ctx: ctx));
         locator<AnalyticsService>().logLogout();
+        locator<AnalyticsService>().removeUserId();
+        locator<CrashlyticsService>().removeUserIdentifier();
       } on DioError catch (e) {
         final String errorMsg = e.getResponseError(ctx: ctx);
         locator<AnalyticsService>().logError(errorMsg: errorMsg);

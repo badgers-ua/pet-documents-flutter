@@ -5,6 +5,10 @@ class CrashlyticsService {
     await FirebaseCrashlytics.instance.setUserIdentifier(userId);
   }
 
+  Future<void> removeUserIdentifier() async {
+    await FirebaseCrashlytics.instance.setUserIdentifier('null');
+  }
+
   void testCrash() {
     FirebaseCrashlytics.instance.crash();
   }
