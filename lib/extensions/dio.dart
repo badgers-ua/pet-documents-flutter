@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio_firebase_performance/dio_firebase_performance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdoc/extensions/string.dart';
@@ -18,6 +19,7 @@ extension AuthenticatedDio on Dio {
       responseType: ResponseType.json,
       contentType: ContentType.json.toString(),
     ));
+    dio.interceptors.add(DioFirebasePerformanceInterceptor());
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions requestOptions, handler) async {
@@ -39,9 +41,7 @@ extension AuthenticatedDio on Dio {
             }
 
             MyApp.store.dispatch(
-              LoadAccessTokenSuccess(
-                  payload: auth
-              ),
+              LoadAccessTokenSuccess(payload: auth),
             );
 
             accessToken = auth.accessToken!;
