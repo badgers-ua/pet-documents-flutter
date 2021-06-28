@@ -170,8 +170,20 @@ class AnalyticsConstants {
   static final ownerRemoved = 'owner_removed';
   static final hasAvatar = 'has_avatar';
   static final species = 'species';
-  static final error = 'error';
+  static final error = 'caught_error';
   static final errorMessage = 'error_message';
+}
+
+class InAppPurchaseConstants {
+  static final String subscription_1 = 'subscription_1';
+  static final String subscription_2 = 'subscription_2';
+  static final String subscription_3 = 'subscription_3';
+
+  static Set<String> get productIds => Set.from([
+        subscription_1,
+        subscription_2,
+        subscription_3,
+      ]);
 }
 
 class Api {

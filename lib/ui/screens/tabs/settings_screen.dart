@@ -6,6 +6,7 @@ import 'package:pdoc/models/dto/request/sign_out_req_dto.dart';
 import 'package:pdoc/models/dto/response/user_res_dto.dart';
 import 'package:pdoc/store/index.dart';
 import 'package:pdoc/store/sign-out/effects.dart';
+import 'package:pdoc/ui/widgets/temp_in_app_purchase_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routeName = '/tab-settings';
@@ -18,10 +19,11 @@ class SettingsScreen extends StatelessWidget {
           isLoadingUser: store.state.user.isLoading,
           user: store.state.user.data,
           error: store.state.user.errorMessage.isNotEmpty,
-          dispatchSignOut: () => store.dispatch(loadSignOutThunk(
-            ctx: context,
-            request: SignOutReqDto(deviceToken: store.state.deviceToken.data!.deviceToken),
-          )),
+          dispatchSignOut: () =>
+              store.dispatch(loadSignOutThunk(
+                ctx: context,
+                request: SignOutReqDto(deviceToken: store.state.deviceToken.data!.deviceToken),
+              )),
         );
       },
       ignoreChange: (state) => state.user.data == null,
@@ -33,7 +35,9 @@ class SettingsScreen extends StatelessWidget {
         }
 
         if (vm.error) {
-          return Center(child: L10n.of(context).something_went_wrong);
+          return Center(child: L10n
+              .of(context)
+              .something_went_wrong);
         }
 
         final UserResDto user = vm.user!;
@@ -43,9 +47,10 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               leading: CachedNetworkImage(
                 imageUrl: user.avatar,
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                ),
+                imageBuilder: (context, imageProvider) =>
+                    CircleAvatar(
+                      backgroundImage: imageProvider,
+                    ),
                 placeholder: (context, url) => CircularProgressIndicator(),
               ),
               title: Text('${user.firstName} ${user.lastName}'),
@@ -55,6 +60,7 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: vm.dispatchSignOut,
               ),
             ),
+            TempInAppPurchaseWidget(userId: user.id),
           ],
         );
       },

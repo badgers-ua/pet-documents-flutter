@@ -82,6 +82,7 @@ class SignInScreen extends StatelessWidget {
                       text: L10n.of(context).sign_in_with_apple,
                     ),
                   ),
+                // TODO: SIgn in button double clickable
                 Align(
                   child: SignInButton(
                     Theme.of(context).brightness == Brightness.dark ? Buttons.Google : Buttons.GoogleDark,

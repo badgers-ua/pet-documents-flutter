@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,6 +24,7 @@ import 'package:pdoc/ui/screens/tabs/pet_profile/pet_profile_screen.dart';
 import 'package:pdoc/ui/screens/tabs_screen.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 import 'l10n/l10n.dart';
 import 'locator.dart';
@@ -39,12 +41,20 @@ _initializeCrashlytics() {
   }).sendPort);
 }
 
+_initializeAndroidInAppPurchases() {
+  if (defaultTargetPlatform != TargetPlatform.android) {
+    return;
+  }
+  InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+}
+
 Future<void> main() async {
-  setupLocator();
+  _initializeAndroidInAppPurchases();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
   _initializeCrashlytics();
+  setupLocator();
   runZonedGuarded<Future<void>>(() async {
     runApp(MyApp());
   }, FirebaseCrashlytics.instance.recordError);

@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "796641729899-qifqqadoks1i513bke7oitma65pvsaqp.apps.googleusercontent.com",
+          "client_id": "796641729899-foecgmk7t5hifrf7h8p0prdvl27ho0hv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ua.yyesi.pdoc",
+            "certificate_hash": "3d4245857638b5c15f1d051fda28362000d34381"
+          }
+        },
+        {
+          "client_id": "796641729899-ppo3u2q7lhh36a563ssra6cln26qkk8u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ua.yyesi.pdoc",
