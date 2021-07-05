@@ -74,6 +74,7 @@ class InAppPurchaseService {
     final PurchaseParam purchaseParam = PurchaseParam(productDetails: product, applicationUserName: userId);
     _iap.buyNonConsumable(purchaseParam: purchaseParam);
     final List<PurchaseDetails> newPurchases = await _getNewPurchaseDetails();
+    return newPurchases;
   }
 
   Future<List<PurchaseDetails>?> buySubscription({

@@ -62,7 +62,8 @@ class _TempInAppPurchaseWidgetState extends State<TempInAppPurchaseWidget> {
           ] else ...[
             TextButton(
               onPressed: () async {
-                await _iapService.buySubscription(product: _p, userId: widget.userId);
+                final res = await _iapService.buySubscription(product: _p, userId: widget.userId);
+                print(res);
                 _load();
               },
               child: Text("Purchase: ${_p.title.split((' ('))[0]} (${_p.price})"),

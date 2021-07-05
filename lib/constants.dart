@@ -188,7 +188,7 @@ class InAppPurchaseConstants {
 
 class Api {
   // Android
-  // static const baseUrl = 'http://10.0.2.2:5000/api/v2';
+  static const baseUrl = 'http://10.0.2.2:5000/api/v2';
 // static const baseUrl = 'http://localhost:5000/api/v2';
-  static const baseUrl = 'https://p-doc.com/api/v2';
+//   static const baseUrl = 'https://p-doc.com/api/v2';
 }
