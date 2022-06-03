@@ -1,0 +1,198 @@
+{
+  "sign_in_screen_app_bar_text": "Вхід",
+  "sign_in_screen_welcome_text": "Привіт",
+  "email": "Ел. пошта",
+  "password": "Пароль",
+  "sign_in_screen_sign_in_button_text": "Увійти з Email",
+  "invalid_email_text": "Некоректна ел. пошта.",
+  "invalid_password_text": "Довжина паролю має становити від 6 до 20 символів.",
+  "passwords_not_matched_text": "Паролі не співпадають.",
+  "sign_in_screen_no_account_text": "Немає аккаунту?",
+  "sign_up": "Зареєструватись",
+  "sign_up_screen_app_bar_text": "Реєстрація",
+  "tabs_screen_home_tab_text": "Головна",
+  "tabs_screen_chats_tab_text": "Чати",
+  "tabs_screen_settings_tab_text": "Налаштування",
+  "home_screen_app_bar_text": "Головна",
+  "home_screen_pets_title_text": "Мої улюбленці",
+  "upcoming_events": "Майбутні події",
+  "today_events": "Сьогоднішні події",
+  "tomorrow_events": "Завтрішні події",
+  "past_events": "Минулі події",
+  "pet_card_widget_subtitle": "Вік: {age}",
+  "@pet_card_widget_subtitle": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "chats_screen_app_bar_text": "Чати",
+  "settings_screen_app_bar_text": "Налаштування",
+  "add_edit_pet_screen_app_bar_text": "Додати улюбленця",
+  "add_edit_pet_screen_app_bar_edit_text": "Редагувати {petName}",
+  "@add_edit_pet_screen_app_bar_edit_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_edit_pet_screen_name_input_text": "Ім'я",
+  "add_edit_pet_screen_species_input_text": "Вид",
+  "add_edit_pet_screen_breed_input_text": "Порода",
+  "add_edit_pet_screen_gender_input_text": "Стать",
+  "add_edit_pet_screen_date_of_birth_input_text": "Дата народження",
+  "add_edit_pet_screen_color_input_text": "Колір",
+  "description": "Опис",
+  "create": "Створити",
+  "update": "Редагувати",
+  "pet_profile_screen_info_tab_text": "Опис",
+  "pet_profile_screen_chat_tab_text": "Чат",
+  "pet_profile_screen_events_tab_text": "Події",
+  "pet_profile_screen_edit_pet_fab_button_text": "Рудагувати",
+  "scaffold_messenger_extension_dismiss_text": "Зрозуміло",
+  "pet_info_sliver_list_screen_species_text": "Вид",
+  "pet_info_sliver_list_screen_breed_text": "Порода",
+  "pet_info_sliver_list_screen_gender_text": "Стать",
+  "pet_info_sliver_list_screen_date_born_text": "Дата народження",
+  "pet_info_sliver_list_screen_color_text": "Колір",
+  "pet_info_sliver_list_screen_description_text": "Опис",
+  "pet_info_sliver_list_screen_owners_text": "Власники",
+  "age": "Вік",
+  "age_unknown": "Вік невідомий",
+  "pet_info_sliver_list_screen_owners_me_text": "Я",
+  "species_enum_cat": "Кіт",
+  "species_enum_dog": "Пес",
+  "gender_enum_male": "Чоловіча",
+  "gender_enum_female": "Жіноча",
+  "modal_select_app_bar_select_species_text": "Обрати вид",
+  "modal_select_app_bar_select_breeds_text": "Обрати породу",
+  "modal_select_app_bar_select_gender_text": "Обрати стать",
+  "modal_select_app_bar_search_text": "Пошук",
+  "modal_select_search_bar_breeds_hint_text": "Пошук породи ведеться англійською мовою.",
+  "required_validator_text": "{fieldName} є обов'язковим полем.",
+  "@required_validator_text": {
+    "placeholders": {
+      "fieldName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_owner": "Додати власника",
+  "remove_owner": "Видалити власника",
+  "add_owner_dialog_widget_description1_text": "Вкажіть електронну адресу людини, яку бажаєте додати як власника {petName}.",
+  "@add_owner_dialog_widget_description1_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_owner_dialog_widget_description2_text": "УВАГА: Людина має бути зареєстрована в додатку.",
+  "done_text": "Готово",
+  "cancel_text": "Відміна",
+  "no_pets_text": "Створені улюбленці відображатимуться тут.",
+  "no_events_text": "Створені події відображатимуться тут.",
+  "remove_owner_warning": "УВАГА: {ownerName} втратить доступ до {petName}.",
+  "@remove_owner_warning": {
+    "placeholders": {
+      "ownerName": {
+        "type": "String"
+      },
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "select_avatar": "Обрати фото",
+  "delete_avatar": "Видалити фото",
+  "camera": "Камера",
+  "library": "Галерея",
+  "something_went_wrong": "От халепа, щось пішло не так, будь ласка, спробуйте пізніше.",
+  "file_too_large": "Розмір фото файлу завеликий.",
+  "delete": "Видалити",
+  "delete_pet": "Видалити {petName}",
+  "@delete_pet": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete_pet_warning": "УВАГА: Ви збираєтесь видалити {petName}.\nУсі власники втратять доступ до {petName}.",
+  "@delete_pet_warning": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_event_app_bar_title": "Додати подію ({petName})",
+  "@add_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "edit_event_app_bar_title": "Редагувати подію ({petName})",
+  "@edit_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "event_vaccination": "Вакцинація",
+  "event_deworming": "Дегельмінтизація",
+  "event_end_of_treatment": "Кінець лікування",
+  "event_operation": "Операція",
+  "event_childbirth": "Роди",
+  "event_sterilization": "Стерелізація/Кастрація",
+  "event_tick_treatment": "Щеплення проти кліщів",
+  "event_vaccination_against_rabies": "Щеплення проти сказу",
+  "event_veterinarian_examination": "Огляд лікаря",
+  "event_show": "Участь у виставці",
+  "event_reward": "Нагорода",
+  "event_photo_session": "Фотосесія",
+  "event_training": "Дресерування",
+  "event_start_of_treatment": "Початок лікування",
+  "event_pairing": "Спарювання",
+  "event_estrus": "Еструс",
+  "event_molt": "Линька",
+  "event_type": "Тип події",
+  "date": "Дата",
+  "delete_event": "Видалити подію",
+  "delete_event_warning": "УВАГА: Підтвердіть видалення події.",
+  "sign_in_with_google": "Увійти з Google",
+  "sign_in_with_apple": "Увійти з Apple",
+  "first_name": "Ім'я",
+  "last_name": "Прізвище",
+  "repeat_password": "Повторіть пароль",
+  "weight_kg": "Вага (kg)",
+  "weight": "Вага",
+  "avatar_download_error": "Помилка завантаження фото.",
+  "age_year": "р",
+  "age_month": "м",
+  "receive_notification": "Отримати сповіщення",
+  "optional_fields": "Необов'язкові поля",
+  "sign_in_description": "Будь ласка залогуйтесь, щоб керувати улюбленцями",
+  "no_connection_error": "Сервер не відповідає, або немає доступу до мережі.",
+  "server_down_error": "Сервер не відповідає.",
+  "error_launching_url": "Помилка при відкритті посилання: {url}",
+  "@error_launching_url": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "about_app": "Про додаток",
+  "your_pets_in_your_pocket": "Ваші улюленці завжди з вами",
+  "share_feedback": "Маєте побажання або пропозиції? Поділіться з нами",
+  "privacy_policy": "Політика конфіденційності",
+  "terms_of_service": "Умови користування",
+  "pet_limit_reached": "Неможливо мати більше 2х улюбленців, ми знаємо що це не ідеально.",
+  "event_limit_reached": "Неможливо мати більше 50х подій, ми знаємо що це не ідеально."
+}

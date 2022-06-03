@@ -1,0 +1,198 @@
+{
+  "sign_in_screen_app_bar_text": "Sign in",
+  "sign_in_screen_welcome_text": "Welcome",
+  "email": "Email",
+  "password": "Password",
+  "sign_in_screen_sign_in_button_text": "Sign in with Email",
+  "invalid_email_text": "Invalid email.",
+  "invalid_password_text": "Password must be between 6 and 20 characters.",
+  "passwords_not_matched_text": "Passwords don't match.",
+  "sign_in_screen_no_account_text": "Don't have an account yet?",
+  "sign_up": "Sign up",
+  "sign_up_screen_app_bar_text": "Sign up",
+  "tabs_screen_home_tab_text": "Home",
+  "tabs_screen_chats_tab_text": "Chats",
+  "tabs_screen_settings_tab_text": "Settings",
+  "home_screen_app_bar_text": "Home",
+  "home_screen_pets_title_text": "My pets",
+  "upcoming_events": "Upcoming events",
+  "today_events": "Today's events",
+  "tomorrow_events": "Tomorrow's events",
+  "past_events": "Past events",
+  "pet_card_widget_subtitle": "Age: {age}",
+  "@pet_card_widget_subtitle": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "chats_screen_app_bar_text": "Chats",
+  "settings_screen_app_bar_text": "Settings",
+  "add_edit_pet_screen_app_bar_text": "Add new pet",
+  "add_edit_pet_screen_app_bar_edit_text": "Edit {petName}",
+  "@add_edit_pet_screen_app_bar_edit_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_edit_pet_screen_name_input_text": "Name",
+  "add_edit_pet_screen_species_input_text": "Species",
+  "add_edit_pet_screen_breed_input_text": "Breed",
+  "add_edit_pet_screen_gender_input_text": "Gender",
+  "add_edit_pet_screen_date_of_birth_input_text": "Date of birth",
+  "add_edit_pet_screen_color_input_text": "Color",
+  "description": "Description",
+  "create": "Create",
+  "update": "Update",
+  "pet_profile_screen_info_tab_text": "Info",
+  "pet_profile_screen_chat_tab_text": "Chat",
+  "pet_profile_screen_events_tab_text": "Events",
+  "pet_profile_screen_edit_pet_fab_button_text": "Edit",
+  "scaffold_messenger_extension_dismiss_text": "Dismiss",
+  "pet_info_sliver_list_screen_species_text": "Species",
+  "pet_info_sliver_list_screen_breed_text": "Breed",
+  "pet_info_sliver_list_screen_gender_text": "Gender",
+  "pet_info_sliver_list_screen_date_born_text": "Date born",
+  "pet_info_sliver_list_screen_color_text": "Color",
+  "pet_info_sliver_list_screen_description_text": "Description",
+  "pet_info_sliver_list_screen_owners_text": "Owners",
+  "age": "Age",
+  "age_unknown": "Age unknown",
+  "pet_info_sliver_list_screen_owners_me_text": "Me",
+  "species_enum_cat": "Cat",
+  "species_enum_dog": "Dog",
+  "gender_enum_male": "Male",
+  "gender_enum_female": "Female",
+  "modal_select_app_bar_select_species_text": "Select species",
+  "modal_select_app_bar_select_breeds_text": "Select breed",
+  "modal_select_app_bar_select_gender_text": "Select gender",
+  "modal_select_app_bar_search_text": "Search",
+  "modal_select_search_bar_breeds_hint_text": "Please use english language to search breeds.",
+  "required_validator_text": "{fieldName} is required.",
+  "@required_validator_text": {
+    "placeholders": {
+      "fieldName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_owner": "Add owner",
+  "remove_owner": "Remove owner",
+  "add_owner_dialog_widget_description1_text": "Enter email address of person that you want to add as an owner of {petName}.",
+  "@add_owner_dialog_widget_description1_text": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_owner_dialog_widget_description2_text": "WARNING: Person must be registered within the app.",
+  "done_text": "Done",
+  "cancel_text": "Cancel",
+  "no_pets_text": "Created pets will be displayed here.",
+  "no_events_text": "Created events will be displayed here.",
+  "remove_owner_warning": "WARNING: {ownerName} will loose access to {petName}.",
+  "@remove_owner_warning": {
+    "placeholders": {
+      "ownerName": {
+        "type": "String"
+      },
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "select_avatar": "Choose photo",
+  "delete_avatar": "Delete photo",
+  "camera": "Camera",
+  "library": "Library",
+  "something_went_wrong": "Oh no, something went wrong, please try again later.",
+  "file_too_large": "Image file size is too large.",
+  "delete": "Delete",
+  "delete_pet": "Delete {petName}",
+  "@delete_pet": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete_pet_warning": "WARNING: You are about to delete {petName}.\nAll owners will lose access to {petName}.",
+  "@delete_pet_warning": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "add_event_app_bar_title": "Add event ({petName})",
+  "@add_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "edit_event_app_bar_title": "Edit event ({petName})",
+  "@edit_event_app_bar_title": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "event_vaccination": "Vaccination",
+  "event_deworming": "Deworming",
+  "event_end_of_treatment": "End of treatment",
+  "event_operation": "Operation",
+  "event_childbirth": "Childbirth",
+  "event_sterilization": "Sterilization",
+  "event_tick_treatment": "Tick treatment",
+  "event_vaccination_against_rabies": "Vaccination against rabies",
+  "event_veterinarian_examination": "Veterinarian examination",
+  "event_show": "Participation in the exhibition",
+  "event_reward": "Reward",
+  "event_photo_session": "Photo session",
+  "event_training": "Training",
+  "event_start_of_treatment": "Start of treatment",
+  "event_pairing": "Pairing",
+  "event_estrus": "Estrus",
+  "event_molt": "Molt",
+  "event_type": "Event type",
+  "date": "Date",
+  "delete_event": "Delete event",
+  "delete_event_warning": "WARNING: This can't be undone.",
+  "sign_in_with_google": "Sign in with Google",
+  "sign_in_with_apple": "Sign in with Apple",
+  "first_name": "First name",
+  "last_name": "Last name",
+  "repeat_password": "Repeat password",
+  "weight_kg": "Weight (kg)",
+  "weight": "Weight",
+  "avatar_download_error": "Error downloading photo.",
+  "age_year": "y",
+  "age_month": "m",
+  "receive_notification": "Receive notification",
+  "optional_fields": "Optional fields",
+  "sign_in_description": "Please sign in to manage your pets",
+  "no_connection_error": "Server is not responding or check your internet connection.",
+  "server_down_error": "Server is not responding.",
+  "error_launching_url": "Error launching url: {url}",
+  "@error_launching_url": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "about_app": "About",
+  "your_pets_in_your_pocket": "Your pets in your pocket",
+  "share_feedback": "Have a feedback or suggestion? Reach us at",
+  "privacy_policy": "Privacy Policy",
+  "terms_of_service": "Terms of Service",
+  "pet_limit_reached": "You can't have more then 2 pets, we know it's not ideal.",
+  "event_limit_reached": "You can't have more then 50 events, we know it's not ideal."
+}
